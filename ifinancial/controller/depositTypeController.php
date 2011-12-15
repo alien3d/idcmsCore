@@ -384,22 +384,50 @@ class DepositTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`depositType`.`depositTypeId`,`depositType`.`depositTypeSequence`,`depositType`.`depositCode`,`depositType`.`depositTypeDesc`,`depositType`.`isDefault`,`depositType`.`isNew`,`depositType`.`isDraft`,`depositType`.`isUpdate`,`depositType`.`isDelete`,`depositType`.`isActive`,`depositType`.`isApproved`,`depositType`.`isReview`,`depositType`.`isPost`,`depositType`.`executeBy`,`depositType`.`executeTime`
-                    ,`iManagement`.`staff`.`staffName`
+			SELECT	`depositType`.`depositTypeId`,
+					`depositType`.`depositTypeSequence`,
+					`depositType`.`depositTypeCode`,
+					`depositType`.`depositTypeDesc`,
+					`depositType`.`isDefault`,
+					`depositType`.`isNew`,
+					`depositType`.`isDraft`,
+					`depositType`.`isUpdate`,
+					`depositType`.`isDelete`,
+					`depositType`.`isActive`,
+					`depositType`.`isApproved`,
+					`depositType`.`isReview`,
+					`depositType`.`isPost`,
+					`depositType`.`executeBy`,
+					`depositType`.`executeTime`,
+					`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`depositType`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `depositType`.`executeBy` = `iManagement`.`staff`.`staffId`
+            ON      `depositType`.`executeBy` = `staff`.`staffId`
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getDepositTypeId(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getDepositTypeId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getDepositTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT`depositType`.`depositTypeId`,`depositType`.`depositTypeSequence`,`depositType`.`depositCode`,`depositType`.`depositTypeDesc`,`depositType`.`isDefault`,`depositType`.`isNew`,`depositType`.`isDraft`,`depositType`.`isUpdate`,`depositType`.`isDelete`,`depositType`.`isActive`,`depositType`.`isApproved`,`depositType`.`isReview`,`depositType`.`isPost`,`depositType`.`executeBy`,`depositType`.`executeTime`
-                    `iManagement`.`staff`.`staffName`
-            FROM    `".$this->q->getFixAssetDatabase()."`.`depositType`
-            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `depositType`.`executeBy` = `iManagement`.`staff`.`staffId`
+			SELECT	[depositType].[depositTypeId],
+					[depositType].[depositTypeSequence],
+					[depositType].[depositTypeCode],
+					[depositType].[depositTypeDesc],
+					[depositType].[isDefault],
+					[depositType].[isNew],
+					[depositType].[isDraft],
+					[depositType].[isUpdate],
+					[depositType].[isDelete],
+					[depositType].[isActive],
+					[depositType].[isApproved],
+					[depositType].[isReview],
+					[depositType].[isPost],
+					[depositType].[executeBy],
+					[depositType].[executeTime],
+					[staff].[staffName]
+            FROM    [".$this->q->getFinancialDatabase()."].[depositType]
+            JOIN    [".$this->q->getManagementDatabase()."].[staff]
+            ON      [depositType].[executeBy] = [staff].[staffId]
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getDepositTypeId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getDepositTypeId(0, 'single') . "'";
@@ -565,25 +593,25 @@ class DepositTypeClass extends ConfigClass {
 				$sql = "
 							WITH [depositTypeDerived] AS
 							(
-								SELECT 		['".$this->q->getFinancialDatabase()."'].[depositType].[depositTypeId],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[depositTypeSequence],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[depositTypeCode],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[depositTypeDesc],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[isDefault],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[isNew],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[isDraft],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[isUpdate],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[isDelete],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[isApproved],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[isReview],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[isPost],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[executeBy],
-											['".$this->q->getFinancialDatabase()."'].[depositType].[executeTime],
-											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY ['".$this->q->getFinancialDatabase()."'].[depositType].[depositTypeId]) AS 'RowNumber'
+								SELECT 		[depositType].[depositTypeId],
+											[depositType].[depositTypeSequence],
+											[depositType].[depositTypeCode],
+											[depositType].[depositTypeDesc],
+											[depositType].[isDefault],
+											[depositType].[isNew],
+											[depositType].[isDraft],
+											[depositType].[isUpdate],
+											[depositType].[isDelete],
+											[depositType].[isApproved],
+											[depositType].[isReview],
+											[depositType].[isPost],
+											[depositType].[executeBy],
+											[depositType].[executeTime],
+											[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [depositType].[depositTypeId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[depositType]
-								JOIN	[iManagement].[staff]
-								ON		['".$this->q->getFinancialDatabase()."'].[depositType].[executeBy] = [iManagement].[staff].[staffId]
+								JOIN	[".$this->q->getManagementDatabase()."].[staff]
+								ON		[depositType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -692,14 +720,14 @@ class DepositTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getDepositTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`".$this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getDepositTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getDepositTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getDepositTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -728,38 +756,38 @@ class DepositTypeClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`depositType`.`depositType`
-				SET 		`".$this->q->getFinancialDatabase()."`.`depositType`.`depositTypeSequence`		=	'" . $this->model->getDepositTypeSequence() . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`depositTypeCode`		=	'" . $this->model->getDepositTypeCode() . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`depositTypeDesc`		=	'" . $this->model->getDepositTypeDesc() . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`".$this->q->getFinancialDatabase()."`.`depositType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`".$this->q->getFinancialDatabase()."`.`depositType`.`depositTypeId`		=	'" . $this->model->getDepositTypeId(0, 'single') . "'";
+				SET 		`depositType`.`depositTypeSequence`		=	'" . $this->model->getDepositTypeSequence() . "',
+							`depositType`.`depositTypeCode`		=	'" . $this->model->getDepositTypeCode() . "',
+							`depositType`.`depositTypeDesc`		=	'" . $this->model->getDepositTypeDesc() . "',
+							`depositType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`depositType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`depositType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`depositType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`depositType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`depositType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`depositType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`depositType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`depositType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`depositType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`depositType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`depositType`.`depositTypeId`		=	'" . $this->model->getDepositTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[depositType]
-				SET 		['".$this->q->getFinancialDatabase()."'].[depositType].[depositTypeSequence]		=	'" . $this->model->getDepositTypeSequence() . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[depositTypeCode]		=	'" . $this->model->getDepositTypeCode() . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[depositTypeDesc]		=	'" . $this->model->getDepositTypeDesc() . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							['".$this->q->getFinancialDatabase()."'].[depositType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				UPDATE 		[".$this->q->getFinancialDatabase()."].[depositType]
+				SET 		[depositType].[depositTypeSequence]		=	'" . $this->model->getDepositTypeSequence() . "',
+							[depositType].[depositTypeCode]		=	'" . $this->model->getDepositTypeCode() . "',
+							[depositType].[depositTypeDesc]		=	'" . $this->model->getDepositTypeDesc() . "',
+							[depositType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[depositType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+							[depositType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[depositType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[depositType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[depositType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+							[depositType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[depositType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+							[depositType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							[depositType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+							[depositType].[executeTime]		=	" . $this->model->getExecuteTime() . "
 			WHERE 		['".$this->q->getFinancialDatabase()."'].[depositType].[depositTypeId]			=	'" . $this->model->getDepositTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
@@ -847,14 +875,14 @@ class DepositTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getDepositTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getDepositTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getDepositTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getDepositTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -882,34 +910,34 @@ class DepositTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`depositType`
-				SET 	`".$this->q->getFinancialDatabase()."`.`depositType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`depositType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`depositType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`depositType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`depositType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`depositType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`depositType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`depositType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`depositType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`depositType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`".$this->q->getFinancialDatabase()."`.`depositType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`".$this->q->getFinancialDatabase()."`.`depositType`.`depositTypeId`		=	'" . $this->model->getDepositTypeId(0, 'single') . "'";
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`depositType`
+				SET 	`depositType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`depositType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`depositType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`depositType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`depositType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`depositType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`depositType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`depositType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`depositType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`depositType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`depositType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`depositType`.`depositTypeId`		=	'" . $this->model->getDepositTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	['".$this->q->getFinancialDatabase()."'].[depositType].[depositType]
-				SET 	['".$this->q->getFinancialDatabase()."'].[depositType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[depositType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[depositType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[depositType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[depositType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[depositType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[depositType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[depositType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[depositType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[depositType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						['".$this->q->getFinancialDatabase()."'].[depositType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	['".$this->q->getFinancialDatabase()."'].[depositType].[depositTypeId]		=	'" . $this->model->getDepositTypeId(0, 'single') . "'";
+				SET 	[depositType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[depositType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[depositType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[depositType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[depositType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[depositType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[depositType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[depositType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[depositType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[depositType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[depositType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[depositType].[depositTypeId]		=	'" . $this->model->getDepositTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	DEPOSITTYPE
@@ -985,11 +1013,11 @@ class DepositTypeClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE [".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

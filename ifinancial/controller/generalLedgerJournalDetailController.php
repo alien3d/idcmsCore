@@ -435,7 +435,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 					`generalLedgerJournalDetail`.`isPost`,
 					`generalLedgerJournalDetail`.`executeBy`,
 					`generalLedgerJournalDetail`.`executeTime`,
-					`iManagement`.`staff`.`staffName`
+					`staff`.`staffName`
             FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalDetail`
 			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
             ON      `generalLedgerJournalDetail`.`executeBy` = `staff`.`staffId`
@@ -451,7 +451,9 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			SELECT		[generalLedgerJournalDetail].[generalLedgerJournalDetailId],
 						[generalLedgerJournalDetail].[generalLedgerJournalId],
 						[generalLedgerJournalDetail].[generalLedgerChartOfAccountId],
-						[generalLedgerJournalDetail].[gAmount],
+						[generalLedgerJournalDetail].[countryId],
+						[generalLedgerJournalDetail].[transactionMode],
+						[generalLedgerJournalDetail].[generalLedgerJournalDetailAmount],
 						[generalLedgerJournalDetail].[isDefault],
 						[generalLedgerJournalDetail].[isNew],
 						[generalLedgerJournalDetail].[isDraft],
@@ -465,11 +467,11 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 						[generalLedgerJournalDetail].[executeTime],
 						[staff].[staffName]
 			FROM 	[".$this->q->getFinancialDatabase()."].[generalLedgerJournalDetail]
-			JOIN	[iManagement].[staff]
+			JOIN	[".$this->q->getManagementDatabase()."].[staff]
 			ON		[generalLedgerJournalDetail].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerJournalId(0, 'single')) {
-				$sql .= " AND ['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
+				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -632,25 +634,27 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerJournalDetailDerived] AS
 							(
-								SELECT 		['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[generalLedgerJournalDetailId],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[generalLedgerJournalId],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[generalLedgerChartOfAccountId],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[gAmount],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isDefault],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isNew],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isDraft],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isUpdate],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isDelete],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isApproved],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isReview],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isPost],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[executeBy],
-											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[executeTime],
-											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY ['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[generalLedgerJournalDetailId]) AS 'RowNumber'
+								SELECT 		[generalLedgerJournalDetail].[generalLedgerJournalDetailId],
+											[generalLedgerJournalDetail].[generalLedgerJournalId],
+											[generalLedgerJournalDetail].[generalLedgerChartOfAccountId],
+											[generalLedgerJournalDetail].[countryId],
+											[generalLedgerJournalDetail].[transactionMode],
+											[generalLedgerJournalDetail].[generalLedgerJournalDetailAmount],
+											[generalLedgerJournalDetail].[isDefault],
+											[generalLedgerJournalDetail].[isNew],
+											[generalLedgerJournalDetail].[isDraft],
+											[generalLedgerJournalDetail].[isUpdate],
+											[generalLedgerJournalDetail].[isDelete],
+											[generalLedgerJournalDetail].[isApproved],
+											[generalLedgerJournalDetail].[isReview],
+											[generalLedgerJournalDetail].[isPost],
+											[generalLedgerJournalDetail].[executeBy],
+											[generalLedgerJournalDetail].[executeTime],
+											[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [generalLedgerJournalDetail].[generalLedgerJournalDetailId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail]
-								JOIN		[iManagement].[staff]
-								ON		['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[executeBy] = [iManagement].[staff].[staffId]
+								JOIN		[".$this->q->getManagementDatabase()."].[staff]
+								ON		[generalLedgerJournalDetail].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*

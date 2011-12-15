@@ -14,8 +14,8 @@ require_once ("../model/invoiceCategoryModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package General Ledger
- * @subpackage Journal Type
+ * @package Account Receivable
+ * @subpackage Invoice Category
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -384,22 +384,50 @@ class InvoiceCategoryClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`invoiceCategory`.`invoiceCategoryId`,`invoiceCategory`.`invoiceCategorySequence`,`invoiceCategory`.`generalLedgerJournalCode`,`invoiceCategory`.`invoiceCategoryDesc`,`invoiceCategory`.`isDefault`,`invoiceCategory`.`isNew`,`invoiceCategory`.`isDraft`,`invoiceCategory`.`isUpdate`,`invoiceCategory`.`isDelete`,`invoiceCategory`.`isActive`,`invoiceCategory`.`isApproved`,`invoiceCategory`.`isReview`,`invoiceCategory`.`isPost`,`invoiceCategory`.`executeBy`,`invoiceCategory`.`executeTime`
-                    ,`iManagement`.`staff`.`staffName`
+			SELECT	`invoiceCategory`.`invoiceCategoryId`,
+					`invoiceCategory`.`invoiceCategorySequence`,
+					`invoiceCategory`.`invoiceCategoryCode`,
+					`invoiceCategory`.`invoiceCategoryDesc`,
+					`invoiceCategory`.`isDefault`,
+					`invoiceCategory`.`isNew`,
+					`invoiceCategory`.`isDraft`,
+					`invoiceCategory`.`isUpdate`,
+					`invoiceCategory`.`isDelete`,
+					`invoiceCategory`.`isActive`,
+					`invoiceCategory`.`isApproved`,
+					`invoiceCategory`.`isReview`,
+					`invoiceCategory`.`isPost`,
+					`invoiceCategory`.`executeBy`,
+					`invoiceCategory`.`executeTime`,
+					`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`invoiceCategory`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `invoiceCategory`.`executeBy` = `iManagement`.`staff`.`staffId`
+            ON      `invoiceCategory`.`executeBy` = `staff`.`staffId`
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getInvoiceCategoryId(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getInvoiceCategoryId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getInvoiceCategoryId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT`invoiceCategory`.`invoiceCategoryId`,`invoiceCategory`.`invoiceCategorySequence`,`invoiceCategory`.`generalLedgerJournalCode`,`invoiceCategory`.`invoiceCategoryDesc`,`invoiceCategory`.`isDefault`,`invoiceCategory`.`isNew`,`invoiceCategory`.`isDraft`,`invoiceCategory`.`isUpdate`,`invoiceCategory`.`isDelete`,`invoiceCategory`.`isActive`,`invoiceCategory`.`isApproved`,`invoiceCategory`.`isReview`,`invoiceCategory`.`isPost`,`invoiceCategory`.`executeBy`,`invoiceCategory`.`executeTime`
-                    `iManagement`.`staff`.`staffName`
-            FROM    `".$this->q->getFixAssetDatabase()."`.`invoiceCategory`
-            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `invoiceCategory`.`executeBy` = `iManagement`.`staff`.`staffId`
+			SELECT	[invoiceCategory].[invoiceCategoryId],
+					[invoiceCategory].[invoiceCategorySequence],
+					[invoiceCategory].[invoiceCategoryCode],
+					[invoiceCategory].[invoiceCategoryDesc],
+					[invoiceCategory].[isDefault],
+					[invoiceCategory].[isNew],
+					[invoiceCategory].[isDraft],
+					[invoiceCategory].[isUpdate],
+					[invoiceCategory].[isDelete],
+					[invoiceCategory].[isActive],
+					[invoiceCategory].[isApproved],
+					[invoiceCategory].[isReview],
+					[invoiceCategory].[isPost],
+					[invoiceCategory].[executeBy],
+					[invoiceCategory].[executeTime],
+					[staff].[staffName]
+            FROM    [".$this->q->getFinancialDatabase()."].[invoiceCategory]
+            JOIN    [".$this->q->getManagementDatabase()."].[staff]
+            ON      [invoiceCategory].[executeBy] = [staff].[staffId]
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getInvoiceCategoryId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getInvoiceCategoryId(0, 'single') . "'";
@@ -565,25 +593,25 @@ class InvoiceCategoryClass extends ConfigClass {
 				$sql = "
 							WITH [invoiceCategoryDerived] AS
 							(
-								SELECT 		['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategoryId],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategorySequence],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategoryCode],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategoryDesc],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isDefault],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isNew],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isDraft],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isUpdate],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isDelete],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isApproved],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isReview],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isPost],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[executeBy],
-											['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[executeTime],
-											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY ['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategoryId]) AS 'RowNumber'
+								SELECT 		[invoiceCategory].[invoiceCategoryId],
+											[invoiceCategory].[invoiceCategorySequence],
+											[invoiceCategory].[invoiceCategoryCode],
+											[invoiceCategory].[invoiceCategoryDesc],
+											[invoiceCategory].[isDefault],
+											[invoiceCategory].[isNew],
+											[invoiceCategory].[isDraft],
+											[invoiceCategory].[isUpdate],
+											[invoiceCategory].[isDelete],
+											[invoiceCategory].[isApproved],
+											[invoiceCategory].[isReview],
+											[invoiceCategory].[isPost],
+											[invoiceCategory].[executeBy],
+											[invoiceCategory].[executeTime],
+											[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [invoiceCategory].[invoiceCategoryId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[invoiceCategory]
-								JOIN	[iManagement].[staff]
-								ON		['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[executeBy] = [iManagement].[staff].[staffId]
+								JOIN	[".$this->q->getManagementDatabase()."].[staff]
+								ON		[invoiceCategory].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -692,14 +720,14 @@ class InvoiceCategoryClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInvoiceCategoryId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInvoiceCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getInvoiceCategoryId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getInvoiceCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -728,39 +756,39 @@ class InvoiceCategoryClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`invoiceCategory`
-				SET 		`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`invoiceCategorySequence`		=	'" . $this->model->getInvoiceCategorySequence() . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`invoiceCategoryCode`		=	'" . $this->model->getInvoiceCategoryCode() . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`invoiceCategoryDesc`		=	'" . $this->model->getInvoiceCategoryDesc() . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`invoiceCategoryId`		=	'" . $this->model->getInvoiceCategoryId(0, 'single') . "'";
+				SET 		`invoiceCategory`.`invoiceCategorySequence`		=	'" . $this->model->getInvoiceCategorySequence() . "',
+							`invoiceCategory`.`invoiceCategoryCode`		=	'" . $this->model->getInvoiceCategoryCode() . "',
+							`invoiceCategory`.`invoiceCategoryDesc`		=	'" . $this->model->getInvoiceCategoryDesc() . "',
+							`invoiceCategory`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`invoiceCategory`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`invoiceCategory`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`invoiceCategory`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`invoiceCategory`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`invoiceCategory`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`invoiceCategory`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`invoiceCategory`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`invoiceCategory`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`invoiceCategory`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`invoiceCategory`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`invoiceCategory`.`invoiceCategoryId`		=	'" . $this->model->getInvoiceCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[invoiceCategory]
-				SET 		['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategorySequence]		=	'" . $this->model->getInvoiceCategorySequence() . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategoryCode]		=	'" . $this->model->getInvoiceCategoryCode() . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategoryDesc]		=	'" . $this->model->getInvoiceCategoryDesc() . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategoryId]			=	'" . $this->model->getInvoiceCategoryId(0, 'single') . "'";
+				UPDATE 		['".$this->q->getFinancialDatabase()."'].[invoiceCategory]
+				SET 		[invoiceCategory].[invoiceCategorySequence]		=	'" . $this->model->getInvoiceCategorySequence() . "',
+						[invoiceCategory].[invoiceCategoryCode]		=	'" . $this->model->getInvoiceCategoryCode() . "',
+						[invoiceCategory].[invoiceCategoryDesc]		=	'" . $this->model->getInvoiceCategoryDesc() . "',
+						[invoiceCategory].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[invoiceCategory].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[invoiceCategory].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[invoiceCategory].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[invoiceCategory].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[invoiceCategory].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[invoiceCategory].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[invoiceCategory].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[invoiceCategory].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[invoiceCategory].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[invoiceCategory].[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 		[invoiceCategory].[invoiceCategoryId]			=	'" . $this->model->getInvoiceCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		INVOICECATEGORY
@@ -847,14 +875,14 @@ class InvoiceCategoryClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInvoiceCategoryId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInvoiceCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getInvoiceCategoryId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getInvoiceCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -882,8 +910,8 @@ class InvoiceCategoryClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`invoiceCategory`
-				SET 	`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`invoiceCategory`
+				SET 	`invoiceCategory`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
 						`".$this->q->getFinancialDatabase()."`.`invoiceCategory`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
@@ -898,18 +926,18 @@ class InvoiceCategoryClass extends ConfigClass {
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategory]
-				SET 	['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	['".$this->q->getFinancialDatabase()."'].[invoiceCategory].[invoiceCategoryId]		=	'" . $this->model->getInvoiceCategoryId(0, 'single') . "'";
+				SET 	[invoiceCategory].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[invoiceCategory].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[invoiceCategory].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[invoiceCategory].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[invoiceCategory].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[invoiceCategory].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[invoiceCategory].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[invoiceCategory].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[invoiceCategory].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[invoiceCategory].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[invoiceCategory].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[invoiceCategory].[invoiceCategoryId]		=	'" . $this->model->getInvoiceCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	INVOICECATEGORY
@@ -985,11 +1013,11 @@ class InvoiceCategoryClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE [".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

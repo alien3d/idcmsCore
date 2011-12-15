@@ -14,8 +14,8 @@ require_once ("../model/membershipTypeModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package General Ledger
- * @subpackage Journal Type
+ * @package Membership
+ * @subpackage Membership Type
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -384,22 +384,50 @@ class MembershipTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`membershipType`.`membershipTypeId`,`membershipType`.`membershipTypeSequence`,`membershipType`.`generalLedgerJournalCode`,`membershipType`.`membershipTypeDesc`,`membershipType`.`isDefault`,`membershipType`.`isNew`,`membershipType`.`isDraft`,`membershipType`.`isUpdate`,`membershipType`.`isDelete`,`membershipType`.`isActive`,`membershipType`.`isApproved`,`membershipType`.`isReview`,`membershipType`.`isPost`,`membershipType`.`executeBy`,`membershipType`.`executeTime`
-                    ,`iManagement`.`staff`.`staffName`
+			SELECT	`membershipType`.`membershipTypeId`,
+					`membershipType`.`membershipTypeSequence`,
+					`membershipType`.`membershipTypeCode`,
+					`membershipType`.`membershipTypeDesc`,
+					`membershipType`.`isDefault`,
+					`membershipType`.`isNew`,
+					`membershipType`.`isDraft`,
+					`membershipType`.`isUpdate`,
+					`membershipType`.`isDelete`,
+					`membershipType`.`isActive`,
+					`membershipType`.`isApproved`,
+					`membershipType`.`isReview`,
+					`membershipType`.`isPost`,
+					`membershipType`.`executeBy`,
+					`membershipType`.`executeTime`
+                    ,`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`membershipType`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `membershipType`.`executeBy` = `iManagement`.`staff`.`staffId`
+            ON      `membershipType`.`executeBy` = `staff`.`staffId`
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getMembershipTypeId(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getMembershipTypeId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getMembershipTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT`membershipType`.`membershipTypeId`,`membershipType`.`membershipTypeSequence`,`membershipType`.`generalLedgerJournalCode`,`membershipType`.`membershipTypeDesc`,`membershipType`.`isDefault`,`membershipType`.`isNew`,`membershipType`.`isDraft`,`membershipType`.`isUpdate`,`membershipType`.`isDelete`,`membershipType`.`isActive`,`membershipType`.`isApproved`,`membershipType`.`isReview`,`membershipType`.`isPost`,`membershipType`.`executeBy`,`membershipType`.`executeTime`
-                    `iManagement`.`staff`.`staffName`
-            FROM    `".$this->q->getFixAssetDatabase()."`.`membershipType`
-            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `membershipType`.`executeBy` = `iManagement`.`staff`.`staffId`
+			SELECT	[membershipType].[membershipTypeId],
+					[membershipType].[membershipTypeSequence],
+					[membershipType].[membershipTypeCode],
+					[membershipType].[mmembershipTypeDesc],
+					[membershipType].[isDefault],
+					[membershipType].[isNew],
+					[membershipType].[isDraft],
+					[membershipType].[sUpdate],
+					[membershipType].[isDelete],
+					[membershipType].[isActive],
+					[membershipType].[isApproved],
+					[membershipType].[isReview],
+					[membershipType].[isPost],
+					[membershipType].[executeBy],
+					[membershipType].[executeTime],
+					[staff].[staffName]
+            FROM    [".$this->q->getFinancialDatabase()."].[membershipType]
+            JOIN    [".$this->q->getManagementDatabase()."].[staff]
+            ON      [membershipType].[executeBy] = [staff].[staffId]
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getMembershipTypeId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getMembershipTypeId(0, 'single') . "'";
@@ -565,25 +593,25 @@ class MembershipTypeClass extends ConfigClass {
 				$sql = "
 							WITH [membershipTypeDerived] AS
 							(
-								SELECT 		['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipTypeId],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipTypeSequence],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipTypeCode],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipTypeDesc],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[isDefault],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[isNew],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[isDraft],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[isUpdate],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[isDelete],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[isApproved],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[isReview],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[isPost],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[executeBy],
-											['".$this->q->getFinancialDatabase()."'].[membershipType].[executeTime],
-											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY ['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipTypeId]) AS 'RowNumber'
+								SELECT 		[membershipType].[membershipTypeId],
+											[membershipType].[membershipTypeSequence],
+											[membershipType].[membershipTypeCode],
+											[membershipType].[membershipTypeDesc],
+											[membershipType].[isDefault],
+											[membershipType].[isNew],
+											[membershipType].[isDraft],
+											[membershipType].[isUpdate],
+											[membershipType].[isDelete],
+											[membershipType].[isApproved],
+											[membershipType].[isReview],
+											[membershipType].[isPost],
+											[membershipType].[executeBy],
+											[membershipType].[executeTime],
+											[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [membershipType].[membershipTypeId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[membershipType]
-								JOIN	[iManagement].[staff]
-								ON		['".$this->q->getFinancialDatabase()."'].[membershipType].[executeBy] = [iManagement].[staff].[staffId]
+								JOIN	[".$this->q->getManagementDatabase()."].[staff]
+								ON		[membershipType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -692,14 +720,14 @@ class MembershipTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getMembershipTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getMembershipTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getMembershipTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getMembershipTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -728,39 +756,39 @@ class MembershipTypeClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`membershipType`.`membershipType`
-				SET 		`".$this->q->getFinancialDatabase()."`.`membershipType`.`membershipTypeSequence`		=	'" . $this->model->getMembershipTypeSequence() . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`membershipTypeCode`		=	'" . $this->model->getMembershipTypeCode() . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`membershipTypeDesc`		=	'" . $this->model->getMembershipTypeDesc() . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`".$this->q->getFinancialDatabase()."`.`membershipType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`".$this->q->getFinancialDatabase()."`.`membershipType`.`membershipTypeId`		=	'" . $this->model->getMembershipTypeId(0, 'single') . "'";
+				SET 		`membershipType`.`membershipTypeSequence`		=	'" . $this->model->getMembershipTypeSequence() . "',
+							`membershipType`.`membershipTypeCode`		=	'" . $this->model->getMembershipTypeCode() . "',
+							`membershipType`.`membershipTypeDesc`		=	'" . $this->model->getMembershipTypeDesc() . "',
+							`membershipType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`membershipType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`membershipType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`membershipType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`membershipType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`membershipType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`membershipType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`membershipType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`membershipType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`membershipType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`membershipType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`membershipType`.`membershipTypeId`		=	'" . $this->model->getMembershipTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[membershipType]
-				SET 		['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipTypeSequence]		=	'" . $this->model->getMembershipTypeSequence() . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipTypeCode]		=	'" . $this->model->getMembershipTypeCode() . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipTypeDesc]		=	'" . $this->model->getMembershipTypeDesc() . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							['".$this->q->getFinancialDatabase()."'].[membershipType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipTypeId]			=	'" . $this->model->getMembershipTypeId(0, 'single') . "'";
+				UPDATE 	['".$this->q->getFinancialDatabase()."'].[membershipType]
+				SET 		[membershipType].[membershipTypeSequence]		=	'" . $this->model->getMembershipTypeSequence() . "',
+							[membershipType].[membershipTypeCode]		=	'" . $this->model->getMembershipTypeCode() . "',
+							[membershipType].[membershipTypeDesc]		=	'" . $this->model->getMembershipTypeDesc() . "',
+							[membershipType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[membershipType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+							[membershipType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[membershipType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[membershipType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[membershipType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+							[membershipType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[membershipType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+							[membershipType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							[membershipType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+							[membershipType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 		[membershipType].[membershipTypeId]			=	'" . $this->model->getMembershipTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		MEMBERSHIPTYPE
@@ -847,14 +875,14 @@ class MembershipTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getMembershipTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getMembershipTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getMembershipTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getMembershipTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -882,34 +910,34 @@ class MembershipTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`membershipType`
-				SET 	`".$this->q->getFinancialDatabase()."`.`membershipType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`membershipType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`membershipType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`membershipType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`membershipType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`membershipType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`membershipType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`membershipType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`membershipType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`membershipType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`".$this->q->getFinancialDatabase()."`.`membershipType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`".$this->q->getFinancialDatabase()."`.`membershipType`.`membershipTypeId`		=	'" . $this->model->getMembershipTypeId(0, 'single') . "'";
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`membershipType`
+				SET 	`membershipType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`membershipType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`membershipType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`membershipType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`membershipType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`membershipType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`membershipType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`membershipType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`membershipType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`membershipType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`membershipType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`membershipType`.`membershipTypeId`		=	'" . $this->model->getMembershipTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipType]
-				SET 	['".$this->q->getFinancialDatabase()."'].[membershipType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[membershipType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[membershipType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[membershipType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[membershipType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[membershipType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[membershipType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[membershipType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[membershipType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[membershipType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						['".$this->q->getFinancialDatabase()."'].[membershipType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	['".$this->q->getFinancialDatabase()."'].[membershipType].[membershipTypeId]		=	'" . $this->model->getMembershipTypeId(0, 'single') . "'";
+				SET 	[membershipType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[membershipType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[membershipType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[membershipType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[membershipType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[membershipType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[membershipType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[membershipType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[membershipType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[membershipType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[membershipType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[membershipType].[membershipTypeId]		=	'" . $this->model->getMembershipTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	MEMBERSHIPTYPE
@@ -985,11 +1013,11 @@ class MembershipTypeClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE [".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

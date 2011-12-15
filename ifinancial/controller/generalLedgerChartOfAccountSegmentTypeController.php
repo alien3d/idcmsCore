@@ -15,7 +15,7 @@ require_once ("../model/generalLedgerChartOfAccountSegmentTypeModel.php");
  * @version 2
  * @author hafizan
  * @package General Ledger
- * @subpackageChart Of Account Type
+ * @subpackage Chart Of Account Segment Type
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -384,53 +384,53 @@ class GeneralLedgerChartOfAccountSegmentTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalLedgerChartOfAccountSegmentTypeId`,
-						`generalLedgerChartOfAccountSegmentTypeSequence`,
-						`generalLedgerChartOfAccountSegmentTypeCode`,
-						`generalLedgerChartOfAccountSegmentTypeDesc`,
-						`isDefault`,
-						`isNew`,
-						`isDraft`,
-						`isUpdate`,
-						`isDelete`,
-						`isActive`,
-						`isApproved`,
-						`isReview`,
-						`isPost`,
-						`executeBy`,
-						`executeTime`,
-						`iManagement`.`staff`.`staffName`
+			SELECT		`generalLedgerChartOfAccountSegmentType`.`generalLedgerChartOfAccountSegmentTypeId`,
+						`generalLedgerChartOfAccountSegmentType`.`generalLedgerChartOfAccountSegmentTypeSequence`,
+						`generalLedgerChartOfAccountSegmentType`.`generalLedgerChartOfAccountSegmentTypeCode`,
+						`generalLedgerChartOfAccountSegmentType`.`generalLedgerChartOfAccountSegmentTypeDesc`,
+						`generalLedgerChartOfAccountSegmentType`.`isDefault`,
+						`generalLedgerChartOfAccountSegmentType`.`isNew`,
+						`generalLedgerChartOfAccountSegmentType`.`isDraft`,
+						`generalLedgerChartOfAccountSegmentType`.`isUpdate`,
+						`generalLedgerChartOfAccountSegmentType`.`isDelete`,
+						`generalLedgerChartOfAccountSegmentType`.`isActive`,
+						`generalLedgerChartOfAccountSegmentType`.`isApproved`,
+						`generalLedgerChartOfAccountSegmentType`.`isReview`,
+						`generalLedgerChartOfAccountSegmentType`.`isPost`,
+						`generalLedgerChartOfAccountSegmentType`.`executeBy`,
+						`generalLedgerChartOfAccountSegmentType`.`executeTime`,
+						`staff`.`staffName`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountSegmentType`
-			JOIN	`iManagement`.`staff`
-			ON		`executeBy` = `iManagement`.`staff`.`staffId`
+			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
+			ON		`generalLedgerChartOfAccountSegmentType`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[generalLedgerChartOfAccountSegmentTypeId],
-						[generalLedgerChartOfAccountSegmentTypeSequence],
-						[generalLedgerChartOfAccountSegmentTypeCode],
-						[generalLedgerChartOfAccountSegmentTypeDesc],
-						[isDefault],
-						[isNew],
-						[isDraft],
-						[isUpdate],
-						[isDelete],
-						[isActive],
-						[isApproved],
-						[isReview],
-						[isPost],
-						[executeBy],
-						[executeTime],
-						[iManagement].[staff].[staffName]
-			FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountSegmentType]
-			JOIN		[iManagement].[staff]
-			ON		[executeBy] = [iManagement].[staff].[staffId]
+			SELECT		[generalLedgerChartOfAccountSegmentType].[generalLedgerChartOfAccountSegmentTypeId],
+						[generalLedgerChartOfAccountSegmentType].[generalLedgerChartOfAccountSegmentTypeSequence],
+						[generalLedgerChartOfAccountSegmentType].[generalLedgerChartOfAccountSegmentTypeCode],
+						[generalLedgerChartOfAccountSegmentType].[generalLedgerChartOfAccountSegmentTypeDesc],
+						[generalLedgerChartOfAccountSegmentType].[isDefault],
+						[generalLedgerChartOfAccountSegmentType].[isNew],
+						[generalLedgerChartOfAccountSegmentType].[isDraft],
+						[generalLedgerChartOfAccountSegmentType].[isUpdate],
+						[generalLedgerChartOfAccountSegmentType].[isDelete],
+						[generalLedgerChartOfAccountSegmentType].[isActive],
+						[generalLedgerChartOfAccountSegmentType].[isApproved],
+						[generalLedgerChartOfAccountSegmentType].[isReview],
+						[generalLedgerChartOfAccountSegmentType].[isPost],
+						[generalLedgerChartOfAccountSegmentType].[executeBy],
+						[generalLedgerChartOfAccountSegmentType].[executeTime],
+						[staff].[staffName]
+			FROM 		['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountSegmentType]
+			JOIN		[".$this->q->getManagementDatabase()."].[staff]
+			ON			[generalLedgerChartOfAccountSegmentType].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single')) {
-				$sql .= " AND ['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "'";
+				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -593,25 +593,25 @@ class GeneralLedgerChartOfAccountSegmentTypeClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerChartOfAccountSegmentTypeDerived] AS
 							(
-								SELECT 		[generalLedgerChartOfAccountSegmentTypeId],
-											[generalLedgerChartOfAccountSegmentTypeSequence],
-											[generalLedgerChartOfAccountSegmentTypeCode],
-											[generalLedgerChartOfAccountSegmentTypeDesc],
-											[isDefault],
-											[isNew],
-											[isDraft],
-											[isUpdate],
-											[isDelete],
-											[isApproved],
-											[isReview],
-											[isPost],
-											[executeBy],
-											[executeTime],
-											[iManagement].[staff].[staffName],
+								SELECT 		[generalLedgerChartOfAccountSegmentType].[generalLedgerChartOfAccountSegmentTypeId],
+											[generalLedgerChartOfAccountSegmentType].[generalLedgerChartOfAccountSegmentTypeSequence],
+											[generalLedgerChartOfAccountSegmentType].[generalLedgerChartOfAccountSegmentTypeCode],
+											[generalLedgerChartOfAccountSegmentType].[generalLedgerChartOfAccountSegmentTypeDesc],
+											[generalLedgerChartOfAccountSegmentType].[isDefault],
+											[generalLedgerChartOfAccountSegmentType].[isNew],
+											[generalLedgerChartOfAccountSegmentType].[isDraft],
+											[generalLedgerChartOfAccountSegmentType].[isUpdate],
+											[generalLedgerChartOfAccountSegmentType].[isDelete],
+											[generalLedgerChartOfAccountSegmentType].[isApproved],
+											[generalLedgerChartOfAccountSegmentType].[isReview],
+											[generalLedgerChartOfAccountSegmentType].[isPost],
+											[generalLedgerChartOfAccountSegmentType].[executeBy],
+											[generalLedgerChartOfAccountSegmentType].[executeTime],
+											[staff].[staffName],
 								ROW_NUMBER() OVER (ORDER BY [generalLedgerChartOfAccountSegmentTypeId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountSegmentType]
-								JOIN	[iManagement].[staff]
-								ON		[executeBy] = [iManagement].[staff].[staffId]
+								JOIN	[".$this->q->getManagementDatabase()."].[staff]
+								ON		[generalLedgerChartOfAccountSegmentType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -720,14 +720,14 @@ class GeneralLedgerChartOfAccountSegmentTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -755,7 +755,7 @@ class GeneralLedgerChartOfAccountSegmentTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`generalLedgerChartOfAccountSegmentType`
+				UPDATE		`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountSegmentType`
 				SET 		`generalLedgerChartOfAccountSegmentTypeSequence`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeSequence() . "',
 							`generalLedgerChartOfAccountSegmentTypeCode`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeCode() . "',
 							`generalLedgerChartOfAccountSegmentTypeDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeDesc() . "',
@@ -773,7 +773,7 @@ class GeneralLedgerChartOfAccountSegmentTypeClass extends ConfigClass {
 				WHERE 		`generalLedgerChartOfAccountSegmentTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[generalLedgerChartOfAccountSegmentType]
+				UPDATE 		[".$this->q->getFinancialDatabase()."].[generalLedgerChartOfAccountSegmentType]
 				SET 		[generalLedgerChartOfAccountSegmentTypeSequence]		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeSequence() . "',
 							[generalLedgerChartOfAccountSegmentTypeCode]		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeCode() . "',
 							[generalLedgerChartOfAccountSegmentTypeDesc]		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeDesc() . "',
@@ -875,14 +875,14 @@ class GeneralLedgerChartOfAccountSegmentTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -910,7 +910,7 @@ class GeneralLedgerChartOfAccountSegmentTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalLedgerChartOfAccountSegmentType`
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountSegmentType`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -925,7 +925,7 @@ class GeneralLedgerChartOfAccountSegmentTypeClass extends ConfigClass {
 				WHERE 	`generalLedgerChartOfAccountSegmentTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalLedgerChartOfAccountSegmentType]
+				UPDATE 	[".$this->q->getFinancialDatabase()."].[generalLedgerChartOfAccountSegmentType]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1013,11 +1013,11 @@ class GeneralLedgerChartOfAccountSegmentTypeClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

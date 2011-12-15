@@ -3,7 +3,7 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is generalLedgerChartOfAccountReportType model file.This is to ensure strict setting enable for all variable enter to database
+ * this is voucherType model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
@@ -14,24 +14,24 @@ require_once ("../../class/classValidation.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
        
-class GeneralLedgerChartOfAccountReportTypeModel extends ValidationClass {
+class VoucherTypeModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $generalLedgerChartOfAccountReportTypeId;
+	private $voucherTypeId;
 	/**
 	 * @var string
 	 */
-	private $generalLedgerChartOfAccountReportTypeSequence;
+	private $voucherTypeSequence;
 	/**
 	 * @var int
 	 */
-	private $generalLedgerChartOfAccountReportTypeCode;
+	private $voucherTypeCode;
 	/**
 	 * @var string
 	 */
-	private $generalLedgerChartOfAccountReportTypeDesc;
+	private $voucherTypeDesc;
 
 
 	/* (non-PHPdoc)
@@ -42,29 +42,29 @@ class GeneralLedgerChartOfAccountReportTypeModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('generalLedgerChartOfAccountReportType');
-		$this->setPrimaryKeyName('generalLedgerChartOfAccountReportTypeId');
+		$this->setTableName('voucherType');
+		$this->setPrimaryKeyName('voucherTypeId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['generalLedgerChartOfAccountReportTypeId'])) {
-			$this->setGeneralLedgerChartOfAccountReportTypeId($this->strict($_POST ['generalLedgerChartOfAccountReportTypeId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['voucherTypeId'])) {
+			$this->setVoucherTypeId($this->strict($_POST ['voucherTypeId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['generalLedgerChartOfAccountReportTypeSequence'])) {
-			$this->setGeneralLedgerChartOfAccountReportTypeSequence($this->strict($_POST ['generalLedgerChartOfAccountReportTypeSequence'], 'string'));
+		if (isset($_POST ['voucherTypeSequence'])) {
+			$this->setVoucherTypeSequence($this->strict($_POST ['voucherTypeSequence'], 'string'));
 		}
-		if (isset($_POST ['generalLedgerChartOfAccountReportTypeCode'])) {
-			$this->setGeneralLedgerChartOfAccountReportTypeCode($this->strict($_POST ['generalLedgerChartOfAccountReportTypeCode'], 'numeric'));
+		if (isset($_POST ['voucherTypeCode'])) {
+			$this->setVoucherTypeCode($this->strict($_POST ['voucherTypeCode'], 'numeric'));
 		}
-		if (isset($_POST ['generalLedgerChartOfAccountReportTypeDesc'])) {
-			$this->setGeneralLedgerChartOfAccountReportTypeDesc($this->strict($_POST ['generalLedgerChartOfAccountReportTypeDesc'], 'string'));
+		if (isset($_POST ['voucherTypeDesc'])) {
+			$this->setVoucherTypeDesc($this->strict($_POST ['voucherTypeDesc'], 'string'));
 		}
 
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['generalLedgerChartOfAccountReportTypeId'])) {
-			$this->setTotal(count($_GET ['generalLedgerChartOfAccountReportTypeId']));
+		if (isset($_GET ['voucherTypeId'])) {
+			$this->setTotal(count($_GET ['voucherTypeId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -114,8 +114,8 @@ class GeneralLedgerChartOfAccountReportTypeModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['generalLedgerChartOfAccountReportTypeId'])) {
-				$this->setGeneralLedgerChartOfAccountId($this->strict($_GET ['generalLedgerChartOfAccountReportTypeId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['voucherTypeId'])) {
+				$this->setGeneralLedgerChartOfAccountId($this->strict($_GET ['voucherTypeId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -319,11 +319,11 @@ class GeneralLedgerChartOfAccountReportTypeModel extends ValidationClass {
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setGeneralLedgerChartOfAccountReportTypeId($value, $key, $type) {
+	public function setVoucherTypeId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->generalLedgerChartOfAccountReportTypeId = $value;
+			$this->voucherTypeId = $value;
 		} else if ($type == 'array') {
-			$this->generalLedgerChartOfAccountReportTypeId [$key] = $value;
+			$this->voucherTypeId [$key] = $value;
 		} else {
 			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setGeneralledgerId ?"));
 			exit();
@@ -336,11 +336,11 @@ class GeneralLedgerChartOfAccountReportTypeModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getGeneralLedgerChartOfAccountReportTypeId($key, $type) {
+	public function getVoucherTypeId($key, $type) {
 		if ($type == 'single') {
-			return $this->generalLedgerChartOfAccountReportTypeId;
+			return $this->voucherTypeId;
 		} else if ($type == 'array') {
-			return $this->generalLedgerChartOfAccountReportTypeId [$key];
+			return $this->voucherTypeId [$key];
 		} else {
 			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getGeneralledgerId ?"));
 			exit();
@@ -353,72 +353,72 @@ class GeneralLedgerChartOfAccountReportTypeModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getGeneralLedgerChartOfAccountReportTypeSequence()
+	public function getVoucherTypeSequence()
 	{
-	    return $this->generalLedgerChartOfAccountReportTypeSequence;
+	    return $this->voucherTypeSequence;
 	}
 
 	/**
 	 * 
-	 * @param $generalLedgerChartOfAccountReportTypeSequence
+	 * @param $voucherTypeSequence
 	 */
-	public function setGeneralLedgerChartOfAccountReportTypeSequence($generalLedgerChartOfAccountReportTypeSequence)
+	public function setVoucherTypeSequence($voucherTypeSequence)
 	{
-	    $this->generalLedgerChartOfAccountReportTypeSequence = $generalLedgerChartOfAccountReportTypeSequence;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getGeneralLedgerChartOfAccountReportTypeCode()
-	{
-	    return $this->generalLedgerChartOfAccountReportTypeCode;
-	}
-
-	/**
-	 * 
-	 * @param $generalLedgerChartOfAccountReportTypeCode
-	 */
-	public function setGeneralLedgerChartOfAccountReportTypeCode($generalLedgerChartOfAccountReportTypeCode)
-	{
-	    $this->generalLedgerChartOfAccountReportTypeCode = $generalLedgerChartOfAccountReportTypeCode;
+	    $this->voucherTypeSequence = $voucherTypeSequence;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getGeneralLedgerChartOfAccountReportTypeDesc()
+	public function getVoucherTypeCode()
 	{
-	    return $this->generalLedgerChartOfAccountReportTypeDesc;
+	    return $this->voucherTypeCode;
 	}
 
 	/**
 	 * 
-	 * @param $generalLedgerChartOfAccountReportTypeDesc
+	 * @param $voucherTypeCode
 	 */
-	public function setGeneralLedgerChartOfAccountReportTypeDesc($generalLedgerChartOfAccountReportTypeDesc)
+	public function setVoucherTypeCode($voucherTypeCode)
 	{
-	    $this->generalLedgerChartOfAccountReportTypeDesc = $generalLedgerChartOfAccountReportTypeDesc;
+	    $this->voucherTypeCode = $voucherTypeCode;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getGeneralLedgerChartOfAccountReportTypeSequenceDesc()
+	public function getVoucherTypeDesc()
 	{
-	    return $this->generalLedgerChartOfAccountReportTypeSequenceDesc;
+	    return $this->voucherTypeDesc;
 	}
 
 	/**
 	 * 
-	 * @param $generalLedgerChartOfAccountReportTypeSequenceDesc
+	 * @param $voucherTypeDesc
 	 */
-	public function setGeneralLedgerChartOfAccountReportTypeSequenceDesc($generalLedgerChartOfAccountReportTypeSequenceDesc)
+	public function setVoucherTypeDesc($voucherTypeDesc)
 	{
-	    $this->generalLedgerChartOfAccountReportTypeSequenceDesc = $generalLedgerChartOfAccountReportTypeSequenceDesc;
+	    $this->voucherTypeDesc = $voucherTypeDesc;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getVoucherTypeSequenceDesc()
+	{
+	    return $this->voucherTypeSequenceDesc;
+	}
+
+	/**
+	 * 
+	 * @param $voucherTypeSequenceDesc
+	 */
+	public function setVoucherTypeSequenceDesc($voucherTypeSequenceDesc)
+	{
+	    $this->voucherTypeSequenceDesc = $voucherTypeSequenceDesc;
 	}
 }
 

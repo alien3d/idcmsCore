@@ -3,14 +3,14 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is refundType model file.This is to ensure strict setting enable for all variable enter to database
- *
+ * A money-back guarantee is essentially a simple guarantee that, if a buyer is not satisfied with a product or service, a refund will be made.
  * @name IDCMS.
  * @version 2
  * @author hafizan
  * @package General Ledger
  * @subpackage Chart Of Account Type
  * @link http://www.idcms.org
+ * @link http://en.wikipedia.org/wiki/Refund
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
        

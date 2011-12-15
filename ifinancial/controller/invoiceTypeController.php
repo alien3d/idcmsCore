@@ -14,9 +14,10 @@ require_once ("../model/invoiceTypeModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package General Ledger
+ * @package Account Receivable
  * @subpackage Journal Type
  * @link http://www.idcms.org
+ * @link http://en.wikipedia.org/wiki/Invoice
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class InvoiceTypeClass extends ConfigClass {
@@ -384,22 +385,50 @@ class InvoiceTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`invoiceType`.`invoiceTypeId`,`invoiceType`.`invoiceTypeSequence`,`invoiceType`.`invoiceCode`,`invoiceType`.`invoiceTypeDesc`,`invoiceType`.`isDefault`,`invoiceType`.`isNew`,`invoiceType`.`isDraft`,`invoiceType`.`isUpdate`,`invoiceType`.`isDelete`,`invoiceType`.`isActive`,`invoiceType`.`isApproved`,`invoiceType`.`isReview`,`invoiceType`.`isPost`,`invoiceType`.`executeBy`,`invoiceType`.`executeTime`
-                    ,`iManagement`.`staff`.`staffName`
+			SELECT	`invoiceType`.`invoiceTypeId`,
+					`invoiceType`.`invoiceTypeSequence`,
+					`invoiceType`.`invoiceTypeCode`,
+					`invoiceType`.`invoiceTypeDesc`,
+					`invoiceType`.`isDefault`,
+					`invoiceType`.`isNew`,
+					`invoiceType`.`isDraft`,
+					`invoiceType`.`isUpdate`,
+					`invoiceType`.`isDelete`,
+					`invoiceType`.`isActive`,
+					`invoiceType`.`isApproved`,
+					`invoiceType`.`isReview`,
+					`invoiceType`.`isPost`,
+					`invoiceType`.`executeBy`,
+					`invoiceType`.`executeTime`,
+					`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`invoiceType`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `invoiceType`.`executeBy` = `iManagement`.`staff`.`staffId`
+            ON      `invoiceType`.`executeBy` = `staff`.`staffId`
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getInvoiceTypeId(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT`invoiceType`.`invoiceTypeId`,`invoiceType`.`invoiceTypeSequence`,`invoiceType`.`invoiceCode`,`invoiceType`.`invoiceTypeDesc`,`invoiceType`.`isDefault`,`invoiceType`.`isNew`,`invoiceType`.`isDraft`,`invoiceType`.`isUpdate`,`invoiceType`.`isDelete`,`invoiceType`.`isActive`,`invoiceType`.`isApproved`,`invoiceType`.`isReview`,`invoiceType`.`isPost`,`invoiceType`.`executeBy`,`invoiceType`.`executeTime`
-                    `iManagement`.`staff`.`staffName`
-            FROM    `".$this->q->getFixAssetDatabase()."`.`invoiceType`
-            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `invoiceType`.`executeBy` = `iManagement`.`staff`.`staffId`
+			SELECT	[invoiceType].[invoiceTypeId],
+					[invoiceType].[invoiceTypeSequence],
+					[invoiceType].[invoiceTypeCode],
+					[invoiceType].[invoiceTypeDesc],
+					[invoiceType].[isDefault],
+					[invoiceType].[isNew],
+					[invoiceType].[isDraft],
+					[invoiceType].[isUpdate],
+					[invoiceType].[isDelete],
+					[invoiceType].[isActive],
+					[invoiceType].[isApproved],
+					[invoiceType].[isReview],
+					[invoiceType].[isPost],
+					[invoiceType].[executeBy],
+					[invoiceType].[executeTime],
+					[staff].[staffName]
+            FROM    [".$this->q->getFinancialDatabase()."].[invoiceType]
+            JOIN    [".$this->q->getManagementDatabase()."].[staff]
+            ON      [invoiceType].[executeBy] = [staff].[staffId]
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getInvoiceTypeId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
@@ -565,25 +594,25 @@ class InvoiceTypeClass extends ConfigClass {
 				$sql = "
 							WITH [invoiceTypeDerived] AS
 							(
-								SELECT 		['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceTypeId],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceTypeSequence],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceTypeCode],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceTypeDesc],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[isDefault],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[isNew],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[isDraft],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[isUpdate],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[isDelete],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[isApproved],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[isReview],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[isPost],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[executeBy],
-											['".$this->q->getFinancialDatabase()."'].[invoiceType].[executeTime],
-											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY ['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceTypeId]) AS 'RowNumber'
+								SELECT 		[invoiceType].[invoiceTypeId],
+											[invoiceType].[invoiceTypeSequence],
+											[invoiceType].[invoiceTypeCode],
+											[invoiceType].[invoiceTypeDesc],
+											[invoiceType].[isDefault],
+											[invoiceType].[isNew],
+											[invoiceType].[isDraft],
+											[invoiceType].[isUpdate],
+											[invoiceType].[isDelete],
+											[invoiceType].[isApproved],
+											[invoiceType].[isReview],
+											[invoiceType].[isPost],
+											[invoiceType].[executeBy],
+											[invoiceType].[executeTime],
+											[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [invoiceType].[invoiceTypeId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[invoiceType]
-								JOIN	[iManagement].[staff]
-								ON		['".$this->q->getFinancialDatabase()."'].[invoiceType].[executeBy] = [iManagement].[staff].[staffId]
+								JOIN	[".$this->q->getManagementDatabase()."].[staff]
+								ON		[invoiceType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -692,14 +721,14 @@ class InvoiceTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInvoiceTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInvoiceTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getInvoiceTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getInvoiceTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -728,39 +757,39 @@ class InvoiceTypeClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`invoiceType`.`invoiceType`
-				SET 		`".$this->q->getFinancialDatabase()."`.`invoiceType`.`invoiceTypeSequence`		=	'" . $this->model->getInvoiceTypeSequence() . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`invoiceTypeCode`		=	'" . $this->model->getInvoiceTypeCode() . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`invoiceTypeDesc`		=	'" . $this->model->getInvoiceTypeDesc() . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`".$this->q->getFinancialDatabase()."`.`invoiceType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`".$this->q->getFinancialDatabase()."`.`invoiceType`.`invoiceTypeId`		=	'" . $this->model->getInvoiceTypeId(0, 'single') . "'";
+				SET 	`invoiceType`.`invoiceTypeSequence`		=	'" . $this->model->getInvoiceTypeSequence() . "',
+							`invoiceType`.`invoiceTypeCode`		=	'" . $this->model->getInvoiceTypeCode() . "',
+							`invoiceType`.`invoiceTypeDesc`		=	'" . $this->model->getInvoiceTypeDesc() . "',
+							`invoiceType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`invoiceType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`invoiceType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`invoiceType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`invoiceType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`invoiceType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`invoiceType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`invoiceType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`invoiceType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`invoiceType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`invoiceType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`invoiceType`.`invoiceTypeId`		=	'" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[invoiceType]
-				SET 		['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceTypeSequence]		=	'" . $this->model->getInvoiceTypeSequence() . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceTypeCode]		=	'" . $this->model->getInvoiceTypeCode() . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceTypeDesc]		=	'" . $this->model->getInvoiceTypeDesc() . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							['".$this->q->getFinancialDatabase()."'].[invoiceType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceTypeId]			=	'" . $this->model->getInvoiceTypeId(0, 'single') . "'";
+				UPDATE 	['".$this->q->getFinancialDatabase()."'].[invoiceType]
+				SET 	[invoiceType].[invoiceTypeSequence]		=	'" . $this->model->getInvoiceTypeSequence() . "',
+						[invoiceType].[invoiceTypeCode]		=	'" . $this->model->getInvoiceTypeCode() . "',
+						[invoiceType].[invoiceTypeDesc]		=	'" . $this->model->getInvoiceTypeDesc() . "',
+						[invoiceType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[invoiceType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[invoiceType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[invoiceType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[invoiceType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[invoiceType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[invoiceType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[invoiceType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[invoiceType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[invoiceType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[invoiceType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 		[invoiceType].[invoiceTypeId]			=	'" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		INVOICETYPE
@@ -847,14 +876,14 @@ class InvoiceTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInvoiceTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInvoiceTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getInvoiceTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getInvoiceTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -882,34 +911,34 @@ class InvoiceTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`invoiceType`
-				SET 	`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`invoiceType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`invoiceType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`".$this->q->getFinancialDatabase()."`.`invoiceType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`".$this->q->getFinancialDatabase()."`.`invoiceType`.`invoiceTypeId`		=	'" . $this->model->getInvoiceTypeId(0, 'single') . "'";
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`invoiceType`
+				SET 	`invoiceType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`invoiceType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`invoiceType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`invoiceType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`invoiceType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`invoiceType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`invoiceType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`invoiceType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`invoiceType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`invoiceType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`invoiceType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`invoiceType`.`invoiceTypeId`		=	'" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceType]
-				SET 	['".$this->q->getFinancialDatabase()."'].[invoiceType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						['".$this->q->getFinancialDatabase()."'].[invoiceType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	['".$this->q->getFinancialDatabase()."'].[invoiceType].[invoiceTypeId]		=	'" . $this->model->getInvoiceTypeId(0, 'single') . "'";
+				SET 	[invoiceType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[invoiceType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[invoiceType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[invoiceType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[invoiceType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[invoiceType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[invoiceType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[invoiceType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[invoiceType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[invoiceType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[invoiceType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[invoiceType].[invoiceTypeId]		=	'" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	INVOICETYPE
@@ -985,11 +1014,11 @@ class InvoiceTypeClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE [".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

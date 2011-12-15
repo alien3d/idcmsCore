@@ -384,53 +384,53 @@ class BudgetTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`budgetTypeId`,
-						`budgetTypeSequence`,
-						`budgetTypeCode`,
-						`budgetTypeDesc`,
-						`isDefault`,
-						`isNew`,
-						`isDraft`,
-						`isUpdate`,
-						`isDelete`,
-						`isActive`,
-						`isApproved`,
-						`isReview`,
-						`isPost`,
-						`executeBy`,
-						`executeTime`,
-						`iManagement`.`staff`.`staffName`
+			SELECT		`budgetType`.`budgetTypeId`,
+						`budgetType`.`budgetTypeSequence`,
+						`budgetType`.`budgetTypeCode`,
+						`budgetType`.`budgetTypeDesc`,
+						`budgetType`.`isDefault`,
+						`budgetType`.`isNew`,
+						`budgetType`.`isDraft`,
+						`budgetType`.`isUpdate`,
+						`budgetType`.`isDelete`,
+						`budgetType`.`isActive`,
+						`budgetType`.`isApproved`,
+						`budgetType`.`isReview`,
+						`budgetType`.`isPost`,
+						`budgetType`.`executeBy`,
+						`budgetType`.`executeTime`,
+						`staff`.`staffName`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`budgetType`
-			JOIN	`iManagement`.`staff`
-			ON		`executeBy` = `iManagement`.`staff`.`staffId`
+			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
+			ON		`budgetType`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getBudgetTypeId(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getBudgetTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeId],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeSequence],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeCode],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeDesc],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isDefault],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isNew],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isDraft],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isUpdate],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isDelete],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isActive],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isApproved],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isReview],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isPost],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[executeBy],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[executeTime],
-						[iManagement].[staff].[staffName]
+			SELECT		[budgetType].[budgetTypeId],
+						[budgetType].[budgetTypeSequence],
+						[budgetType].[budgetTypeCode],
+						[budgetType].[budgetTypeDesc],
+						[budgetType].[isDefault],
+						[budgetType].[isNew],
+						[budgetType].[isDraft],
+						[budgetType].[isUpdate],
+						[budgetType].[isDelete],
+						[budgetType].[isActive],
+						[budgetType].[isApproved],
+						[budgetType].[isReview],
+						[budgetType].[isPost],
+						[budgetType].[executeBy],
+						[budgetType].[executeTime],
+						[staff].[staffName]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[budgetType]
-			JOIN		[iManagement].[staff]
-			ON		['".$this->q->getFinancialDatabase()."'].[budgetType].[executeBy] = [iManagement].[staff].[staffId]
+			JOIN		[".$this->q->getManagementDatabase()."].[staff]
+			ON		[budgetType].[executeBy] =[staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getBudgetTypeId(0, 'single')) {
-				$sql .= " AND ['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getBudgetTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -593,25 +593,25 @@ class BudgetTypeClass extends ConfigClass {
 				$sql = "
 							WITH [budgetTypeDerived] AS
 							(
-								SELECT 		['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeId],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeSequence],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeCode],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeDesc],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[isDefault],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[isNew],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[isDraft],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[isUpdate],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[isDelete],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[isApproved],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[isReview],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[isPost],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[executeBy],
-											['".$this->q->getFinancialDatabase()."'].[budgetType].[executeTime],
-											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY ['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeId]) AS 'RowNumber'
+								SELECT 		[budgetType].[budgetTypeId],
+											[budgetType].[budgetTypeSequence],
+											[budgetType].[budgetTypeCode],
+											[budgetType].[budgetTypeDesc],
+											[budgetType].[isDefault],
+											[budgetType].[isNew],
+											[budgetType].[isDraft],
+											[budgetType].[isUpdate],
+											[budgetType].[isDelete],
+											[budgetType].[isApproved],
+											[budgetType].[isReview],
+											[budgetType].[isPost],
+											[budgetType].[executeBy],
+											[budgetType].[executeTime],
+											[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [budgetType].[budgetTypeId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[budgetType]
-								JOIN	[iManagement].[staff]
-								ON		['".$this->q->getFinancialDatabase()."'].[budgetType].[executeBy] = [iManagement].[staff].[staffId]
+								JOIN	[".$this->q->getManagementDatabase()."].[staff]
+								ON		[budgetType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -720,14 +720,14 @@ class BudgetTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -755,7 +755,7 @@ class BudgetTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`budgetType`
+				UPDATE		`".$this->q->getFinancialDatabase()."`.`budgetType`
 				SET 		`budgetTypeSequence`		=	'" . $this->model->getBudgetTypeSequence() . "',
 							`budgetTypeCode`		=	'" . $this->model->getBudgetTypeCode() . "',
 							`budgetTypeDesc`		=	'" . $this->model->getBudgetTypeDesc() . "',
@@ -773,22 +773,22 @@ class BudgetTypeClass extends ConfigClass {
 				WHERE 		`budgetTypeId`		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[budgetType]
-				SET 		['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeSequence]		=	'" . $this->model->getBudgetTypeSequence() . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeCode]		=	'" . $this->model->getBudgetTypeCode() . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeDesc]		=	'" . $this->model->getBudgetTypeDesc() . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							['".$this->q->getFinancialDatabase()."'].[budgetType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeId]			=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				UPDATE 		['".$this->q->getFinancialDatabase()."'].[budgetType]
+				SET 	[budgetType].[budgetTypeSequence]		=	'" . $this->model->getBudgetTypeSequence() . "',
+						[budgetType].[budgetTypeCode]		=	'" . $this->model->getBudgetTypeCode() . "',
+						[budgetType].[budgetTypeDesc]		=	'" . $this->model->getBudgetTypeDesc() . "',
+						[budgetType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[budgetType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[budgetType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[budgetType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[budgetType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[budgetType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[budgetType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[budgetType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[budgetType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[budgetType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[budgetType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 		[budgetType].[budgetTypeId]			=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		GENERALLEDGERCHARTOFACCOUNTTYPE
@@ -875,14 +875,14 @@ class BudgetTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -910,7 +910,7 @@ class BudgetTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`budgetType`
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`budgetType`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -926,18 +926,18 @@ class BudgetTypeClass extends ConfigClass {
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetType]
-				SET 	['".$this->q->getFinancialDatabase()."'].[budgetType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeId]		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				SET 	[budgetType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[budgetType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[budgetType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[budgetType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[budgetType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[budgetType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[budgetType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[budgetType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[budgetType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[budgetType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[budgetType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[budgetType].[budgetTypeId]		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
@@ -1013,11 +1013,11 @@ class BudgetTypeClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE [".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

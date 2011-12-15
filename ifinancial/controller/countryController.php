@@ -327,7 +327,7 @@ class CountryClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			
 			$sql = "SELECT`country`.`countryId`,`country`.`countrySequence`,`country`.`countryCode`,`country`.`countryCurrencyCode`,`country`.`countryCurrencyCodeDesc`,`country`.`countryDesc`,`country`.`isDefault`,`country`.`isNew`,`country`.`isDraft`,`country`.`isUpdate`,`country`.`isDelete`,`country`.`isActive`,`country`.`isApproved`,`country`.`isReview`,`country`.`isPost`,`country`.`executeBy`,`country`.`executeTime`
-                    ,`iManagement`.`staff`.`staffName`
+                    ,`staff`.`staffName`
            
 			  FROM 	`".$this->q->getFinancialDatabase()."`.`country`
 			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
@@ -354,7 +354,7 @@ class CountryClass extends ConfigClass {
 						[country].[executeTime],
 						[staff].[staffName]
 			FROM 		[country]
-			JOIN		[staff]
+			JOIN		[".$this->q->getManagementDatabase()."].[staff]
 			ON			[country].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getCountryId(0, 'single')) {
@@ -513,7 +513,7 @@ class CountryClass extends ConfigClass {
 											[staff].[staffName],
 								ROW_NUMBER() OVER (ORDER BY [countryId]) AS 'RowNumber'
 								FROM 	[country]
-								JOIN		[staff]
+								JOIN		[".$this->q->getManagementDatabase()."].[staff]
 								ON		[country].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
@@ -625,7 +625,7 @@ class CountryClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -778,7 +778,7 @@ class CountryClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -921,11 +921,11 @@ class CountryClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE [".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

@@ -4,9 +4,12 @@
 	$targetDatabase='mysql';
 	$targetDb="ifinancial";
 	$targetTable ='country';
+	if($_GET['table']){
+		$targetTable=$_GET['table'];
+	}
 	$targetTableId = $targetTable."Id";
 	$targetMasterTable='generalLedgerJournalId'; // parent primary key
-	$targetGridType="second"; // first -normal table ,second -edit in grid table
+	$targetGridType="first"; // first -normal table ,second -edit in grid table
 	$managementDb="imanagement";
 	$mysqlOpenTag="`";
 	$mysqlCloseTag="`";

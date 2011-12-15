@@ -11,7 +11,7 @@ Ext.onReady(function () {
 	// common Proxy,Reader,Store,Filter,Grid
 	// start Staff Request
 	var staffByProxy = new Ext.data.HttpProxy({
-			url : '../controller/generalLedgerChartOfAccountTypeController.php?',
+			url : '../controller/membershipTypeController.php',
 			method : 'GET',
 			success : function (response, options) {
 				jsonResponse = Ext.decode(response.responseText);
@@ -749,7 +749,7 @@ Ext.onReady(function () {
 						iconCls : 'bullet_disk',
 						listeners : {
 							'click' : function (button, e) {
-								var url = '../controller/generalLedgerChartOfAccountTypeController.php?';
+								var url = '../controller/membershipTypeController.php';
 								var sub_url = '';
 								var modified = generalLedgerChartOfAccountTypeStore.getModifiedRecords();
 								for (var i = 0; i < modified.length; i++) {

@@ -384,53 +384,53 @@ class ForecastTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`forecastTypeId`,
-						`forecastTypeSequence`,
-						`forecastTypeCode`,
-						`forecastTypeDesc`,
-						`isDefault`,
-						`isNew`,
-						`isDraft`,
-						`isUpdate`,
-						`isDelete`,
-						`isActive`,
-						`isApproved`,
-						`isReview`,
-						`isPost`,
-						`executeBy`,
-						`executeTime`,
-						`iManagement`.`staff`.`staffName`
+			SELECT		`forecastType`.`forecastTypeId`,
+						`forecastType`.`forecastTypeSequence`,
+						`forecastType`.`forecastTypeCode`,
+						`forecastType`.`forecastTypeDesc`,
+						`forecastType`.`isDefault`,
+						`forecastType`.`isNew`,
+						`forecastType`.`isDraft`,
+						`forecastType`.`isUpdate`,
+						`forecastType`.`isDelete`,
+						`forecastType`.`isActive`,
+						`forecastType`.`isApproved`,
+						`forecastType`.`isReview`,
+						`forecastType`.`isPost`,
+						`forecastType`.`executeBy`,
+						`forecastType`.`executeTime`,
+						`staff`.`staffName`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`forecastType`
-			JOIN	`iManagement`.`staff`
-			ON		`executeBy` = `iManagement`.`staff`.`staffId`
+			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
+			ON		`forecastType`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getForecastTypeId(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getForecastTypeId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getForecastTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[forecastTypeId],
-						[forecastTypeSequence],
-						[forecastTypeCode],
-						[forecastTypeDesc],
-						[isDefault],
-						[isNew],
-						[isDraft],
-						[isUpdate],
-						[isDelete],
-						[isActive],
-						[isApproved],
-						[isReview],
-						[isPost],
-						[executeBy],
-						[executeTime],
-						[iManagement].[staff].[staffName]
+			SELECT		[forecastType].[forecastTypeId],
+						[forecastType].[forecastTypeSequence],
+						[forecastType].[forecastTypeCode],
+						[forecastType].[forecastTypeDesc],
+						[forecastType].[isDefault],
+						[forecastType].[isNew],
+						[forecastType].[isDraft],
+						[forecastType].[isUpdate],
+						[forecastType].[isDelete],
+						[forecastType].[isActive],
+						[forecastType].[isApproved],
+						[forecastType].[isReview],
+						[forecastType].[isPost],
+						[forecastType].[executeBy],
+						[forecastType].[executeTime],
+						[staff].[staffName]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[forecastType]
-			JOIN		[iManagement].[staff]
-			ON		[executeBy] = [iManagement].[staff].[staffId]
+			JOIN		[".$this->q->getManagementDatabase()."].[staff]
+			ON		[forecastType].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getForecastTypeId(0, 'single')) {
-				$sql .= " AND ['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getForecastTypeId(0, 'single') . "'";
+				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getForecastTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -593,25 +593,25 @@ class ForecastTypeClass extends ConfigClass {
 				$sql = "
 							WITH [forecastTypeDerived] AS
 							(
-								SELECT 		[forecastTypeId],
-											[forecastTypeSequence],
-											[forecastTypeCode],
-											[forecastTypeDesc],
-											[isDefault],
-											[isNew],
-											[isDraft],
-											[isUpdate],
-											[isDelete],
-											[isApproved],
-											[isReview],
-											[isPost],
-											[executeBy],
-											[executeTime],
-											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [forecastTypeId]) AS 'RowNumber'
+								SELECT 		[forecastType].[forecastTypeId],
+											[forecastType].[forecastTypeSequence],
+											[forecastType].[forecastTypeCode],
+											[forecastType].[forecastTypeDesc],
+											[forecastType].[isDefault],
+											[forecastType].[isNew],
+											[forecastType].[isDraft],
+											[forecastType].[isUpdate],
+											[forecastType].[isDelete],
+											[forecastType].[isApproved],
+											[forecastType].[isReview],
+											[forecastType].[isPost],
+											[forecastType].[executeBy],
+											[forecastType].[executeTime],
+											[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [forecastType].[forecastTypeId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[forecastType]
-								JOIN	[iManagement].[staff]
-								ON		[executeBy] = [iManagement].[staff].[staffId]
+								JOIN	[".$this->q->getManagementDatabase()."].[staff]
+								ON		[forecastType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -720,14 +720,14 @@ class ForecastTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -755,7 +755,7 @@ class ForecastTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`forecastType`
+				UPDATE		`".$this->q->getFinancialDatabase()."`.`forecastType`
 				SET 		`forecastTypeSequence`		=	'" . $this->model->getForecastTypeSequence() . "',
 							`forecastTypeCode`		=	'" . $this->model->getForecastTypeCode() . "',
 							`forecastTypeDesc`		=	'" . $this->model->getForecastTypeDesc() . "',
@@ -773,7 +773,7 @@ class ForecastTypeClass extends ConfigClass {
 				WHERE 		`forecastTypeId`		=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[forecastType]
+				UPDATE 		[".$this->q->getFinancialDatabase()."].[forecastType]
 				SET 		[forecastTypeSequence]		=	'" . $this->model->getForecastTypeSequence() . "',
 							[forecastTypeCode]		=	'" . $this->model->getForecastTypeCode() . "',
 							[forecastTypeDesc]		=	'" . $this->model->getForecastTypeDesc() . "',
@@ -875,14 +875,14 @@ class ForecastTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -910,7 +910,7 @@ class ForecastTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`forecastType`
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`forecastType`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -925,7 +925,7 @@ class ForecastTypeClass extends ConfigClass {
 				WHERE 	`forecastTypeId`		=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[forecastType]
+				UPDATE 	[".$this->q->getFinancialDatabase()."].[forecastType]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1013,11 +1013,11 @@ class ForecastTypeClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE [".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

@@ -11,7 +11,7 @@ Ext.onReady(function () {
 	// common Proxy,Reader,Store,Filter,Grid
 	// start Staff Request
 	var staffByProxy = new Ext.data.HttpProxy({
-			url : '../controller/generalLedgerChartOfAccountTypeController.php?',
+			url : '../controller/depositTypeController.php?',
 			method : 'GET',
 			success : function (response, options) {
 				jsonResponse = Ext.decode(response.responseText);
@@ -449,8 +449,8 @@ Ext.onReady(function () {
 
 	// end additional Proxy ,Reader,Store,Filter,Grid
 	// start application Proxy ,Reader,Store,Filter,Grid
-	var generalLedgerChartOfAccountTypeProxy = new Ext.data.HttpProxy({
-			url : '../controller/generalLedgerChartOfAccountTypeController.php',
+	var depositTypeProxy = new Ext.data.HttpProxy({
+			url : '../controller/depositTypeController.php',
 			method : 'POST',
 			success : function (response, options) {
 				jsonResponse = Ext.decode(response.responseText);
@@ -463,15 +463,15 @@ Ext.onReady(function () {
 				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
 			}
 		});
-	var generalLedgerChartOfAccountTypeReader = new Ext.data.JsonReader({
+	var depositTypeReader = new Ext.data.JsonReader({
 			totalProperty : 'total',
 			successProperty : 'success',
 			messageProperty : 'message',
-			idProperty : 'generalLedgerChartOfAccountTypeId'
+			idProperty : 'depositTypeId'
 		});
-	var generalLedgerChartOfAccountTypeStore = new Ext.data.JsonStore({
-			proxy : generalLedgerChartOfAccountTypeProxy,
-			reader : generalLedgerChartOfAccountTypeReader,
+	var depositTypeStore = new Ext.data.JsonStore({
+			proxy : depositTypeProxy,
+			reader : depositTypeReader,
 			autoLoad : true,
 			autoDestroy : true,
 			pruneModifiedRecords : true,
@@ -484,16 +484,16 @@ Ext.onReady(function () {
 			},
 			root : 'data',
 			fields : [{
-					name : 'generalLedgerChartOfAccountTypeId',
+					name : 'depositTypeId',
 					type : 'int'
 				}, {
-					name : 'generalLedgerChartOfAccountTypeSequence',
+					name : 'depositTypeSequence',
 					type : 'string'
 				}, {
-					name : 'generalLedgerChartOfAccountTypeCode',
+					name : 'depositTypeCode',
 					type : 'string'
 				}, {
-					name : 'generalLedgerChartOfAccountTypeDesc',
+					name : 'depositTypeDesc',
 					type : 'string'
 				}, {
 					name : 'isDefault',
@@ -532,32 +532,32 @@ Ext.onReady(function () {
 				}
 			]
 		});
-	var generalLedgerChartOfAccountTypeFilters = new Ext.ux.grid.GridFilters({
+	var depositTypeFilters = new Ext.ux.grid.GridFilters({
 			encode : false,
 			local : false,
 			filters : [ {
 					type : 'string',
-					dataIndex : 'generalLedgerChartOfAccountTypeSequence',
-					column : 'generalLedgerChartOfAccountTypeSequence',
-					table : 'generalLedgerChartOfAccountType',
+					dataIndex : 'depositTypeSequence',
+					column : 'depositTypeSequence',
+					table : 'depositType',
 					database : 'iFinancial'
 				},{
 					type : 'string',
-					dataIndex : 'generalLedgerChartOfAccountTypeCode',
-					column : 'generalLedgerChartOfAccountTypeCode',
-					table : 'generalLedgerChartOfAccountType',
+					dataIndex : 'depositTypeCode',
+					column : 'depositTypeCode',
+					table : 'depositType',
 					database : 'iFinancial'
 				}, {
 					type : 'string',
-					dataIndex : 'generalLedgerChartOfAccountTypeDesc',
-					column : 'generalLedgerChartOfAccountTypeDesc',
-					table : 'generalLedgerChartOfAccountType',
+					dataIndex : 'depositTypeDesc',
+					column : 'depositTypeDesc',
+					table : 'depositType',
 					database : 'iFinancial'
 				}, {
 					type : 'list',
 					dataIndex : 'executeBy',
 					column : 'executeBy',
-					table : 'generalLedgerChartOfAccountType',
+					table : 'depositType',
 					database : 'iFinancial',
 					labelField : 'staffName',
 					store : staffByStore,
@@ -566,7 +566,7 @@ Ext.onReady(function () {
 					type : 'date',
 					dataIndex : 'executeTime',
 					column : 'executeTime',
-					table : 'generalLedgerChartOfAccountType',
+					table : 'depositType',
 					database : 'iFinancial'
 				}
 			]
@@ -615,42 +615,24 @@ Ext.onReady(function () {
 			dataIndex : 'isPost',
 			hidden : isPostHidden
 		});
-	var generalLedgerChartOfAccountTypeColumnModel = [new Ext.grid.RowNumberer(),{
-			dataIndex : 'generalLedgerChartOfAccountTypeCode',
-			header : generalLedgerChartOfAccountTypeCodeLabel,
+	var depositTypeColumnModel = [new Ext.grid.RowNumberer(),{
+			dataIndex : 'depositTypeCode',
+			header : depositTypeCodeLabel,
 			sortable : true,
 			hidden : false,
 			width : 50
 		},{
-			dataIndex : 'generalLedgerChartOfAccountTypeSequence',
-			header : generalLedgerChartOfAccountTypeSequenceLabel,
+			dataIndex : 'depositTypeSequence',
+			header : depositTypeSequenceLabel,
 			sortable : true,
 			hidden : false,
 			width : 50
 		}, {
-			dataIndex : 'generalLedgerChartOfAccountTypeDesc',
-			header : generalLedgerChartOfAccountTypeDescLabel,
+			dataIndex : 'depositTypeDesc',
+			header : depositTypeDescLabel,
 			sortable : true,
 			hidden : false,
 			width : 50
-		}, {
-			dataIndex : 'generalLedgerChartOfAccountStart',
-			header : generalLedgerChartOfAccountIdLabel,
-			sortable : true,
-			hidden : false,
-			width : 50,
-			renderer : function (value, metaData, record, rowIndex, colIndex, store) {
-				return record.data.generalLedgerChartOfAccountStartDesc;
-			}
-		}, {
-			dataIndex : 'generalLedgerChartOfAccountEnd',
-			header : generalLedgerChartOfAccountIdLabel,
-			sortable : true,
-			hidden : false,
-			width : 50,
-			renderer : function (value, metaData, record, rowIndex, colIndex, store) {
-				return record.data.generalLedgerChartOfAccountDescEnd;
-			}
 		},
 		isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid, {
 			dataIndex : 'executeBy',
@@ -670,16 +652,16 @@ Ext.onReady(function () {
 			}
 		}
 	];
-	var generalLedgerChartOfAccountTypeFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-	var generalLedgerChartOfAccountTypeGrid = new Ext.grid.GridPanel({
-			name : 'generalLedgerChartOfAccountTypeGrid',
-			id : 'generalLedgerChartOfAccountTypeGrid',
+	var depositTypeFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+	var depositTypeGrid = new Ext.grid.GridPanel({
+			name : 'depositTypeGrid',
+			id : 'depositTypeGrid',
 			border : false,
-			store : generalLedgerChartOfAccountTypeStore,
+			store : depositTypeStore,
 			autoHeight : false,
 			height : 400,
-			columns : generalLedgerChartOfAccountTypeColumnModel,
-			plugins : [generalLedgerChartOfAccountTypeFilters],
+			columns : depositTypeColumnModel,
+			plugins : [depositTypeFilters],
 			selModel : new Ext.grid.RowSelectionModel({
 				singleSelect : true
 			}),
@@ -689,22 +671,22 @@ Ext.onReady(function () {
 			iconCls : 'application_view_detail',
 			listeners : {
 				'rowclick' : function (object, rowIndex, e) {
-					var record = generalLedgerChartOfAccountTypeStore.getAt(rowIndex);
+					var record = depositTypeStore.getAt(rowIndex);
 					formPanel.getForm().reset();
 					formPanel.form.load({
-						url : '../controller/generalLedgerChartOfAccountTypeController.php',
+						url : '../controller/depositTypeController.php',
 						method : 'POST',
 						waitTitle : systemLabel,
 						waitMsg : waitMessageLabel,
 						params : {
 							method : 'read',
 							mode : 'update',
-							generalLedgerChartOfAccountTypeId : record.data.generalLedgerChartOfAccountTypeId,
+							depositTypeId : record.data.depositTypeId,
 							leafId : leafId,
 							isAdmin : isAdmin
 						},
 						success : function (form, action) {
-							Ext.getCmp('generalLedgerChartOfAccountTypeCodeTemp').setValue(record.data.generalLedgerChartOfAccountTypeDesc);
+							Ext.getCmp('depositTypeCodeTemp').setValue(record.data.depositTypeDesc);
 							viewPort.items.get(1).expand();
 						},
 						failure : function (form, action) {
@@ -723,9 +705,9 @@ Ext.onReady(function () {
 						iconCls : 'row-check-sprite-check',
 						listeners : {
 							'click' : function (button, e) {
-								generalLedgerChartOfAccountTypeStore.each(function (record, fn, scope) {
-									for (var access in generalLedgerChartOfAccountTypeFlagArray) {
-										record.set(generalLedgerChartOfAccountTypeFlagArray[access], true);
+								depositTypeStore.each(function (record, fn, scope) {
+									for (var access in depositTypeFlagArray) {
+										record.set(depositTypeFlagArray[access], true);
 									}
 								});
 							}
@@ -736,9 +718,9 @@ Ext.onReady(function () {
 						iconCls : 'row-check-sprite-uncheck',
 						listeners : {
 							'click' : function (button, e) {
-								generalLedgerChartOfAccountTypeStore.each(function (record, fn, scope) {
-									for (var access in generalLedgerChartOfAccountTypeFlagArray) {
-										record.set(generalLedgerChartOfAccountTypeFlagArray[access], false);
+								depositTypeStore.each(function (record, fn, scope) {
+									for (var access in depositTypeFlagArray) {
+										record.set(depositTypeFlagArray[access], false);
 									}
 								});
 							}
@@ -749,12 +731,12 @@ Ext.onReady(function () {
 						iconCls : 'bullet_disk',
 						listeners : {
 							'click' : function (button, e) {
-								var url = '../controller/generalLedgerChartOfAccountTypeController.php?';
+								var url = '../controller/depositTypeController.php?';
 								var sub_url = '';
-								var modified = generalLedgerChartOfAccountTypeStore.getModifiedRecords();
+								var modified = depositTypeStore.getModifiedRecords();
 								for (var i = 0; i < modified.length; i++) {
 									var dataChanges = modified[i].getChanges();
-									sub_url = sub_url + '&generalLedgerChartOfAccountTypeId[]=' + modified[i].get('generalLedgerChartOfAccountTypeId');
+									sub_url = sub_url + '&depositTypeId[]=' + modified[i].get('depositTypeId');
 									if (isAdmin == 1) {
 										if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
 											sub_url = sub_url + '&isDefault[]=' + modified[i].get('isDefault');
@@ -800,7 +782,7 @@ Ext.onReady(function () {
 										jsonResponse = Ext.decode(response.responseText);
 										if (jsonResponse.success == true) {
 											Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-											generalLedgerChartOfAccountTypeStore.reload();
+											depositTypeStore.reload();
 										} else if (jsonResponse.success == false) {
 											Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
 										}
@@ -815,9 +797,9 @@ Ext.onReady(function () {
 				]
 			},
 			bbar : new Ext.PagingToolbar({
-				store : generalLedgerChartOfAccountTypeStore,
+				store : depositTypeStore,
 				pageSize : perPage,
-				plugins : [generalLedgerChartOfAccountTypeFilters]
+				plugins : [depositTypeFilters]
 			})
 		});
 	var gridPanel = new Ext.Panel({
@@ -829,7 +811,7 @@ Ext.onReady(function () {
 					iconCls : 'database_refresh',
 					id : 'pageReload',
 					handler : function () {
-						generalLedgerChartOfAccountTypeStore.reload();
+						depositTypeStore.reload();
 					}
 				},
 				'-', {
@@ -848,7 +830,7 @@ Ext.onReady(function () {
 					
 					handler : function () {
 						Ext.Ajax.request({
-							url : '../controller/generalLedgerChartOfAccountTypeController.php',
+							url : '../controller/depositTypeController.php',
 							method : 'GET',
 							params : {
 								method : 'report',
@@ -871,19 +853,19 @@ Ext.onReady(function () {
 					}
 				},
 				'-', new Ext.ux.form.SearchField({
-					store : generalLedgerChartOfAccountTypeStore,
+					store : depositTypeStore,
 					width : 320
 				})],
-			items : [generalLedgerChartOfAccountTypeGrid]
+			items : [depositTypeGrid]
 		});
 	// form entry
 	
-	var generalLedgerChartOfAccountTypeCode = new Ext.form.TextField({
+	var depositTypeCode = new Ext.form.TextField({
 			labelAlign : 'left',
-			fieldLabel : generalLedgerChartOfAccountTypeCodeLabel + '<span style=\'color: red;\'>*</span>',
-			hiddenName : 'generalLedgerChartOfAccountTypeCode',
-			name : 'generalLedgerChartOfAccountTypeCode',
-			id : 'generalLedgerChartOfAccountTypeCode',
+			fieldLabel : depositTypeCodeLabel + '<span style=\'color: red;\'>*</span>',
+			hiddenName : 'depositTypeCode',
+			name : 'depositTypeCode',
+			id : 'depositTypeCode',
 			allowBlank : false,
 			blankText : blankTextLabel,
 			style : {
@@ -892,12 +874,12 @@ Ext.onReady(function () {
 			anchor : '40%'
 	});
 	
-	var generalLedgerChartOfAccountTypeSequence = new Ext.form.NumberField({
+	var depositTypeSequence = new Ext.form.NumberField({
 			labelAlign : 'left',
-			fieldLabel : generalLedgerChartOfAccountTypeSequenceLabel + '<span style=\'color: red;\'>*</span>',
-			hiddenName : 'generalLedgerChartOfAccountTypeSequence',
-			name : 'generalLedgerChartOfAccountTypeSequence',
-			id : 'generalLedgerChartOfAccountTypeSequence',
+			fieldLabel : depositTypeSequenceLabel + '<span style=\'color: red;\'>*</span>',
+			hiddenName : 'depositTypeSequence',
+			name : 'depositTypeSequence',
+			id : 'depositTypeSequence',
 			allowBlank : false,
 			blankText : blankTextLabel,
 			style : {
@@ -906,12 +888,12 @@ Ext.onReady(function () {
 			anchor : '40%'
 	});
 	
-	var generalLedgerChartOfAccountTypeDesc = new Ext.form.TextField({
+	var depositTypeDesc = new Ext.form.TextField({
 			labelAlign : 'left',
-			fieldLabel : generalLedgerChartOfAccountTypeDescLabel + '<span style=\'color: red;\'>*</span>',
-			hiddenName : 'generalLedgerChartOfAccountTypeDesc',
-			name : 'generalLedgerChartOfAccountTypeDesc',
-			id : 'generalLedgerChartOfAccountTypeDesc',
+			fieldLabel : depositTypeDescLabel + '<span style=\'color: red;\'>*</span>',
+			hiddenName : 'depositTypeDesc',
+			name : 'depositTypeDesc',
+			id : 'depositTypeDesc',
 			allowBlank : false,
 			blankText : blankTextLabel,
 			style : {
@@ -922,9 +904,9 @@ Ext.onReady(function () {
 	
 	
 		
-	var generalLedgerChartOfAccountTypeId = new Ext.form.Hidden({
-			name : 'generalLedgerChartOfAccountTypeId',
-			id : 'generalLedgerChartOfAccountTypeId'
+	var depositTypeId = new Ext.form.Hidden({
+			name : 'depositTypeId',
+			id : 'depositTypeId'
 		}); // end form entry
 	// start System Validation
 	var isDefault = new Ext.form.Checkbox({
@@ -1008,7 +990,7 @@ Ext.onReady(function () {
 		}); // end of hidden value for navigation button
 	// end System Validation
 	var formPanel = new Ext.form.FormPanel({
-			url : '../controller/generalLedgerChartOfAccountTypeController.php',
+			url : '../controller/depositTypeController.php',
 			name : 'formPanel',
 			id : 'formPanel',
 			method : 'post',
@@ -1020,10 +1002,10 @@ Ext.onReady(function () {
 			items : [{
 					xtype : 'fieldset',
 					title : 'Form Entry',
-					items : [generalLedgerChartOfAccountTypeId,
-						generalLedgerChartOfAccountTypeCode,
-						generalLedgerChartOfAccountTypeSequence,
-						generalLedgerChartOfAccountTypeDesc]
+					items : [depositTypeId,
+						depositTypeCode,
+						depositTypeSequence,
+						depositTypeDesc]
 				}, {
 					xtype : 'fieldset',
 					title : 'System Administration',
@@ -1066,7 +1048,7 @@ Ext.onReady(function () {
 					disabled : auditButtonLabelDisabled,
 					handler : function () {
 						if (auditWindow) {
-							generalLedgerChartOfAccountTypeStore.reload();
+							depositTypeStore.reload();
 							auditWindow.show().center();
 						}
 					}
@@ -1077,7 +1059,7 @@ Ext.onReady(function () {
 					type : 'button',
 					iconCls : 'new',
 					handler : function () {
-						var id = Ext.getCmp('generalLedgerChartOfAccountTypeId').getValue();
+						var id = Ext.getCmp('depositTypeId').getValue();
 						var method = 'create';
 						formPanel.getForm().submit({
 							waitMsg : waitMessageLabel,
@@ -1092,14 +1074,14 @@ Ext.onReady(function () {
 									Ext.getCmp('newButton').disable();
 									Ext.getCmp('saveButton').enable();
 									Ext.getCmp('deleteButton').enable();
-									generalLedgerChartOfAccountTypeStore.reload({
+									depositTypeStore.reload({
 										params : {
 											leafId : leafId,
 											start : 0,
 											limit : perPage
 										}
 									});
-									Ext.getCmp('generalLedgerChartOfAccountTypeId').setValue(action.result.generalLedgerChartOfAccountTypeId);
+									Ext.getCmp('depositTypeId').setValue(action.result.depositTypeId);
 								} else {
 									Ext.MessageBox.alert(systemErrorLabel, action.result.message);
 								}
@@ -1125,7 +1107,7 @@ Ext.onReady(function () {
 					disabled : true,
 					handler : function () {
 						Ext.getCmp('newButton').disable();
-						var id = Ext.getCmp('generalLedgerChartOfAccountTypeId').getValue();
+						var id = Ext.getCmp('depositTypeId').getValue();
 						var method = 'save';
 						formPanel.getForm().submit({
 							waitMsg : waitMessageLabel,
@@ -1140,7 +1122,7 @@ Ext.onReady(function () {
 									Ext.getCmp('newButton').disable();
 									Ext.getCmp('saveButton').enable();
 									Ext.getCmp('deleteButton').enable();
-									generalLedgerChartOfAccountTypeStore.reload({
+									depositTypeStore.reload({
 										params : {
 											leafId : leafId,
 											start : 0,
@@ -1182,10 +1164,10 @@ Ext.onReady(function () {
 							fn : function (response) {
 								if ('yes' == response) {
 									Ext.Ajax.request({
-										url : '../controller/generalLedgerChartOfAccountTypeController.php',
+										url : '../controller/depositTypeController.php',
 										params : {
 											method : 'delete',
-											generalLedgerChartOfAccountTypeId : Ext.getCmp('generalLedgerChartOfAccountTypeId').getValue(),
+											depositTypeId : Ext.getCmp('depositTypeId').getValue(),
 											leafId : leafId,
 											isAdmin : isAdmin
 										},
@@ -1193,7 +1175,7 @@ Ext.onReady(function () {
 											jsonResponse = Ext.decode(response.responseText);
 											if (jsonResponse.success == true) {
 												Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-												generalLedgerChartOfAccountTypeStore.reload({
+												depositTypeStore.reload({
 													params : {
 														leafId : leafId,
 														start : 0,
@@ -1260,7 +1242,7 @@ Ext.onReady(function () {
 						Ext.getCmp('newButton').disable();
 						if (Ext.getCmp('firstRecord').getValue() == '') {
 							Ext.Ajax.request({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/depositTypeController.php',
 								method : 'GET',
 								params : {
 									method : 'dataNavigationRequest',
@@ -1272,13 +1254,13 @@ Ext.onReady(function () {
 									if (jsonResponse.success == true) {
 										Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
 										formPanel.form.load({
-											url : '../controller/generalLedgerChartOfAccountTypeController.php',
+											url : '../controller/depositTypeController.php',
 											method : 'POST',
 											waitTitle : systemLabel,
 											waitMsg : waitMessageLabel,
 											params : {
 												method : 'read',
-												generalLedgerChartOfAccountTypeId : Ext.getCmp('firstRecord').getValue(),
+												depositTypeId : Ext.getCmp('firstRecord').getValue(),
 												leafId : leafId,
 												isAdmin : isAdmin
 											},
@@ -1313,13 +1295,13 @@ Ext.onReady(function () {
 							});
 						} else {
 							formPanel.form.load({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/depositTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
 								params : {
 									method : 'read',
-									generalLedgerChartOfAccountTypeId : Ext.getCmp('firstRecord').getValue(),
+									depositTypeId : Ext.getCmp('firstRecord').getValue(),
 									leafId : leafId,
 									isAdmin : isAdmin
 								},
@@ -1360,13 +1342,13 @@ Ext.onReady(function () {
 						}
 						if (Ext.getCmp('firstRecord').getValue() >= 1) {
 							formPanel.form.load({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/depositTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
 								params : {
 									method : 'read',
-									generalLedgerChartOfAccountTypeId : Ext.getCmp('previousRecord').getValue(),
+									depositTypeId : Ext.getCmp('previousRecord').getValue(),
 									leafId : leafId,
 									isAdmin : isAdmin
 								},
@@ -1406,13 +1388,13 @@ Ext.onReady(function () {
 						}
 						if (Ext.getCmp('nextRecord').getValue() <= Ext.getCmp('lastRecord').getValue()) {
 							formPanel.form.load({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/depositTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
 								params : {
 									method : 'read',
-									generalLedgerChartOfAccountTypeId : Ext.getCmp('nextRecord').getValue(),
+									depositTypeId : Ext.getCmp('nextRecord').getValue(),
 									leafId : leafId,
 									isAdmin : isAdmin
 								},
@@ -1452,7 +1434,7 @@ Ext.onReady(function () {
 						Ext.getCmp('newButton').disable();
 						if (Ext.getCmp('lastRecord').getValue() == '' || Ext.getCmp('lastRecord').getValue() == undefined) {
 							Ext.Ajax.request({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/depositTypeController.php',
 								method : 'GET',
 								params : {
 									method : 'dataNavigationRequest',
@@ -1464,13 +1446,13 @@ Ext.onReady(function () {
 									if (jsonResponse.success == true) {
 										Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
 										formPanel.form.load({
-											url : '../controller/generalLedgerChartOfAccountTypeController.php',
+											url : '../controller/depositTypeController.php',
 											method : 'POST',
 											waitTitle : systemLabel,
 											waitMsg : waitMessageLabel,
 											params : {
 												method : 'read',
-												generalLedgerChartOfAccountTypeId : Ext.getCmp('lastRecord').getValue(),
+												depositTypeId : Ext.getCmp('lastRecord').getValue(),
 												leafId : leafId,
 												isAdmin : isAdmin
 											},
@@ -1505,15 +1487,15 @@ Ext.onReady(function () {
 								}
 							});
 						}
-						if (Ext.getCmp('generalLedgerChartOfAccountTypeId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
+						if (Ext.getCmp('depositTypeId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
 							formPanel.form.load({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/depositTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
 								params : {
 									method : 'read',
-									generalLedgerChartOfAccountTypeId : Ext.getCmp('lastRecord').getValue(),
+									depositTypeId : Ext.getCmp('lastRecord').getValue(),
 									leafId : leafId,
 									isAdmin : isAdmin
 								},

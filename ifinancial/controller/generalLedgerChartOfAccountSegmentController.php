@@ -430,7 +430,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountSegment`
 			JOIN	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountSegmentType`
 			USING	(`generalLedgerChartOfAccountSegmentTypeId`)
-			JOIN	`iManagement`.`staff`
+			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
 			ON		`generalLedgerChartOfAccountSegment`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single')) {
@@ -457,7 +457,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 					[generalLedgerChartOfAccountSegment].[executeTime],
 					[staff].[staffName]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountSegment]
-			JOIN	[iManagement].[staff]
+			JOIN	[".$this->q->getManagementDatabase()."].[staff]
 			ON		[generalLedgerChartOfAccountSegment].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single')) {
@@ -694,7 +694,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 											[staff].[staffName],
 								ROW_NUMBER() OVER (ORDER BY [generalLedgerChartOfAccountSegmentId]) AS 'RowNumber'
 								FROM 	[generalLedgerChartOfAccountSegment]
-								JOIN		[staff]
+								JOIN		[".$this->q->getManagementDatabase()."].[staff]
 								ON		[generalLedgerChartOfAccountSegment].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
@@ -1129,11 +1129,11 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE [".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

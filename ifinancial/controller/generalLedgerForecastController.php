@@ -391,28 +391,28 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalLedgerForecastId`,
+			SELECT		`generalLedgerForecast`.`generalLedgerForecastId`,
 						`generalLedgerForecastMonth`,
 						`generalLedgerForecastYear`,
 						`generalLedgerForecastAmount`,
-						`isDefault`,
-						`isNew`,
-						`isDraft`,
-						`isUpdate`,
-						`isDelete`,
-						`isActive`,
-						`isApproved`,
-						`isReview`,
-						`isPost`,
-						`executeBy`,
-						`executeTime`,
-						`iManagement`.`staff`.`staffName`
+						`generalLedgerForecast`.`isDefault`,
+						`generalLedgerForecast`.`isNew`,
+						`generalLedgerForecast`.`isDraft`,
+						`generalLedgerForecast`.`isUpdate`,
+						`generalLedgerForecast`.`isDelete`,
+						`generalLedgerForecast`.`isActive`,
+						`generalLedgerForecast`.`isApproved`,
+						`generalLedgerForecast`.`isReview`,
+						`generalLedgerForecast`.`isPost`,
+						`generalLedgerForecast`.`executeBy`,
+						`generalLedgerForecast`.`executeTime`,
+						`staff`.`staffName`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerForecast`
-			JOIN	`iManagement`.`staff`
-			ON		`generalLedgerForecast`.`executeBy` =`iManagement`.`staff`.`staffId`
+			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
+			ON		`generalLedgerForecast`.`executeBy` =`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -420,24 +420,24 @@ class GeneralLedgerForecastClass extends ConfigClass {
 						[generalLedgerForecastMonth],
 						[generalLedgerForecastYear],
 						[generalLedgerForecastAmount],
-						[isDefault],
-						[isNew],
-						[isDraft],
-						[isUpdate],
-						[isDelete],
-						[isActive],
-						[isApproved],
-						[isReview],
-						[isPost],
-						[executeBy],
-						[executeTime],
-						[iManagement].[staff].[staffName]
+						[generalLedgerForecast].[isDefault],
+						[generalLedgerForecast].[isNew],
+						[generalLedgerForecast].[isDraft],
+						[generalLedgerForecast].[isUpdate],
+						[generalLedgerForecast].[isDelete],
+						[generalLedgerForecast].[isActive],
+						[generalLedgerForecast].[isApproved],
+						[generalLedgerForecast].[isReview],
+						[generalLedgerForecast].[isPost],
+						[generalLedgerForecast].[executeBy],
+						[generalLedgerForecast].[executeTime],
+						[staff].[staffName]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerForecast]
-			JOIN	[iManagement].[staff]
-			ON		[executeBy] = [iManagement].[staff].[staffId]
+			JOIN	[".$this->q->getManagementDatabase()."].[staff]
+			ON		[generalLedgerForecast].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
-				$sql .= " AND ['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -623,25 +623,25 @@ class GeneralLedgerForecastClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerForecastDerived] AS
 							(
-								SELECT 		[generalLedgerForecastId],
-											[generalLedgerForecastMonth],
-											[generalLedgerForecastYear],
-											[generalLedgerForecastAmount],
-											[isDefault],
-											[isNew],
-											[isDraft],
-											[isUpdate],
-											[isDelete],
-											[isApproved],
-											[isReview],
-											[isPost],
-											[executeBy],
-											[executeTime],
-											[iManagement].[staff].[staffName],
+								SELECT 		[generalLedgerForecast].[generalLedgerForecastId],
+											[generalLedgerForecast].[generalLedgerForecastMonth],
+											[generalLedgerForecast].[generalLedgerForecastYear],
+											[generalLedgerForecast].[generalLedgerForecastAmount],
+											[generalLedgerForecast].[isDefault],
+											[generalLedgerForecast].[isNew],
+											[generalLedgerForecast].[isDraft],
+											[generalLedgerForecast].[isUpdate],
+											[generalLedgerForecast].[isDelete],
+											[generalLedgerForecast].[isApproved],
+											[generalLedgerForecast].[isReview],
+											[generalLedgerForecast].[isPost],
+											[generalLedgerForecast].[executeBy],
+											[generalLedgerForecast].[executeTime],
+											[staff].[staffName],
 								ROW_NUMBER() OVER (ORDER BY [generalLedgerForecastId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerForecast]
-								JOIN		[iManagement].[staff]
-								ON		[executeBy] = [iManagement].[staff].[staffId]
+								JOIN		[".$this->q->getManagementDatabase()."].[staff]
+								ON		[generalLedgerForecast].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -751,9 +751,9 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
@@ -908,7 +908,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -1046,11 +1046,11 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE [".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

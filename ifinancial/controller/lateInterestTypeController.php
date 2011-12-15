@@ -17,6 +17,7 @@ require_once ("../model/lateInterestTypeModel.php");
  * @package General Ledger
  * @subpackage Journal Type
  * @link http://www.idcms.org
+ * @link http://en.wikipedia.org/wiki/Late_Payment_of_Commercial_Debts_%28Interest%29_Act_1998
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class LateInterestTypeClass extends ConfigClass {
@@ -384,22 +385,50 @@ class LateInterestTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`lateInterestType`.`lateInterestTypeId`,`lateInterestType`.`lateInterestTypeSequence`,`lateInterestType`.`lateInterestCode`,`lateInterestType`.`lateInterestTypeDesc`,`lateInterestType`.`isDefault`,`lateInterestType`.`isNew`,`lateInterestType`.`isDraft`,`lateInterestType`.`isUpdate`,`lateInterestType`.`isDelete`,`lateInterestType`.`isActive`,`lateInterestType`.`isApproved`,`lateInterestType`.`isReview`,`lateInterestType`.`isPost`,`lateInterestType`.`executeBy`,`lateInterestType`.`executeTime`
-                    ,`iManagement`.`staff`.`staffName`
+			SELECT	`lateInterestType`.`lateInterestTypeId`,
+					`lateInterestType`.`lateInterestTypeSequence`,
+					`lateInterestType`.`lateInterestCode`,
+					`lateInterestType`.`lateInterestTypeDesc`,
+					`lateInterestType`.`isDefault`,
+					`lateInterestType`.`isNew`,
+					`lateInterestType`.`isDraft`,
+					`lateInterestType`.`isUpdate`,
+					`lateInterestType`.`isDelete`,
+					`lateInterestType`.`isActive`,
+					`lateInterestType`.`isApproved`,
+					`lateInterestType`.`isReview`,
+					`lateInterestType`.`isPost`,
+					`lateInterestType`.`executeBy`,
+					`lateInterestType`.`executeTime`,
+					`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`lateInterestType`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `lateInterestType`.`executeBy` = `iManagement`.`staff`.`staffId`
+            ON      `lateInterestType`.`executeBy` = `staff`.`staffId`
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getLateInterestTypeId(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getLateInterestTypeId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getLateInterestTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT`lateInterestType`.`lateInterestTypeId`,`lateInterestType`.`lateInterestTypeSequence`,`lateInterestType`.`lateInterestCode`,`lateInterestType`.`lateInterestTypeDesc`,`lateInterestType`.`isDefault`,`lateInterestType`.`isNew`,`lateInterestType`.`isDraft`,`lateInterestType`.`isUpdate`,`lateInterestType`.`isDelete`,`lateInterestType`.`isActive`,`lateInterestType`.`isApproved`,`lateInterestType`.`isReview`,`lateInterestType`.`isPost`,`lateInterestType`.`executeBy`,`lateInterestType`.`executeTime`
-                    `iManagement`.`staff`.`staffName`
-            FROM    `".$this->q->getFixAssetDatabase()."`.`lateInterestType`
-            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `lateInterestType`.`executeBy` = `iManagement`.`staff`.`staffId`
+			SELECT	[lateInterestType].[lateInterestTypeId],
+					[lateInterestType].[lateInterestTypeSequence],
+					[lateInterestType].[lateInterestCode],
+					[lateInterestType].[lateInterestTypeDesc],
+					[lateInterestType].[isDefault],
+					[lateInterestType].[isNew],
+					[lateInterestType].[isDraft],
+					[lateInterestType].[isUpdate],
+					[lateInterestType].[isDelete],
+					[lateInterestType].[isActive],
+					[lateInterestType].[isApproved],
+					[lateInterestType].[isReview],
+					[lateInterestType].[isPost],
+					[lateInterestType].[executeBy],
+					[lateInterestType].[executeTime],
+					[staff].[staffName]
+            FROM    [".$this->q->getFinancialDatabase()."].[lateInterestType]
+            JOIN    [".$this->q->getManagementDatabase()."].[staff]
+            ON      [lateInterestType].[executeBy] = [staff].[staffId]
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getLateInterestTypeId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getLateInterestTypeId(0, 'single') . "'";
@@ -565,25 +594,25 @@ class LateInterestTypeClass extends ConfigClass {
 				$sql = "
 							WITH [lateInterestTypeDerived] AS
 							(
-								SELECT 		['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestTypeId],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestTypeSequence],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestTypeCode],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestTypeDesc],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isDefault],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isNew],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isDraft],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isUpdate],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isDelete],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isApproved],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isReview],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isPost],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[executeBy],
-											['".$this->q->getFinancialDatabase()."'].[lateInterestType].[executeTime],
-											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY ['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestTypeId]) AS 'RowNumber'
+								SELECT 		[lateInterestType].[lateInterestTypeId],
+											[lateInterestType].[lateInterestTypeSequence],
+											[lateInterestType].[lateInterestTypeCode],
+											[lateInterestType].[lateInterestTypeDesc],
+											[lateInterestType].[isDefault],
+											[lateInterestType].[isNew],
+											[lateInterestType].[isDraft],
+											[lateInterestType].[isUpdate],
+											[lateInterestType].[isDelete],
+											[lateInterestType].[isApproved],
+											[lateInterestType].[isReview],
+											[lateInterestType].[isPost],
+											[lateInterestType].[executeBy],
+											[lateInterestType].[executeTime],
+											[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [lateInterestType].[lateInterestTypeId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[lateInterestType]
-								JOIN	[iManagement].[staff]
-								ON		['".$this->q->getFinancialDatabase()."'].[lateInterestType].[executeBy] = [iManagement].[staff].[staffId]
+								JOIN	[".$this->q->getManagementDatabase()."].[staff]
+								ON		[lateInterestType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -692,14 +721,14 @@ class LateInterestTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getLateInterestTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getLateInterestTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getLateInterestTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getLateInterestTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -728,38 +757,38 @@ class LateInterestTypeClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`lateInterestType`
-				SET 		`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`lateInterestTypeSequence`		=	'" . $this->model->getLateInterestTypeSequence() . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`lateInterestTypeCode`		=	'" . $this->model->getLateInterestTypeCode() . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`lateInterestTypeDesc`		=	'" . $this->model->getLateInterestTypeDesc() . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`lateInterestTypeId`		=	'" . $this->model->getLateInterestTypeId(0, 'single') . "'";
+				SET 		`lateInterestType`.`lateInterestTypeSequence`		=	'" . $this->model->getLateInterestTypeSequence() . "',
+							`lateInterestType`.`lateInterestTypeCode`		=	'" . $this->model->getLateInterestTypeCode() . "',
+							`lateInterestType`.`lateInterestTypeDesc`		=	'" . $this->model->getLateInterestTypeDesc() . "',
+							`lateInterestType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`lateInterestType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`lateInterestType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`lateInterestType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`lateInterestType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`lateInterestType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`lateInterestType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`lateInterestType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`lateInterestType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`lateInterestType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`lateInterestType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`lateInterestType`.`lateInterestTypeId`		=	'" . $this->model->getLateInterestTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[lateInterestType]
-				SET 		['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestTypeSequence]		=	'" . $this->model->getLateInterestTypeSequence() . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestTypeCode]		=	'" . $this->model->getLateInterestTypeCode() . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestTypeDesc]		=	'" . $this->model->getLateInterestTypeDesc() . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							['".$this->q->getFinancialDatabase()."'].[lateInterestType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				UPDATE 		['".$this->q->getFinancialDatabase()."'].[lateInterestType]
+				SET 		[lateInterestType].[lateInterestTypeSequence]		=	'" . $this->model->getLateInterestTypeSequence() . "',
+							[lateInterestType].[lateInterestTypeCode]		=	'" . $this->model->getLateInterestTypeCode() . "',
+							[lateInterestType].[lateInterestTypeDesc]		=	'" . $this->model->getLateInterestTypeDesc() . "',
+							[lateInterestType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[lateInterestType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+							[lateInterestType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[lateInterestType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[lateInterestType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[lateInterestType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+							[lateInterestType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[lateInterestType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+							[lateInterestType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							[lateInterestType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+							[lateInterestType].[executeTime]		=	" . $this->model->getExecuteTime() . "
 			WHERE 		['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestTypeId]			=	'" . $this->model->getLateInterestTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
@@ -847,14 +876,14 @@ class LateInterestTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getLateInterestTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getLateInterestTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getLateInterestTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getLateInterestTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -882,34 +911,34 @@ class LateInterestTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`lateInterestType`
-				SET 	`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`".$this->q->getFinancialDatabase()."`.`lateInterestType`.`lateInterestTypeId`		=	'" . $this->model->getLateInterestTypeId(0, 'single') . "'";
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`lateInterestType`
+				SET 	`lateInterestType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`lateInterestType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`lateInterestType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`lateInterestType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`lateInterestType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`lateInterestType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`lateInterestType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`lateInterestType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`lateInterestType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`lateInterestType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`lateInterestType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`lateInterestType`.`lateInterestTypeId`		=	'" . $this->model->getLateInterestTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestType]
-				SET 	['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[lateInterestType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						['".$this->q->getFinancialDatabase()."'].[lateInterestType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						['".$this->q->getFinancialDatabase()."'].[lateInterestType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	['".$this->q->getFinancialDatabase()."'].[lateInterestType].[lateInterestTypeId]		=	'" . $this->model->getLateInterestTypeId(0, 'single') . "'";
+				SET 	[lateInterestType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[lateInterestType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[lateInterestType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[lateInterestType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[lateInterestType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[lateInterestType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[lateInterestType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[lateInterestType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[lateInterestType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[lateInterestType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[lateInterestType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[lateInterestType].[lateInterestTypeId]		=	'" . $this->model->getLateInterestTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
@@ -985,11 +1014,11 @@ class LateInterestTypeClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE [".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

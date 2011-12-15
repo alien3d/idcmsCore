@@ -11,7 +11,7 @@ Ext.onReady(function () {
 	// common Proxy,Reader,Store,Filter,Grid
 	// start Staff Request
 	var staffByProxy = new Ext.data.HttpProxy({
-			url : '../controller/generalLedgerChartOfAccountTypeController.php?',
+			url : '../controller/generalLedgerBudgetTypeController.php?',
 			method : 'GET',
 			success : function (response, options) {
 				jsonResponse = Ext.decode(response.responseText);
@@ -449,8 +449,8 @@ Ext.onReady(function () {
 
 	// end additional Proxy ,Reader,Store,Filter,Grid
 	// start application Proxy ,Reader,Store,Filter,Grid
-	var generalLedgerChartOfAccountTypeProxy = new Ext.data.HttpProxy({
-			url : '../controller/generalLedgerChartOfAccountTypeController.php',
+	var generalLedgerBudgetTypeProxy = new Ext.data.HttpProxy({
+			url : '../controller/generalLedgerBudgetTypeController.php',
 			method : 'POST',
 			success : function (response, options) {
 				jsonResponse = Ext.decode(response.responseText);
@@ -463,15 +463,15 @@ Ext.onReady(function () {
 				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
 			}
 		});
-	var generalLedgerChartOfAccountTypeReader = new Ext.data.JsonReader({
+	var generalLedgerBudgetTypeReader = new Ext.data.JsonReader({
 			totalProperty : 'total',
 			successProperty : 'success',
 			messageProperty : 'message',
-			idProperty : 'generalLedgerChartOfAccountTypeId'
+			idProperty : 'generalLedgerBudgetTypeId'
 		});
-	var generalLedgerChartOfAccountTypeStore = new Ext.data.JsonStore({
-			proxy : generalLedgerChartOfAccountTypeProxy,
-			reader : generalLedgerChartOfAccountTypeReader,
+	var generalLedgerBudgetTypeStore = new Ext.data.JsonStore({
+			proxy : generalLedgerBudgetTypeProxy,
+			reader : generalLedgerBudgetTypeReader,
 			autoLoad : true,
 			autoDestroy : true,
 			pruneModifiedRecords : true,
@@ -484,16 +484,16 @@ Ext.onReady(function () {
 			},
 			root : 'data',
 			fields : [{
-					name : 'generalLedgerChartOfAccountTypeId',
+					name : 'generalLedgerBudgetTypeId',
 					type : 'int'
 				}, {
-					name : 'generalLedgerChartOfAccountTypeSequence',
+					name : 'generalLedgerBudgetTypeSequence',
 					type : 'string'
 				}, {
-					name : 'generalLedgerChartOfAccountTypeCode',
+					name : 'generalLedgerBudgetTypeCode',
 					type : 'string'
 				}, {
-					name : 'generalLedgerChartOfAccountTypeDesc',
+					name : 'generalLedgerBudgetTypeDesc',
 					type : 'string'
 				}, {
 					name : 'isDefault',
@@ -532,32 +532,32 @@ Ext.onReady(function () {
 				}
 			]
 		});
-	var generalLedgerChartOfAccountTypeFilters = new Ext.ux.grid.GridFilters({
+	var generalLedgerBudgetTypeFilters = new Ext.ux.grid.GridFilters({
 			encode : false,
 			local : false,
 			filters : [ {
 					type : 'string',
-					dataIndex : 'generalLedgerChartOfAccountTypeSequence',
-					column : 'generalLedgerChartOfAccountTypeSequence',
-					table : 'generalLedgerChartOfAccountType',
+					dataIndex : 'generalLedgerBudgetTypeSequence',
+					column : 'generalLedgerBudgetTypeSequence',
+					table : 'generalLedgerBudgetType',
 					database : 'iFinancial'
 				},{
 					type : 'string',
-					dataIndex : 'generalLedgerChartOfAccountTypeCode',
-					column : 'generalLedgerChartOfAccountTypeCode',
-					table : 'generalLedgerChartOfAccountType',
+					dataIndex : 'generalLedgerBudgetTypeCode',
+					column : 'generalLedgerBudgetTypeCode',
+					table : 'generalLedgerBudgetType',
 					database : 'iFinancial'
 				}, {
 					type : 'string',
-					dataIndex : 'generalLedgerChartOfAccountTypeDesc',
-					column : 'generalLedgerChartOfAccountTypeDesc',
-					table : 'generalLedgerChartOfAccountType',
+					dataIndex : 'generalLedgerBudgetTypeDesc',
+					column : 'generalLedgerBudgetTypeDesc',
+					table : 'generalLedgerBudgetType',
 					database : 'iFinancial'
 				}, {
 					type : 'list',
 					dataIndex : 'executeBy',
 					column : 'executeBy',
-					table : 'generalLedgerChartOfAccountType',
+					table : 'generalLedgerBudgetType',
 					database : 'iFinancial',
 					labelField : 'staffName',
 					store : staffByStore,
@@ -566,7 +566,7 @@ Ext.onReady(function () {
 					type : 'date',
 					dataIndex : 'executeTime',
 					column : 'executeTime',
-					table : 'generalLedgerChartOfAccountType',
+					table : 'generalLedgerBudgetType',
 					database : 'iFinancial'
 				}
 			]
@@ -615,21 +615,21 @@ Ext.onReady(function () {
 			dataIndex : 'isPost',
 			hidden : isPostHidden
 		});
-	var generalLedgerChartOfAccountTypeColumnModel = [new Ext.grid.RowNumberer(),{
-			dataIndex : 'generalLedgerChartOfAccountTypeCode',
-			header : generalLedgerChartOfAccountTypeCodeLabel,
+	var generalLedgerBudgetTypeColumnModel = [new Ext.grid.RowNumberer(),{
+			dataIndex : 'generalLedgerBudgetTypeCode',
+			header : generalLedgerBudgetTypeCodeLabel,
 			sortable : true,
 			hidden : false,
 			width : 50
 		},{
-			dataIndex : 'generalLedgerChartOfAccountTypeSequence',
-			header : generalLedgerChartOfAccountTypeSequenceLabel,
+			dataIndex : 'generalLedgerBudgetTypeSequence',
+			header : generalLedgerBudgetTypeSequenceLabel,
 			sortable : true,
 			hidden : false,
 			width : 50
 		}, {
-			dataIndex : 'generalLedgerChartOfAccountTypeDesc',
-			header : generalLedgerChartOfAccountTypeDescLabel,
+			dataIndex : 'generalLedgerBudgetTypeDesc',
+			header : generalLedgerBudgetTypeDescLabel,
 			sortable : true,
 			hidden : false,
 			width : 50
@@ -670,16 +670,16 @@ Ext.onReady(function () {
 			}
 		}
 	];
-	var generalLedgerChartOfAccountTypeFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-	var generalLedgerChartOfAccountTypeGrid = new Ext.grid.GridPanel({
-			name : 'generalLedgerChartOfAccountTypeGrid',
-			id : 'generalLedgerChartOfAccountTypeGrid',
+	var generalLedgerBudgetTypeFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+	var generalLedgerBudgetTypeGrid = new Ext.grid.GridPanel({
+			name : 'generalLedgerBudgetTypeGrid',
+			id : 'generalLedgerBudgetTypeGrid',
 			border : false,
-			store : generalLedgerChartOfAccountTypeStore,
+			store : generalLedgerBudgetTypeStore,
 			autoHeight : false,
 			height : 400,
-			columns : generalLedgerChartOfAccountTypeColumnModel,
-			plugins : [generalLedgerChartOfAccountTypeFilters],
+			columns : generalLedgerBudgetTypeColumnModel,
+			plugins : [generalLedgerBudgetTypeFilters],
 			selModel : new Ext.grid.RowSelectionModel({
 				singleSelect : true
 			}),
@@ -689,22 +689,22 @@ Ext.onReady(function () {
 			iconCls : 'application_view_detail',
 			listeners : {
 				'rowclick' : function (object, rowIndex, e) {
-					var record = generalLedgerChartOfAccountTypeStore.getAt(rowIndex);
+					var record = generalLedgerBudgetTypeStore.getAt(rowIndex);
 					formPanel.getForm().reset();
 					formPanel.form.load({
-						url : '../controller/generalLedgerChartOfAccountTypeController.php',
+						url : '../controller/generalLedgerBudgetTypeController.php',
 						method : 'POST',
 						waitTitle : systemLabel,
 						waitMsg : waitMessageLabel,
 						params : {
 							method : 'read',
 							mode : 'update',
-							generalLedgerChartOfAccountTypeId : record.data.generalLedgerChartOfAccountTypeId,
+							generalLedgerBudgetTypeId : record.data.generalLedgerBudgetTypeId,
 							leafId : leafId,
 							isAdmin : isAdmin
 						},
 						success : function (form, action) {
-							Ext.getCmp('generalLedgerChartOfAccountTypeCodeTemp').setValue(record.data.generalLedgerChartOfAccountTypeDesc);
+							Ext.getCmp('generalLedgerBudgetTypeCodeTemp').setValue(record.data.generalLedgerBudgetTypeDesc);
 							viewPort.items.get(1).expand();
 						},
 						failure : function (form, action) {
@@ -723,9 +723,9 @@ Ext.onReady(function () {
 						iconCls : 'row-check-sprite-check',
 						listeners : {
 							'click' : function (button, e) {
-								generalLedgerChartOfAccountTypeStore.each(function (record, fn, scope) {
-									for (var access in generalLedgerChartOfAccountTypeFlagArray) {
-										record.set(generalLedgerChartOfAccountTypeFlagArray[access], true);
+								generalLedgerBudgetTypeStore.each(function (record, fn, scope) {
+									for (var access in generalLedgerBudgetTypeFlagArray) {
+										record.set(generalLedgerBudgetTypeFlagArray[access], true);
 									}
 								});
 							}
@@ -736,9 +736,9 @@ Ext.onReady(function () {
 						iconCls : 'row-check-sprite-uncheck',
 						listeners : {
 							'click' : function (button, e) {
-								generalLedgerChartOfAccountTypeStore.each(function (record, fn, scope) {
-									for (var access in generalLedgerChartOfAccountTypeFlagArray) {
-										record.set(generalLedgerChartOfAccountTypeFlagArray[access], false);
+								generalLedgerBudgetTypeStore.each(function (record, fn, scope) {
+									for (var access in generalLedgerBudgetTypeFlagArray) {
+										record.set(generalLedgerBudgetTypeFlagArray[access], false);
 									}
 								});
 							}
@@ -749,12 +749,12 @@ Ext.onReady(function () {
 						iconCls : 'bullet_disk',
 						listeners : {
 							'click' : function (button, e) {
-								var url = '../controller/generalLedgerChartOfAccountTypeController.php?';
+								var url = '../controller/generalLedgerBudgetTypeController.php?';
 								var sub_url = '';
-								var modified = generalLedgerChartOfAccountTypeStore.getModifiedRecords();
+								var modified = generalLedgerBudgetTypeStore.getModifiedRecords();
 								for (var i = 0; i < modified.length; i++) {
 									var dataChanges = modified[i].getChanges();
-									sub_url = sub_url + '&generalLedgerChartOfAccountTypeId[]=' + modified[i].get('generalLedgerChartOfAccountTypeId');
+									sub_url = sub_url + '&generalLedgerBudgetTypeId[]=' + modified[i].get('generalLedgerBudgetTypeId');
 									if (isAdmin == 1) {
 										if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
 											sub_url = sub_url + '&isDefault[]=' + modified[i].get('isDefault');
@@ -800,7 +800,7 @@ Ext.onReady(function () {
 										jsonResponse = Ext.decode(response.responseText);
 										if (jsonResponse.success == true) {
 											Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-											generalLedgerChartOfAccountTypeStore.reload();
+											generalLedgerBudgetTypeStore.reload();
 										} else if (jsonResponse.success == false) {
 											Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
 										}
@@ -815,9 +815,9 @@ Ext.onReady(function () {
 				]
 			},
 			bbar : new Ext.PagingToolbar({
-				store : generalLedgerChartOfAccountTypeStore,
+				store : generalLedgerBudgetTypeStore,
 				pageSize : perPage,
-				plugins : [generalLedgerChartOfAccountTypeFilters]
+				plugins : [generalLedgerBudgetTypeFilters]
 			})
 		});
 	var gridPanel = new Ext.Panel({
@@ -829,7 +829,7 @@ Ext.onReady(function () {
 					iconCls : 'database_refresh',
 					id : 'pageReload',
 					handler : function () {
-						generalLedgerChartOfAccountTypeStore.reload();
+						generalLedgerBudgetTypeStore.reload();
 					}
 				},
 				'-', {
@@ -848,7 +848,7 @@ Ext.onReady(function () {
 					
 					handler : function () {
 						Ext.Ajax.request({
-							url : '../controller/generalLedgerChartOfAccountTypeController.php',
+							url : '../controller/generalLedgerBudgetTypeController.php',
 							method : 'GET',
 							params : {
 								method : 'report',
@@ -871,19 +871,19 @@ Ext.onReady(function () {
 					}
 				},
 				'-', new Ext.ux.form.SearchField({
-					store : generalLedgerChartOfAccountTypeStore,
+					store : generalLedgerBudgetTypeStore,
 					width : 320
 				})],
-			items : [generalLedgerChartOfAccountTypeGrid]
+			items : [generalLedgerBudgetTypeGrid]
 		});
 	// form entry
 	
-	var generalLedgerChartOfAccountTypeCode = new Ext.form.TextField({
+	var generalLedgerBudgetTypeCode = new Ext.form.TextField({
 			labelAlign : 'left',
-			fieldLabel : generalLedgerChartOfAccountTypeCodeLabel + '<span style=\'color: red;\'>*</span>',
-			hiddenName : 'generalLedgerChartOfAccountTypeCode',
-			name : 'generalLedgerChartOfAccountTypeCode',
-			id : 'generalLedgerChartOfAccountTypeCode',
+			fieldLabel : generalLedgerBudgetTypeCodeLabel + '<span style=\'color: red;\'>*</span>',
+			hiddenName : 'generalLedgerBudgetTypeCode',
+			name : 'generalLedgerBudgetTypeCode',
+			id : 'generalLedgerBudgetTypeCode',
 			allowBlank : false,
 			blankText : blankTextLabel,
 			style : {
@@ -892,12 +892,12 @@ Ext.onReady(function () {
 			anchor : '40%'
 	});
 	
-	var generalLedgerChartOfAccountTypeSequence = new Ext.form.NumberField({
+	var generalLedgerBudgetTypeSequence = new Ext.form.NumberField({
 			labelAlign : 'left',
-			fieldLabel : generalLedgerChartOfAccountTypeSequenceLabel + '<span style=\'color: red;\'>*</span>',
-			hiddenName : 'generalLedgerChartOfAccountTypeSequence',
-			name : 'generalLedgerChartOfAccountTypeSequence',
-			id : 'generalLedgerChartOfAccountTypeSequence',
+			fieldLabel : generalLedgerBudgetTypeSequenceLabel + '<span style=\'color: red;\'>*</span>',
+			hiddenName : 'generalLedgerBudgetTypeSequence',
+			name : 'generalLedgerBudgetTypeSequence',
+			id : 'generalLedgerBudgetTypeSequence',
 			allowBlank : false,
 			blankText : blankTextLabel,
 			style : {
@@ -906,12 +906,12 @@ Ext.onReady(function () {
 			anchor : '40%'
 	});
 	
-	var generalLedgerChartOfAccountTypeDesc = new Ext.form.TextField({
+	var generalLedgerBudgetTypeDesc = new Ext.form.TextField({
 			labelAlign : 'left',
-			fieldLabel : generalLedgerChartOfAccountTypeDescLabel + '<span style=\'color: red;\'>*</span>',
-			hiddenName : 'generalLedgerChartOfAccountTypeDesc',
-			name : 'generalLedgerChartOfAccountTypeDesc',
-			id : 'generalLedgerChartOfAccountTypeDesc',
+			fieldLabel : generalLedgerBudgetTypeDescLabel + '<span style=\'color: red;\'>*</span>',
+			hiddenName : 'generalLedgerBudgetTypeDesc',
+			name : 'generalLedgerBudgetTypeDesc',
+			id : 'generalLedgerBudgetTypeDesc',
 			allowBlank : false,
 			blankText : blankTextLabel,
 			style : {
@@ -922,9 +922,9 @@ Ext.onReady(function () {
 	
 	
 		
-	var generalLedgerChartOfAccountTypeId = new Ext.form.Hidden({
-			name : 'generalLedgerChartOfAccountTypeId',
-			id : 'generalLedgerChartOfAccountTypeId'
+	var generalLedgerBudgetTypeId = new Ext.form.Hidden({
+			name : 'generalLedgerBudgetTypeId',
+			id : 'generalLedgerBudgetTypeId'
 		}); // end form entry
 	// start System Validation
 	var isDefault = new Ext.form.Checkbox({
@@ -1008,7 +1008,7 @@ Ext.onReady(function () {
 		}); // end of hidden value for navigation button
 	// end System Validation
 	var formPanel = new Ext.form.FormPanel({
-			url : '../controller/generalLedgerChartOfAccountTypeController.php',
+			url : '../controller/generalLedgerBudgetTypeController.php',
 			name : 'formPanel',
 			id : 'formPanel',
 			method : 'post',
@@ -1020,10 +1020,10 @@ Ext.onReady(function () {
 			items : [{
 					xtype : 'fieldset',
 					title : 'Form Entry',
-					items : [generalLedgerChartOfAccountTypeId,
-						generalLedgerChartOfAccountTypeCode,
-						generalLedgerChartOfAccountTypeSequence,
-						generalLedgerChartOfAccountTypeDesc]
+					items : [generalLedgerBudgetTypeId,
+						generalLedgerBudgetTypeCode,
+						generalLedgerBudgetTypeSequence,
+						generalLedgerBudgetTypeDesc]
 				}, {
 					xtype : 'fieldset',
 					title : 'System Administration',
@@ -1066,7 +1066,7 @@ Ext.onReady(function () {
 					disabled : auditButtonLabelDisabled,
 					handler : function () {
 						if (auditWindow) {
-							generalLedgerChartOfAccountTypeStore.reload();
+							generalLedgerBudgetTypeStore.reload();
 							auditWindow.show().center();
 						}
 					}
@@ -1077,7 +1077,7 @@ Ext.onReady(function () {
 					type : 'button',
 					iconCls : 'new',
 					handler : function () {
-						var id = Ext.getCmp('generalLedgerChartOfAccountTypeId').getValue();
+						var id = Ext.getCmp('generalLedgerBudgetTypeId').getValue();
 						var method = 'create';
 						formPanel.getForm().submit({
 							waitMsg : waitMessageLabel,
@@ -1092,14 +1092,14 @@ Ext.onReady(function () {
 									Ext.getCmp('newButton').disable();
 									Ext.getCmp('saveButton').enable();
 									Ext.getCmp('deleteButton').enable();
-									generalLedgerChartOfAccountTypeStore.reload({
+									generalLedgerBudgetTypeStore.reload({
 										params : {
 											leafId : leafId,
 											start : 0,
 											limit : perPage
 										}
 									});
-									Ext.getCmp('generalLedgerChartOfAccountTypeId').setValue(action.result.generalLedgerChartOfAccountTypeId);
+									Ext.getCmp('generalLedgerBudgetTypeId').setValue(action.result.generalLedgerBudgetTypeId);
 								} else {
 									Ext.MessageBox.alert(systemErrorLabel, action.result.message);
 								}
@@ -1125,7 +1125,7 @@ Ext.onReady(function () {
 					disabled : true,
 					handler : function () {
 						Ext.getCmp('newButton').disable();
-						var id = Ext.getCmp('generalLedgerChartOfAccountTypeId').getValue();
+						var id = Ext.getCmp('generalLedgerBudgetTypeId').getValue();
 						var method = 'save';
 						formPanel.getForm().submit({
 							waitMsg : waitMessageLabel,
@@ -1140,7 +1140,7 @@ Ext.onReady(function () {
 									Ext.getCmp('newButton').disable();
 									Ext.getCmp('saveButton').enable();
 									Ext.getCmp('deleteButton').enable();
-									generalLedgerChartOfAccountTypeStore.reload({
+									generalLedgerBudgetTypeStore.reload({
 										params : {
 											leafId : leafId,
 											start : 0,
@@ -1182,10 +1182,10 @@ Ext.onReady(function () {
 							fn : function (response) {
 								if ('yes' == response) {
 									Ext.Ajax.request({
-										url : '../controller/generalLedgerChartOfAccountTypeController.php',
+										url : '../controller/generalLedgerBudgetTypeController.php',
 										params : {
 											method : 'delete',
-											generalLedgerChartOfAccountTypeId : Ext.getCmp('generalLedgerChartOfAccountTypeId').getValue(),
+											generalLedgerBudgetTypeId : Ext.getCmp('generalLedgerBudgetTypeId').getValue(),
 											leafId : leafId,
 											isAdmin : isAdmin
 										},
@@ -1193,7 +1193,7 @@ Ext.onReady(function () {
 											jsonResponse = Ext.decode(response.responseText);
 											if (jsonResponse.success == true) {
 												Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-												generalLedgerChartOfAccountTypeStore.reload({
+												generalLedgerBudgetTypeStore.reload({
 													params : {
 														leafId : leafId,
 														start : 0,
@@ -1260,7 +1260,7 @@ Ext.onReady(function () {
 						Ext.getCmp('newButton').disable();
 						if (Ext.getCmp('firstRecord').getValue() == '') {
 							Ext.Ajax.request({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/generalLedgerBudgetTypeController.php',
 								method : 'GET',
 								params : {
 									method : 'dataNavigationRequest',
@@ -1272,13 +1272,13 @@ Ext.onReady(function () {
 									if (jsonResponse.success == true) {
 										Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
 										formPanel.form.load({
-											url : '../controller/generalLedgerChartOfAccountTypeController.php',
+											url : '../controller/generalLedgerBudgetTypeController.php',
 											method : 'POST',
 											waitTitle : systemLabel,
 											waitMsg : waitMessageLabel,
 											params : {
 												method : 'read',
-												generalLedgerChartOfAccountTypeId : Ext.getCmp('firstRecord').getValue(),
+												generalLedgerBudgetTypeId : Ext.getCmp('firstRecord').getValue(),
 												leafId : leafId,
 												isAdmin : isAdmin
 											},
@@ -1313,13 +1313,13 @@ Ext.onReady(function () {
 							});
 						} else {
 							formPanel.form.load({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/generalLedgerBudgetTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
 								params : {
 									method : 'read',
-									generalLedgerChartOfAccountTypeId : Ext.getCmp('firstRecord').getValue(),
+									generalLedgerBudgetTypeId : Ext.getCmp('firstRecord').getValue(),
 									leafId : leafId,
 									isAdmin : isAdmin
 								},
@@ -1360,13 +1360,13 @@ Ext.onReady(function () {
 						}
 						if (Ext.getCmp('firstRecord').getValue() >= 1) {
 							formPanel.form.load({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/generalLedgerBudgetTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
 								params : {
 									method : 'read',
-									generalLedgerChartOfAccountTypeId : Ext.getCmp('previousRecord').getValue(),
+									generalLedgerBudgetTypeId : Ext.getCmp('previousRecord').getValue(),
 									leafId : leafId,
 									isAdmin : isAdmin
 								},
@@ -1406,13 +1406,13 @@ Ext.onReady(function () {
 						}
 						if (Ext.getCmp('nextRecord').getValue() <= Ext.getCmp('lastRecord').getValue()) {
 							formPanel.form.load({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/generalLedgerBudgetTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
 								params : {
 									method : 'read',
-									generalLedgerChartOfAccountTypeId : Ext.getCmp('nextRecord').getValue(),
+									generalLedgerBudgetTypeId : Ext.getCmp('nextRecord').getValue(),
 									leafId : leafId,
 									isAdmin : isAdmin
 								},
@@ -1452,7 +1452,7 @@ Ext.onReady(function () {
 						Ext.getCmp('newButton').disable();
 						if (Ext.getCmp('lastRecord').getValue() == '' || Ext.getCmp('lastRecord').getValue() == undefined) {
 							Ext.Ajax.request({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/generalLedgerBudgetTypeController.php',
 								method : 'GET',
 								params : {
 									method : 'dataNavigationRequest',
@@ -1464,13 +1464,13 @@ Ext.onReady(function () {
 									if (jsonResponse.success == true) {
 										Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
 										formPanel.form.load({
-											url : '../controller/generalLedgerChartOfAccountTypeController.php',
+											url : '../controller/generalLedgerBudgetTypeController.php',
 											method : 'POST',
 											waitTitle : systemLabel,
 											waitMsg : waitMessageLabel,
 											params : {
 												method : 'read',
-												generalLedgerChartOfAccountTypeId : Ext.getCmp('lastRecord').getValue(),
+												generalLedgerBudgetTypeId : Ext.getCmp('lastRecord').getValue(),
 												leafId : leafId,
 												isAdmin : isAdmin
 											},
@@ -1505,15 +1505,15 @@ Ext.onReady(function () {
 								}
 							});
 						}
-						if (Ext.getCmp('generalLedgerChartOfAccountTypeId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
+						if (Ext.getCmp('generalLedgerBudgetTypeId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
 							formPanel.form.load({
-								url : '../controller/generalLedgerChartOfAccountTypeController.php',
+								url : '../controller/generalLedgerBudgetTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
 								params : {
 									method : 'read',
-									generalLedgerChartOfAccountTypeId : Ext.getCmp('lastRecord').getValue(),
+									generalLedgerBudgetTypeId : Ext.getCmp('lastRecord').getValue(),
 									leafId : leafId,
 									isAdmin : isAdmin
 								},

@@ -7,19 +7,19 @@ require_once ("../../class/classDate.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/generalLedgerChartOfAccountTypeModel.php");
+require_once ("../model/generalLedgerChartOfAccountCategoryModel.php");
 
 /**
- * this is generalLedgerChartOfAccountType setting files.This sample template file for master record
+ * this is generalLedgerChartOfAccountCategory setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package General Ledger
- * @subpackageChart Of Account Type
+ * @subpackage Chart Of Account Category
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
+class GeneralLedgerChartOfAccountCategoryClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -91,7 +91,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new GeneralLedgerChartOfAccountTypeModel ();
+		$this->model = new GeneralLedgerChartOfAccountCategoryModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -143,11 +143,11 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "
-			INSERT INTO `".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountType`
+			INSERT INTO `".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountCategory`
 					(
-						`generalLedgerChartOfAccountTypeSequence`,												
-						`generalLedgerChartOfAccountTypeCode`,
-						`generalLedgerChartOfAccountTypeDesc`,
+						`generalLedgerChartOfAccountCategorySequence`,												
+						`generalLedgerChartOfAccountCategoryCode`,
+						`generalLedgerChartOfAccountCategoryDesc`,
 						`isDefault`,
 						`isNew`,													
 						`isDraft`,
@@ -162,9 +162,9 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategoryCode() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategoryDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -179,11 +179,11 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO ['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountType]
+			INSERT INTO ['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountCategory]
 					(
-						[generalLedgerChartOfAccountTypeSequence],												
-						[generalLedgerChartOfAccountTypeCode],
-						[generalLedgerChartOfAccountTypeDesc],
+						[generalLedgerChartOfAccountCategorySequence],												
+						[generalLedgerChartOfAccountCategoryCode],
+						[generalLedgerChartOfAccountCategoryDesc],
 						[isDefault],
 						[isNew],														
 						[isDraft],
@@ -197,9 +197,9 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategoryCode() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategoryDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
@@ -229,9 +229,9 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategoryCode() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategoryDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -265,9 +265,9 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategoryCode() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategoryDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -301,9 +301,9 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategoryCode() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountCategoryDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -322,7 +322,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		}
 
 		$this->q->create($sql);
-		$generalLedgerChartOfAccountTypeId = $this->q->lastInsertId();
+		$generalLedgerChartOfAccountCategoryId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
@@ -333,7 +333,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		echo json_encode(
 		array(	"success" => true,
 					"message" => $this->systemString->getCreateMessage(), 
-					"generalLedgerChartOfAccountTypeId" => $generalLedgerChartOfAccountTypeId,
+					"generalLedgerChartOfAccountCategoryId" => $generalLedgerChartOfAccountCategoryId,
         			"time"=>$time));
 		exit();
 	}
@@ -347,9 +347,9 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "  `generalLedgerChartOfAccountType`.`isActive`		=	1	";
+				$this->auditFilter = "  `generalLedgerChartOfAccountCategory`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "  [generalLedgerChartOfAccountType].[isActive]		=	1	";
+				$this->auditFilter = "  [generalLedgerChartOfAccountCategory].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = " GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
@@ -384,60 +384,60 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalLedgerChartOfAccountTypeId`,
-						`generalLedgerChartOfAccountTypeSequence`,
-						`generalLedgerChartOfAccountTypeCode`,
-						`generalLedgerChartOfAccountTypeDesc`,
-						`isDefault`,
-						`isNew`,
-						`isDraft`,
-						`isUpdate`,
-						`isDelete`,
-						`isActive`,
-						`isApproved`,
-						`isReview`,
-						`isPost`,
-						`executeBy`,
-						`executeTime`,
-						`iManagement`.`staff`.`staffName`
-			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountType`
-			JOIN	`iManagement`.`staff`
-			ON		`executeBy` = `iManagement`.`staff`.`staffId`
+			SELECT		`generalLedgerChartOfAccountCategory`.`generalLedgerChartOfAccountCategoryId`,
+						`generalLedgerChartOfAccountCategory`.`generalLedgerChartOfAccountCategorySequence`,
+						`generalLedgerChartOfAccountCategory`.`generalLedgerChartOfAccountCategoryCode`,
+						`generalLedgerChartOfAccountCategory`.`generalLedgerChartOfAccountCategoryDesc`,
+						`generalLedgerChartOfAccountCategory`.`isDefault`,
+						`generalLedgerChartOfAccountCategory`.`isNew`,
+						`generalLedgerChartOfAccountCategory`.`isDraft`,
+						`generalLedgerChartOfAccountCategory`.`isUpdate`,
+						`generalLedgerChartOfAccountCategory`.`isDelete`,
+						`generalLedgerChartOfAccountCategory`.`isActive`,
+						`generalLedgerChartOfAccountCategory`.`isApproved`,
+						`generalLedgerChartOfAccountCategory`.`isReview`,
+						`generalLedgerChartOfAccountCategory`.`isPost`,
+						`generalLedgerChartOfAccountCategory`.`executeBy`,
+						`generalLedgerChartOfAccountCategory`.`executeTime`,
+						`staff`.`staffName`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountCategory`
+			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
+			ON		`generalLedgerChartOfAccountCategory`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[generalLedgerChartOfAccountTypeId],
-						[generalLedgerChartOfAccountTypeSequence],
-						[generalLedgerChartOfAccountTypeCode],
-						[generalLedgerChartOfAccountTypeDesc],
-						[isDefault],
-						[isNew],
-						[isDraft],
-						[isUpdate],
-						[isDelete],
-						[isActive],
-						[isApproved],
-						[isReview],
-						[isPost],
-						[executeBy],
-						[executeTime],
-						[iManagement].[staff].[staffName]
-			FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountType]
-			JOIN		[iManagement].[staff]
-			ON		[executeBy] = [iManagement].[staff].[staffId]
+			SELECT		[generalLedgerChartOfAccountCategory].[generalLedgerChartOfAccountCategory].[generalLedgerChartOfAccountCategoryId],
+						[generalLedgerChartOfAccountCategory].[generalLedgerChartOfAccountCategorySequence],
+						[generalLedgerChartOfAccountCategory].[generalLedgerChartOfAccountCategoryCode],
+						[generalLedgerChartOfAccountCategory].[generalLedgerChartOfAccountCategoryDesc],
+						[generalLedgerChartOfAccountCategory].[isDefault],
+						[generalLedgerChartOfAccountCategory].[isNew],
+						[generalLedgerChartOfAccountCategory].[isDraft],
+						[generalLedgerChartOfAccountCategory].[isUpdate],
+						[generalLedgerChartOfAccountCategory].[isDelete],
+						[generalLedgerChartOfAccountCategory].[isActive],
+						[generalLedgerChartOfAccountCategory].[isApproved],
+						[generalLedgerChartOfAccountCategory].[isReview],
+						[generalLedgerChartOfAccountCategory].[isPost],
+						[generalLedgerChartOfAccountCategory].[executeBy],
+						[generalLedgerChartOfAccountCategory].[executeTime],
+						[staff].[staffName]
+			FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountCategory]
+			JOIN		[".$this->q->getManagementDatabase()."].[staff]
+			ON		[generalLedgerChartOfAccountCategory].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single')) {
-				$sql .= " AND ['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEID   		 	AS 	\"generalLedgerChartOfAccountTypeId\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 				AS 	\"generalLedgerChartOfAccountTypeSequence\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE 			AS 	\"generalLedgerChartOfAccountTypeCode\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC 			AS 	\"generalLedgerChartOfAccountTypeDesc\",
+			SELECT		GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEID   		 	AS 	\"generalLedgerChartOfAccountCategoryId\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 				AS 	\"generalLedgerChartOfAccountCategorySequence\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE 			AS 	\"generalLedgerChartOfAccountCategoryCode\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC 			AS 	\"generalLedgerChartOfAccountCategoryDesc\",
 						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT    			AS	\"isDefault\",
 						GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW		  			AS	\"isNew\",
 						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT	  				AS	\"isDraft\",
@@ -454,8 +454,8 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 			JOIN		STAFF
 			ON			GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -494,13 +494,13 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('generalLedgerChartOfAccountTypeId');
+		$filterArray = array('generalLedgerChartOfAccountCategoryId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('generalLedgerChartOfAccountType');
+		$tableArray = array('generalLedgerChartOfAccountCategory');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -591,31 +591,31 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [generalLedgerChartOfAccountTypeDerived] AS
+							WITH [generalLedgerChartOfAccountCategoryDerived] AS
 							(
-								SELECT 		[generalLedgerChartOfAccountTypeId],
-											[generalLedgerChartOfAccountTypeSequence],
-											[generalLedgerChartOfAccountTypeCode],
-											[generalLedgerChartOfAccountTypeDesc],
-											[isDefault],
-											[isNew],
-											[isDraft],
-											[isUpdate],
-											[isDelete],
-											[isApproved],
-											[isReview],
-											[isPost],
-											[executeBy],
-											[executeTime],
-											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [generalLedgerChartOfAccountTypeId]) AS 'RowNumber'
-								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountType]
-								JOIN	[iManagement].[staff]
-								ON		[executeBy] = [iManagement].[staff].[staffId]
+								SELECT 		[generalLedgerChartOfAccountCategory].[generalLedgerChartOfAccountCategoryId],
+											[generalLedgerChartOfAccountCategory].[generalLedgerChartOfAccountCategorySequence],
+											[generalLedgerChartOfAccountCategory].[generalLedgerChartOfAccountCategoryCode],
+											[generalLedgerChartOfAccountCategory].[generalLedgerChartOfAccountCategoryDesc],
+											[generalLedgerChartOfAccountCategory].[isDefault],
+											[generalLedgerChartOfAccountCategory].[isNew],
+											[generalLedgerChartOfAccountCategory].[isDraft],
+											[generalLedgerChartOfAccountCategory].[isUpdate],
+											[generalLedgerChartOfAccountCategory].[isDelete],
+											[generalLedgerChartOfAccountCategory].[isApproved],
+											[generalLedgerChartOfAccountCategory].[isReview],
+											[generalLedgerChartOfAccountCategory].[isPost],
+											[generalLedgerChartOfAccountCategory].[executeBy],
+											[generalLedgerChartOfAccountCategory].[executeTime],
+											[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [generalLedgerChartOfAccountCategoryId]) AS 'RowNumber'
+								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountCategory]
+								JOIN	[".$this->q->getManagementDatabase()."].[staff]
+								ON		[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[generalLedgerChartOfAccountTypeDerived]
+							FROM 		[generalLedgerChartOfAccountCategoryDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -628,10 +628,10 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEID   		AS 	\"generalLedgerChartOfAccountTypeId\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 			AS 	\"generalLedgerChartOfAccountTypeSequence\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE 		AS 	\"generalLedgerChartOfAccountTypeCode\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC 		AS 	\"generalLedgerChartOfAccountTypeDesc\",
+								SELECT	GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEID   		AS 	\"generalLedgerChartOfAccountCategoryId\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 			AS 	\"generalLedgerChartOfAccountCategorySequence\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE 		AS 	\"generalLedgerChartOfAccountCategoryCode\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC 		AS 	\"generalLedgerChartOfAccountCategoryDesc\",
 										GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT    		AS	\"isDefault\",
 										GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW		  		AS	\"isNew\",
 										GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT	 			AS	\"isDraft\",
@@ -675,7 +675,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single'))) {
+		if (!($this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -686,8 +686,8 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single')) {
-			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single')) {
+			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -720,29 +720,29 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "' ";
+			WHERE 	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -755,10 +755,10 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`generalLedgerChartOfAccountType`
-				SET 		`generalLedgerChartOfAccountTypeSequence`		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
-							`generalLedgerChartOfAccountTypeCode`		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
-							`generalLedgerChartOfAccountTypeDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
+				UPDATE		`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountCategory`
+				SET 		`generalLedgerChartOfAccountCategorySequence`		=	'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "',
+							`generalLedgerChartOfAccountCategoryCode`		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryCode() . "',
+							`generalLedgerChartOfAccountCategoryDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryDesc() . "',
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -770,13 +770,13 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`generalLedgerChartOfAccountTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+				WHERE 		`generalLedgerChartOfAccountCategoryId`		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[generalLedgerChartOfAccountType]
-				SET 		[generalLedgerChartOfAccountTypeSequence]		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
-							[generalLedgerChartOfAccountTypeCode]		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
-							[generalLedgerChartOfAccountTypeDesc]		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
+				UPDATE 		[".$this->q->getFinancialDatabase()."].[generalLedgerChartOfAccountCategory]
+				SET 		[generalLedgerChartOfAccountCategorySequence]		=	'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "',
+							[generalLedgerChartOfAccountCategoryCode]		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryCode() . "',
+							[generalLedgerChartOfAccountCategoryDesc]		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryDesc() . "',
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -788,13 +788,13 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[generalLedgerChartOfAccountTypeId]			=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+			WHERE 		[generalLedgerChartOfAccountCategoryId]			=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		GENERALLEDGERCHARTOFACCOUNTTYPE
-				SET 		GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
+				SET 		GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryCode() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryDesc() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -806,13 +806,13 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+			WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 			UPDATE			GENERALLEDGERCHARTOFACCOUNTTYPE
-			SET 			GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
+			SET 			GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryCode() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryDesc() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -824,13 +824,13 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+			WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE		GENERALLEDGERCHARTOFACCOUNTTYPE
-				SET 		GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
+				SET 		GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryCode() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryDesc() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -842,7 +842,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID			=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+				WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID			=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -875,29 +875,29 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -910,7 +910,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalLedgerChartOfAccountType`
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountCategory`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -922,10 +922,10 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`generalLedgerChartOfAccountTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+				WHERE 	`generalLedgerChartOfAccountCategoryId`		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalLedgerChartOfAccountType]
+				UPDATE 	[".$this->q->getFinancialDatabase()."].[generalLedgerChartOfAccountCategory]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -937,7 +937,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[generalLedgerChartOfAccountTypeId]		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+				WHERE 	[generalLedgerChartOfAccountCategoryId]		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
@@ -952,7 +952,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
@@ -967,7 +967,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
@@ -982,7 +982,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountCategoryId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -1013,11 +1013,11 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -1065,7 +1065,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerChartOfAccountTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerChartOfAccountCategoryId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1089,7 +1089,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerChartOfAccountTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerChartOfAccountCategoryId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1113,7 +1113,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerChartOfAccountTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerChartOfAccountCategoryId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1137,7 +1137,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerChartOfAccountTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerChartOfAccountCategoryId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1161,7 +1161,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerChartOfAccountTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerChartOfAccountCategoryId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 							if(!$this->getIsAdmin()){
@@ -1182,7 +1182,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 										exit();
 									}
 									$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerChartOfAccountTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerChartOfAccountCategoryId($i, 'array') . "'
 							THEN '0'";
 									$sqlLooping .= " END,";
 								}
@@ -1209,7 +1209,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerChartOfAccountTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerChartOfAccountCategoryId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1233,7 +1233,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerChartOfAccountTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerChartOfAccountCategoryId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1257,7 +1257,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getGeneralLedgerChartOfAccountTypeId($i, 'array') . "'
+                            WHEN '" . $this->model->getGeneralLedgerChartOfAccountCategoryId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1281,7 +1281,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getGeneralLedgerChartOfAccountTypeId($i, 'array') . "'
+                                WHEN '" . $this->model->getGeneralLedgerChartOfAccountCategoryId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1339,33 +1339,33 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`generalLedgerChartOfAccountTypeSequence`
-			FROM 	`generalLedgerChartOfAccountType`
-			WHERE 	`generalLedgerChartOfAccountTypeSequence` 	= 	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "'
+			SELECT	`generalLedgerChartOfAccountCategorySequence`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountCategory`
+			WHERE 	`generalLedgerChartOfAccountCategorySequence` 	= 	'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[generalLedgerChartOfAccountTypeSequence]
-			FROM 	[generalLedgerChartOfAccountType]
-			WHERE 	[generalLedgerChartOfAccountTypeSequence] 	= 	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "'
+			SELECT	[generalLedgerChartOfAccountCategorySequence]
+			FROM 	[".$this->q->getFinancialDatabase()."].[generalLedgerChartOfAccountCategory]
+			WHERE 	[generalLedgerChartOfAccountCategorySequence] 	= 	'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE
 			FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
-			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "'
+			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE
 			FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
-			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "'
+			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE
 			FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
-			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "'
+			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerChartOfAccountCategorySequence() . "'
 			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -1380,7 +1380,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "generalLedgerChartOfAccountTypeDesc" => $row ['generalLedgerChartOfAccountTypeDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "generalLedgerChartOfAccountCategoryDesc" => $row ['generalLedgerChartOfAccountCategoryDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
@@ -1447,7 +1447,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalLedgerChartOfAccountTypeDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalLedgerChartOfAccountCategoryDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1456,7 +1456,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "generalLedgerChartOfAccountType" . rand(0, 10000000) . ".xlsx";
+		$filename = "generalLedgerChartOfAccountCategory" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1472,7 +1472,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 
 }
 
-$generalLedgerChartOfAccountTypeObject = new GeneralLedgerChartOfAccountTypeClass ();
+$generalLedgerChartOfAccountCategoryObject = new GeneralLedgerChartOfAccountCategoryClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1482,31 +1482,31 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$generalLedgerChartOfAccountTypeObject->setLeafId($_POST ['leafId']);
+		$generalLedgerChartOfAccountCategoryObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$generalLedgerChartOfAccountTypeObject->setIsAdmin($_POST ['isAdmin']);
+		$generalLedgerChartOfAccountCategoryObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$generalLedgerChartOfAccountTypeObject->setStart($_POST ['start']);
+		$generalLedgerChartOfAccountCategoryObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$generalLedgerChartOfAccountTypeObject->setLimit($_POST ['perPage']);
+		$generalLedgerChartOfAccountCategoryObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$generalLedgerChartOfAccountTypeObject->setFieldQuery($_POST ['query']);
+		$generalLedgerChartOfAccountCategoryObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$generalLedgerChartOfAccountTypeObject->setGridQuery($_POST ['filter']);
+		$generalLedgerChartOfAccountCategoryObject->setGridQuery($_POST ['filter']);
 	}
 	if (isset($_POST ['character'])) {
 		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
@@ -1524,29 +1524,29 @@ if (isset($_POST ['method'])) {
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$generalLedgerChartOfAccountTypeObject->setOrder($_POST ['order']);
+		$generalLedgerChartOfAccountCategoryObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$generalLedgerChartOfAccountTypeObject->setSortField($_POST ['sortField']);
+		$generalLedgerChartOfAccountCategoryObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalLedgerChartOfAccountTypeObject->execute();
+	$generalLedgerChartOfAccountCategoryObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$generalLedgerChartOfAccountTypeObject->create();
+		$generalLedgerChartOfAccountCategoryObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$generalLedgerChartOfAccountTypeObject->update();
+		$generalLedgerChartOfAccountCategoryObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$generalLedgerChartOfAccountTypeObject->read();
+		$generalLedgerChartOfAccountCategoryObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$generalLedgerChartOfAccountTypeObject->delete();
+		$generalLedgerChartOfAccountCategoryObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1554,35 +1554,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$generalLedgerChartOfAccountTypeObject->setLeafId($_GET ['leafId']);
+		$generalLedgerChartOfAccountCategoryObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$generalLedgerChartOfAccountTypeObject->setIsAdmin($_GET ['isAdmin']);
+		$generalLedgerChartOfAccountCategoryObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalLedgerChartOfAccountTypeObject->execute();
+	$generalLedgerChartOfAccountCategoryObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$generalLedgerChartOfAccountTypeObject->staff();
+			$generalLedgerChartOfAccountCategoryObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$generalLedgerChartOfAccountTypeObject->updateStatus();
+		$generalLedgerChartOfAccountCategoryObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['generalLedgerChartOfAccountTypeDesc'])) {
-		if (strlen($_GET ['generalLedgerChartOfAccountTypeDesc']) > 0) {
-			$generalLedgerChartOfAccountTypeObject->duplicate();
+	if (isset($_GET ['generalLedgerChartOfAccountCategoryDesc'])) {
+		if (strlen($_GET ['generalLedgerChartOfAccountCategoryDesc']) > 0) {
+			$generalLedgerChartOfAccountCategoryObject->duplicate();
 		}
 	}
 	/**
@@ -1590,16 +1590,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$generalLedgerChartOfAccountTypeObject->firstRecord('json');
+			$generalLedgerChartOfAccountCategoryObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$generalLedgerChartOfAccountTypeObject->previousRecord('json', 0);
+			$generalLedgerChartOfAccountCategoryObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$generalLedgerChartOfAccountTypeObject->nextRecord('json', 0);
+			$generalLedgerChartOfAccountCategoryObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$generalLedgerChartOfAccountTypeObject->lastRecord('json');
+			$generalLedgerChartOfAccountCategoryObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1607,7 +1607,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$generalLedgerChartOfAccountTypeObject->excel();
+			$generalLedgerChartOfAccountCategoryObject->excel();
 		}
 	}
 }

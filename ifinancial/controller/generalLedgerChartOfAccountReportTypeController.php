@@ -384,53 +384,53 @@ class generalLedgerChartOfAccountReportTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalLedgerChartOfAccountReportTypeId`,
-						`generalLedgerChartOfAccountReportTypeSequence`,
-						`generalLedgerChartOfAccountReportTypeCode`,
-						`generalLedgerChartOfAccountReportTypeDesc`,
-						`isDefault`,
-						`isNew`,
-						`isDraft`,
-						`isUpdate`,
-						`isDelete`,
-						`isActive`,
-						`isApproved`,
-						`isReview`,
-						`isPost`,
-						`executeBy`,
-						`executeTime`,
-						`iManagement`.`staff`.`staffName`
+			SELECT		`generalLedgerChartOfAccountReportType`.`generalLedgerChartOfAccountReportTypeId`,
+						`generalLedgerChartOfAccountReportType`.`generalLedgerChartOfAccountReportTypeSequence`,
+						`generalLedgerChartOfAccountReportType`.`generalLedgerChartOfAccountReportTypeCode`,
+						`generalLedgerChartOfAccountReportType`.`generalLedgerChartOfAccountReportTypeDesc`,
+						`generalLedgerChartOfAccountReportType`.`isDefault`,
+						`generalLedgerChartOfAccountReportType`.`isNew`,
+						`generalLedgerChartOfAccountReportType`.`isDraft`,
+						`generalLedgerChartOfAccountReportType`.`isUpdate`,
+						`generalLedgerChartOfAccountReportType`.`isDelete`,
+						`generalLedgerChartOfAccountReportType`.`isActive`,
+						`generalLedgerChartOfAccountReportType`.`isApproved`,
+						`generalLedgerChartOfAccountReportType`.`isReview`,
+						`generalLedgerChartOfAccountReportType`.`isPost`,
+						`generalLedgerChartOfAccountReportType`.`executeBy`,
+						`generalLedgerChartOfAccountReportType`.`executeTime`,
+						`staff`.`staffName`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountReportType`
-			JOIN	`iManagement`.`staff`
-			ON		`executeBy` = `iManagement`.`staff`.`staffId`
+			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
+			ON		`generalLedgerChartOfAccountReportType`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountReportType(0, 'single')) {
-				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[generalLedgerChartOfAccountReportTypeId],
-						[generalLedgerChartOfAccountReportTypeSequence],
-						[generalLedgerChartOfAccountReportTypeCode],
-						[generalLedgerChartOfAccountReportTypeDesc],
-						[isDefault],
-						[isNew],
-						[isDraft],
-						[isUpdate],
-						[isDelete],
-						[isActive],
-						[isApproved],
-						[isReview],
-						[isPost],
-						[executeBy],
-						[executeTime],
-						[iManagement].[staff].[staffName]
+			SELECT		[generalLedgerChartOfAccountReportType].[generalLedgerChartOfAccountReportTypeId],
+						[generalLedgerChartOfAccountReportType].[generalLedgerChartOfAccountReportTypeSequence],
+						[generalLedgerChartOfAccountReportType].[generalLedgerChartOfAccountReportTypeCode],
+						[generalLedgerChartOfAccountReportType].[generalLedgerChartOfAccountReportTypeDesc],
+						[generalLedgerChartOfAccountReportType].[isDefault],
+						[generalLedgerChartOfAccountReportType].[isNew],
+						[generalLedgerChartOfAccountReportType].[isDraft],
+						[generalLedgerChartOfAccountReportType].[isUpdate],
+						[generalLedgerChartOfAccountReportType].[isDelete],
+						[generalLedgerChartOfAccountReportType].[isActive],
+						[generalLedgerChartOfAccountReportType].[isApproved],
+						[generalLedgerChartOfAccountReportType].[isReview],
+						[generalLedgerChartOfAccountReportType].[isPost],
+						[generalLedgerChartOfAccountReportType].[executeBy],
+						[generalLedgerChartOfAccountReportType].[executeTime],
+						[staff].[staffName]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountReportType]
-			JOIN		[iManagement].[staff]
-			ON		[executeBy] = [iManagement].[staff].[staffId]
+			JOIN		[".$this->q->getManagementDatabase()."].[staff]
+			ON		[generalLedgerChartOfAccountReportType].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountReportType(0, 'single')) {
-				$sql .= " AND ['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "'";
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -593,25 +593,25 @@ class generalLedgerChartOfAccountReportTypeClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerChartOfAccountReportTypeDerived] AS
 							(
-								SELECT 		[generalLedgerChartOfAccountReportTypeId],
-											[generalLedgerChartOfAccountReportTypeSequence],
-											[generalLedgerChartOfAccountReportTypeCode],
-											[generalLedgerChartOfAccountReportTypeDesc],
-											[isDefault],
-											[isNew],
-											[isDraft],
-											[isUpdate],
-											[isDelete],
-											[isApproved],
-											[isReview],
-											[isPost],
-											[executeBy],
-											[executeTime],
-											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [generalLedgerChartOfAccountReportTypeId]) AS 'RowNumber'
+								SELECT 		[generalLedgerChartOfAccountReportType].[generalLedgerChartOfAccountReportTypeId],
+											[generalLedgerChartOfAccountReportType].[generalLedgerChartOfAccountReportTypeSequence],
+											[generalLedgerChartOfAccountReportType].[generalLedgerChartOfAccountReportTypeCode],
+											[generalLedgerChartOfAccountReportType].[generalLedgerChartOfAccountReportTypeDesc],
+											[generalLedgerChartOfAccountReportType].[isDefault],
+											[generalLedgerChartOfAccountReportType].[isNew],
+											[generalLedgerChartOfAccountReportType].[isDraft],
+											[generalLedgerChartOfAccountReportType].[isUpdate],
+											[generalLedgerChartOfAccountReportType].[isDelete],
+											[generalLedgerChartOfAccountReportType].[isApproved],
+											[generalLedgerChartOfAccountReportType].[isReview],
+											[generalLedgerChartOfAccountReportType].[isPost],
+											[generalLedgerChartOfAccountReportType].[executeBy],
+											[generalLedgerChartOfAccountReportType].[executeTime],
+											[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [generalLedgerChartOfAccountReportType].[generalLedgerChartOfAccountReportTypeId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountReportType]
-								JOIN	[iManagement].[staff]
-								ON		[executeBy] = [iManagement].[staff].[staffId]
+								JOIN	[".$this->q->getManagementDatabase()."].[staff]
+								ON		[generalLedgerChartOfAccountReportType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -720,14 +720,14 @@ class generalLedgerChartOfAccountReportTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -755,7 +755,7 @@ class generalLedgerChartOfAccountReportTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`generalLedgerChartOfAccountReportType`
+				UPDATE		`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountReportType`
 				SET 		`generalLedgerChartOfAccountReportTypeSequence`		=	'" . $this->model->getGENERALLEDGERCHARTOFACCOUNTREPORTTYPESequence() . "',
 							`generalLedgerChartOfAccountReportTypeCode`		=	'" . $this->model->getGENERALLEDGERCHARTOFACCOUNTREPORTTYPECode() . "',
 							`generalLedgerChartOfAccountReportTypeDesc`		=	'" . $this->model->getGENERALLEDGERCHARTOFACCOUNTREPORTTYPEDesc() . "',
@@ -773,7 +773,7 @@ class generalLedgerChartOfAccountReportTypeClass extends ConfigClass {
 				WHERE 		`generalLedgerChartOfAccountReportTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[generalLedgerChartOfAccountReportType]
+				UPDATE 		[".$this->q->getFinancialDatabase()."].[generalLedgerChartOfAccountReportType]
 				SET 		[generalLedgerChartOfAccountReportTypeSequence]		=	'" . $this->model->getGENERALLEDGERCHARTOFACCOUNTREPORTTYPESequence() . "',
 							[generalLedgerChartOfAccountReportTypeCode]		=	'" . $this->model->getGENERALLEDGERCHARTOFACCOUNTREPORTTYPECode() . "',
 							[generalLedgerChartOfAccountReportTypeDesc]		=	'" . $this->model->getGENERALLEDGERCHARTOFACCOUNTREPORTTYPEDesc() . "',
@@ -875,14 +875,14 @@ class generalLedgerChartOfAccountReportTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -910,7 +910,7 @@ class generalLedgerChartOfAccountReportTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalLedgerChartOfAccountReportType`
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountReportType`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -925,7 +925,7 @@ class generalLedgerChartOfAccountReportTypeClass extends ConfigClass {
 				WHERE 	`generalLedgerChartOfAccountReportTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountReportType(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalLedgerChartOfAccountReportType]
+				UPDATE 	[".$this->q->getFinancialDatabase()."].[generalLedgerChartOfAccountReportType]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1013,11 +1013,11 @@ class generalLedgerChartOfAccountReportTypeClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "

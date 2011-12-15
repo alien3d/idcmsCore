@@ -477,7 +477,7 @@ Ext.onReady(function() {
     // start additional Proxy ,Reader,Store,Filter,Grid
     // start chart of account request
     var generalLedgerChartOfAccountProxy = new Ext.data.HttpProxy({
-        url: '../controller/generalLedgerChartOfAccountController.php',
+        url: '../controller/lateInterestController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
