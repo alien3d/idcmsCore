@@ -23,7 +23,7 @@ class InvoiceLedgerModel extends ValidationClass {
 	/**
 	 * @var int
 	 */
-	private $adjustmentLedgerTypeId;
+	private $invoiceId;
 	/**
 	 * @var int
 	 */
@@ -37,36 +37,36 @@ class InvoiceLedgerModel extends ValidationClass {
 	 */
 	private $invoiceTypeId;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $documentNo;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $referenceNo;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $invoiceLedgerTitle;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $invoiceLedgerDesc;
 	/**
-	* @var date
-	*/
+	 * @var date
+	 */
 	private $invoiceLedgerDate;
 	/**
-	* @var date
-	*/
+	 * @var date
+	 */
 	private $invoiceLedgerStartDate;
 	/**
-	* @var date
-	*/
+	 * @var date
+	 */
 	private $invoiceLedgerEndDate;
 	/**
-	* @var float
-	*/
+	 * @var float
+	 */
 	private $invoiceLedgerAmount;
 
 	/* (non-PHPdoc)
@@ -87,9 +87,17 @@ class InvoiceLedgerModel extends ValidationClass {
 		 */
 		if (isset($_POST ['invoiceLedgerId'])) {
 			$this->setInvoiceLedgerId($this->strict($_POST ['invoiceLedgerId'], 'numeric'), 0, 'single');
+		}if (isset($_POST ['businessPartnerId'])) {
+			$this->setBusinessPartnerId($this->strict($_POST ['businessPartnerId'], 'numeric'));
+		}
+		if (isset($_POST ['invoiceCategoryId'])) {
+			$this->setInvoiceCategoryId($this->strict($_POST ['invoiceCategoryId'], 'numeric'));
 		}
 		if (isset($_POST ['invoiceLedgerTypeId'])) {
-			$this->setInvoiceLedgerTypeId($this->strict($_POST ['invoiceLedgerTypeId'], 'numeric'));
+			$this->setInvoiceTypeId($this->strict($_POST ['invoiceTypeId'], 'numeric'));
+		}
+		if (isset($_POST ['invoiceId'])) {
+			$this->setInvoiceLedgerId($this->strict($_POST ['invoiceId'], 'numeric'));
 		}
 		if (isset($_POST ['documentNo'])) {
 			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'string'));
@@ -115,7 +123,7 @@ class InvoiceLedgerModel extends ValidationClass {
 		if (isset($_POST ['invoiceLedgerAmount'])) {
 			$this->setInvoiceLedgerAmount($this->strict($_POST ['invoiceLedgerAmount'], 'float'));
 		}
-		
+
 		/**
 		 * All the $_GET enviroment.
 		 */
@@ -169,10 +177,10 @@ class InvoiceLedgerModel extends ValidationClass {
 			}
 		}
 		$primaryKeyAll = '';
-		
+
 		for ($i = 0; $i < $this->getTotal(); $i++) {
 			if (isset($_GET ['invoiceLedgerId'])) {
-				$this->setInvoiceLedgerId($this->strict($_GET ['invoiceLedgerId'] [$i], 'numeric'), $i, 'array');				
+				$this->setInvoiceLedgerId($this->strict($_GET ['invoiceLedgerId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -406,165 +414,237 @@ class InvoiceLedgerModel extends ValidationClass {
 
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getDocumentNo()
 	{
-	    return $this->documentNo;
+		return $this->documentNo;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $documentNo
 	 */
 	public function setDocumentNo($documentNo)
 	{
-	    $this->documentNo = $documentNo;
+		$this->documentNo = $documentNo;
 	}
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getReferenceNo()
 	{
-	    return $this->referenceNo;
+		return $this->referenceNo;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $referenceNo
 	 */
 	public function setReferenceNo($referenceNo)
 	{
-	    $this->referenceNo = $referenceNo;
+		$this->referenceNo = $referenceNo;
 	}
 
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getInvoiceLedgerTitle()
 	{
-	    return $this->invoiceLedgerTitle;
+		return $this->invoiceLedgerTitle;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $invoiceLedgerTitle
 	 */
 	public function setInvoiceLedgerTitle($invoiceLedgerTitle)
 	{
-	    $this->invoiceLedgerTitle = $invoiceLedgerTitle;
+		$this->invoiceLedgerTitle = $invoiceLedgerTitle;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getInvoiceLedgerDesc()
 	{
-	    return $this->invoiceLedgerDesc;
+		return $this->invoiceLedgerDesc;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $invoiceLedgerDesc
 	 */
 	public function setInvoiceLedgerDesc($invoiceLedgerDesc)
 	{
-	    $this->invoiceLedgerDesc = $invoiceLedgerDesc;
+		$this->invoiceLedgerDesc = $invoiceLedgerDesc;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getInvoiceLedgerDate()
 	{
-	    return $this->invoiceLedgerDate;
+		return $this->invoiceLedgerDate;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $invoiceLedgerDate
 	 */
 	public function setInvoiceLedgerDate($invoiceLedgerDate)
 	{
-	    $this->invoiceLedgerDate = $invoiceLedgerDate;
+		$this->invoiceLedgerDate = $invoiceLedgerDate;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getInvoiceLedgerStartDate()
 	{
-	    return $this->invoiceLedgerStartDate;
+		return $this->invoiceLedgerStartDate;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $invoiceLedgerStartDate
 	 */
 	public function setInvoiceLedgerStartDate($invoiceLedgerStartDate)
 	{
-	    $this->invoiceLedgerStartDate = $invoiceLedgerStartDate;
-	}
-	
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getInvoiceLedgerEndDate()
-	{
-	    return $this->invoiceLedgerEndDate;
+		$this->invoiceLedgerStartDate = $invoiceLedgerStartDate;
 	}
 
 	/**
-	 * 
+	 *
+	 * @return
+	 */
+	public function getInvoiceLedgerEndDate()
+	{
+		return $this->invoiceLedgerEndDate;
+	}
+
+	/**
+	 *
 	 * @param $invoiceLedgerDate
 	 */
 	public function setInvoiceLedgerEndDate($invoiceLedgerEndDate)
 	{
-	    $this->invoiceLedgerEndDate = $invoiceLedgerEndDate;
-	}
-	
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getInvoiceLedgerAmount()
-	{
-	    return $this->invoiceLedgerAmount;
+		$this->invoiceLedgerEndDate = $invoiceLedgerEndDate;
 	}
 
 	/**
-	 * 
+	 *
+	 * @return
+	 */
+	public function getInvoiceLedgerAmount()
+	{
+		return $this->invoiceLedgerAmount;
+	}
+
+	/**
+	 *
 	 * @param $invoiceLedgerAmount
 	 */
 	public function setInvoiceLedgerAmount($invoiceLedgerAmount)
 	{
-	    $this->invoiceLedgerAmount = $invoiceLedgerAmount;
-	}	
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getInvoiceLedgerTypeId()
-	{
-	    return $this->invoiceLedgerTypeId;
+		$this->invoiceLedgerAmount = $invoiceLedgerAmount;
 	}
 
 	/**
-	 * 
+	 *
+	 * @return
+	 */
+	public function getInvoiceLedgerTypeId()
+	{
+		return $this->invoiceLedgerTypeId;
+	}
+
+	/**
+	 *
 	 * @param $invoiceLedgerTypeId
 	 */
 	public function setInvoiceLedgerTypeId($invoiceLedgerTypeId)
 	{
-	    $this->invoiceLedgerTypeId = $invoiceLedgerTypeId;
+		$this->invoiceLedgerTypeId = $invoiceLedgerTypeId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceId()
+	{
+		return $this->invoiceId;
+	}
+
+	/**
+	 *
+	 * @param $invoiceId
+	 */
+	public function setInvoiceId($invoiceId)
+	{
+		$this->invoiceId = $invoiceId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getBusinessPartnerId()
+	{
+		return $this->businessPartnerId;
+	}
+
+	/**
+	 *
+	 * @param $businessPartnerId
+	 */
+	public function setBusinessPartnerId($businessPartnerId)
+	{
+		$this->businessPartnerId = $businessPartnerId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceCategoryId()
+	{
+		return $this->invoiceCategoryId;
+	}
+
+	/**
+	 *
+	 * @param $invoiceCategoryId
+	 */
+	public function setInvoiceCategoryId($invoiceCategoryId)
+	{
+		$this->invoiceCategoryId = $invoiceCategoryId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceTypeId()
+	{
+		return $this->invoiceTypeId;
+	}
+
+	/**
+	 *
+	 * @param $invoiceTypeId
+	 */
+	public function setInvoiceTypeId($invoiceTypeId)
+	{
+		$this->invoiceTypeId = $invoiceTypeId;
 	}
 }
 

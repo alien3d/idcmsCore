@@ -3,7 +3,7 @@
 require_once ("../../class/classValidation.php");
 
 /**
- *A voucher is a bond which is worth a certain monetary value and which may be spent only for specific reasons or on specific goods. Examples include (but are not limited to) housing, travel, and food vouchers. The term voucher is also a synonym for receipt and is often used to refer to receipts used as evidence of, for example, the declaration that a service has been performed or that an expenditure has been made. *
+ * A voucher is a bond which is worth a certain monetary value and which may be spent only for specific reasons or on specific goods. Examples include (but are not limited to) housing, travel, and food vouchers. The term voucher is also a synonym for receipt and is often used to refer to receipts used as evidence of, for example, the declaration that a service has been performed or that an expenditure has been made. *
  * @name IDCMS.
  * @version 2
  * @author hafizan

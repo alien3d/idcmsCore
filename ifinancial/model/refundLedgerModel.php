@@ -4,7 +4,6 @@ require_once ("../../class/classValidation.php");
 
 /**
  * The general journal is where double entry bookkeeping entries are recorded by debiting one or more accounts and crediting another one or more accounts with the same total amount. The total amount debited and the total amount credited should always be equal, thereby ensuring the accounting equation is maintained.Depending on the business's accounting information system, specialized journals may be used in conjunction with the general journal for record-keeping. In such case, use of the general journal may be limited to non-routine and adjusting entries.
- *
  * @name IDCMS.
  * @version 2
  * @author hafizan
@@ -41,28 +40,28 @@ class RefundLedgerModel extends ValidationClass {
 	 */
 	private $invoiceId;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $documentNo;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $referenceNo;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $refundLedgerTitle;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $refundLedgerDesc;
 	/**
-	* @var date
-	*/
+	 * @var date
+	 */
 	private $refundLedgerDate;
 	/**
-	* @var float
-	*/
+	 * @var float
+	 */
 	private $refundLedgerAmount;
 
 	/* (non-PHPdoc)
@@ -86,6 +85,18 @@ class RefundLedgerModel extends ValidationClass {
 		}
 		if (isset($_POST ['refundLedgerTypeId'])) {
 			$this->setRefundLedgerTypeId($this->strict($_POST ['refundLedgerTypeId'], 'numeric'));
+		}
+		if (isset($_POST ['businessPartnerId'])) {
+			$this->setBusinessPartnerId($this->strict($_POST ['businessPartnerId'], 'numeric'));
+		}
+		if (isset($_POST ['invoiceCategoryId'])) {
+			$this->setInvoiceCategoryId($this->strict($_POST ['invoiceCategoryId'], 'numeric'));
+		}
+		if (isset($_POST ['invoiceTypeId'])) {
+			$this->setInvoiceTypeId($this->strict($_POST ['invoiceTypeId'], 'numeric'));
+		}
+		if (isset($_POST ['invoiceId'])) {
+			$this->setInvoiceId($this->strict($_POST ['invoiceId'], 'numeric'));
 		}
 		if (isset($_POST ['documentNo'])) {
 			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'string'));
@@ -111,7 +122,7 @@ class RefundLedgerModel extends ValidationClass {
 		if (isset($_POST ['refundLedgerAmount'])) {
 			$this->setRefundLedgerAmount($this->strict($_POST ['refundLedgerAmount'], 'float'));
 		}
-		
+
 		/**
 		 * All the $_GET enviroment.
 		 */
@@ -165,10 +176,10 @@ class RefundLedgerModel extends ValidationClass {
 			}
 		}
 		$primaryKeyAll = '';
-		
+
 		for ($i = 0; $i < $this->getTotal(); $i++) {
 			if (isset($_GET ['refundLedgerId'])) {
-				$this->setRefundLedgerId($this->strict($_GET ['refundLedgerId'] [$i], 'numeric'), $i, 'array');				
+				$this->setRefundLedgerId($this->strict($_GET ['refundLedgerId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -402,165 +413,201 @@ class RefundLedgerModel extends ValidationClass {
 
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getDocumentNo()
 	{
-	    return $this->documentNo;
+		return $this->documentNo;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $documentNo
 	 */
 	public function setDocumentNo($documentNo)
 	{
-	    $this->documentNo = $documentNo;
+		$this->documentNo = $documentNo;
 	}
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getReferenceNo()
 	{
-	    return $this->referenceNo;
+		return $this->referenceNo;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $referenceNo
 	 */
 	public function setReferenceNo($referenceNo)
 	{
-	    $this->referenceNo = $referenceNo;
+		$this->referenceNo = $referenceNo;
 	}
 
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getRefundLedgerTitle()
 	{
-	    return $this->refundLedgerTitle;
+		return $this->refundLedgerTitle;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $refundLedgerTitle
 	 */
 	public function setRefundLedgerTitle($refundLedgerTitle)
 	{
-	    $this->refundLedgerTitle = $refundLedgerTitle;
+		$this->refundLedgerTitle = $refundLedgerTitle;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getRefundLedgerDesc()
 	{
-	    return $this->refundLedgerDesc;
+		return $this->refundLedgerDesc;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $refundLedgerDesc
 	 */
 	public function setRefundLedgerDesc($refundLedgerDesc)
 	{
-	    $this->refundLedgerDesc = $refundLedgerDesc;
+		$this->refundLedgerDesc = $refundLedgerDesc;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getRefundLedgerDate()
 	{
-	    return $this->refundLedgerDate;
+		return $this->refundLedgerDate;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $refundLedgerDate
 	 */
 	public function setRefundLedgerDate($refundLedgerDate)
 	{
-	    $this->refundLedgerDate = $refundLedgerDate;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getRefundLedgerStartDate()
-	{
-	    return $this->refundLedgerStartDate;
-	}
-
-	/**
-	 * 
-	 * @param $refundLedgerStartDate
-	 */
-	public function setRefundLedgerStartDate($refundLedgerStartDate)
-	{
-	    $this->refundLedgerStartDate = $refundLedgerStartDate;
+		$this->refundLedgerDate = $refundLedgerDate;
 	}
 	
 	/**
-	 * 
-	 * @return 
-	 */
-	public function getRefundLedgerEndDate()
-	{
-	    return $this->refundLedgerEndDate;
-	}
-
-	/**
-	 * 
-	 * @param $refundLedgerDate
-	 */
-	public function setRefundLedgerEndDate($refundLedgerEndDate)
-	{
-	    $this->refundLedgerEndDate = $refundLedgerEndDate;
-	}
-	
-	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getRefundLedgerAmount()
 	{
-	    return $this->refundLedgerAmount;
+		return $this->refundLedgerAmount;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $refundLedgerAmount
 	 */
 	public function setRefundLedgerAmount($refundLedgerAmount)
 	{
-	    $this->refundLedgerAmount = $refundLedgerAmount;
-	}	
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getRefundLedgerTypeId()
-	{
-	    return $this->refundLedgerTypeId;
+		$this->refundLedgerAmount = $refundLedgerAmount;
 	}
 
 	/**
-	 * 
+	 *
+	 * @return
+	 */
+	public function getRefundLedgerTypeId()
+	{
+		return $this->refundLedgerTypeId;
+	}
+
+	/**
+	 *
 	 * @param $refundLedgerTypeId
 	 */
 	public function setRefundLedgerTypeId($refundLedgerTypeId)
 	{
-	    $this->refundLedgerTypeId = $refundLedgerTypeId;
+		$this->refundLedgerTypeId = $refundLedgerTypeId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getBusinessPartnerId()
+	{
+		return $this->businessPartnerId;
+	}
+
+	/**
+	 *
+	 * @param $businessPartnerId
+	 */
+	public function setBusinessPartnerId($businessPartnerId)
+	{
+		$this->businessPartnerId = $businessPartnerId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceCategoryId()
+	{
+		return $this->invoiceCategoryId;
+	}
+
+	/**
+	 *
+	 * @param $invoiceCategoryId
+	 */
+	public function setInvoiceCategoryId($invoiceCategoryId)
+	{
+		$this->invoiceCategoryId = $invoiceCategoryId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceTypeId()
+	{
+		return $this->invoiceTypeId;
+	}
+
+	/**
+	 *
+	 * @param $invoiceTypeId
+	 */
+	public function setInvoiceTypeId($invoiceTypeId)
+	{
+		$this->invoiceTypeId = $invoiceTypeId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceId()
+	{
+		return $this->invoiceId;
+	}
+
+	/**
+	 *
+	 * @param $invoiceId
+	 */
+	public function setInvoiceId($invoiceId)
+	{
+		$this->invoiceId = $invoiceId;
 	}
 }
 

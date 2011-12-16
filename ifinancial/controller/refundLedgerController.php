@@ -157,8 +157,6 @@ class RefundLedgerClass extends ConfigClass {
 						`refundLedgerTitle`,    
 						`refundLedgerDesc`, 
 						`refundLedgerDate`,
-						`refundLedgerStartDate`,    
-						`refundLedgerEndDate`,  
 						`refundLedgerAmount`,   
 						`isDefault`,    
 						`isNew`,   
@@ -973,8 +971,6 @@ class RefundLedgerClass extends ConfigClass {
 							 `refundLedgerTitle` = '".$this->model->getRefundLedgerTitle()."',
 							 `refundLedgerDesc` = '".$this->model->getRefundLedgerDesc()."',
 							 `refundLedgerDate` = '".$this->model->getRefundLedgerDate()."',
-							 `refundLedgerStartDate` = '".$this->model->getRefundLedgerStartDate()."',
-							 `refundLedgerEndDate` = '".$this->model->getRefundLedgerEndDate()."',
 							 `refundLedgerAmount` = '".$this->model->getRefundLedgerAmount()."',
  							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -995,8 +991,6 @@ class RefundLedgerClass extends ConfigClass {
 							[refundLedgerTitle] = '".$this->model->getRefundLedgerTitle()."',
 							[refundLedgerDesc] = '".$this->model->getRefundLedgerDesc()."',
 							[refundLedgerDate] = '".$this->model->getRefundLedgerDate()."',
-							[refundLedgerStartDate] = '".$this->model->getRefundLedgerStartDate()."',
-							[refundLedgerEndDate] = '".$this->model->getRefundLedgerEndDate()."',
 							[refundLedgerAmount] = '".$this->model->getRefundLedgerAmount()."',	
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -1114,7 +1108,7 @@ class RefundLedgerClass extends ConfigClass {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
-			WHERE  	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getRefundLedgerId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getRefundLedgerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "

@@ -197,6 +197,8 @@ class VoucherLedgerClass extends ConfigClass {
 			$sql = "
 			INSERT INTO [".$this->q->getFinancialDatabase()."].[voucherLedger]
 					(
+						[voucherTypeId],
+						[businessPartnerId],
 						[documentNo],												
 						[voucherLedgerTitle],
 						[voucherLedgerDesc],
@@ -243,6 +245,8 @@ class VoucherLedgerClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	VOUCHERLEDGER
 					(
+						VOUCHERTYPEID,
+						BUSINESSPARTNERID,
 						DOCUMENTNO,												
 						VOUCHERLEDGERTITLE,
 						VOUCHERLEDGERDESC,
@@ -288,6 +292,8 @@ class VoucherLedgerClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	VOUCHERLEDGER
 					(
+						VOUCHERTYPEID,
+						BUSINESSPARTNERID,
 						DOCUMENTNO,												
 						VOUCHERLEDGERTITLE,
 						VOUCHERLEDGERDESC,
@@ -333,6 +339,8 @@ class VoucherLedgerClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	VOUCHERLEDGER
 					(
+						VOUCHERTYPEID,
+						BUSINESSPARTNERID,
 						DOCUMENTNO,												
 						VOUCHERLEDGERTITLE,
 						VOUCHERLEDGERDESC,
@@ -370,6 +378,7 @@ class VoucherLedgerClass extends ConfigClass {
 						'" . $this->model->getIsApproved(0, 'single') . "',
 						'" . $this->model->getIsReview(0, 'single') . "',			
 						'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getIsReconciled(0, 'single') . "',
 						'" . $this->model->getExecuteBy() . "',						
 						" . $this->model->getExecuteTime() . "
 					)";
@@ -541,6 +550,7 @@ class VoucherLedgerClass extends ConfigClass {
 					VOUCHERLEDGER.ISAPPROVED   			AS	\"isApproved\",
 					VOUCHERLEDGER.ISREVIEW	  			AS	\"isReview\",
 					VOUCHERLEDGER.ISPOST  	  			AS	\"isPost\",
+					VOUCHERLEDGER.ISRECONCILED  	  	AS	\"isReconciled\",
 					VOUCHERLEDGER.EXECUTEBY    			AS	\"executeBy\",
 					VOUCHERLEDGER.EXECUTETIME  			AS	\"executeTime\",
 					STAFF.STAFFNAME		  				AS	\"staffName\"	
@@ -702,8 +712,6 @@ class VoucherLedgerClass extends ConfigClass {
 											[voucherLedger].[voucherLedgerTitle],
 											[voucherLedger].[voucherLedgerDesc],
 											[voucherLedger].[voucherLedgerDate],
-											[voucherLedger].[voucherLedgerStartDate],
-											[voucherLedger].[voucherLedgerEndDate],
 											[voucherLedger].[voucherLedgerAmount],
 											[voucherLedger].[isDefault],
 											[voucherLedger].[isNew],
@@ -756,6 +764,7 @@ class VoucherLedgerClass extends ConfigClass {
 										VOUCHERLEDGER.ISAPPROVED   			AS	\"isApproved\",
 										VOUCHERLEDGER.ISREVIEW	  			AS	\"isReview\",
 										VOUCHERLEDGER.ISPOST  	  			AS	\"isPost\",
+										VOUCHERLEDGER.ISRECONCILED  	  	AS	\"isReconciled\",
 										VOUCHERLEDGER.EXECUTEBY    			AS	\"executeBy\",
 										VOUCHERLEDGER.EXECUTETIME  			AS	\"executeTime\",
 										STAFF.STAFFNAME		  				AS	\"staffName\"	
@@ -901,7 +910,7 @@ class VoucherLedgerClass extends ConfigClass {
 				$sql = "
 				UPDATE	`".$this->q->getFinancialDatabase()."`.`voucherLedger`
 				SET 	`voucherTypeId` 		= 	'".$this->model->getVoucherTypeId()."',
-						`businessPartnerId` 	= 	'".$this->model->getVoucherTypeId()."',
+						`businessPartnerId` 	= 	'".$this->model->getBusinessPartnerId()."',
 						`referenceNo` 			= 	'".$this->model->getReferenceNo()."',
 						`voucherLedgerTitle` 	= 	'".$this->model->getVoucherLedgerTitle()."',
 						`voucherLedgerDesc` 	= 	'".$this->model->getVoucherLedgerDesc()."',
@@ -924,7 +933,7 @@ class VoucherLedgerClass extends ConfigClass {
 				$sql = "
 				UPDATE 		[".$this->q->getFinancialDatabase()."].[voucherLedger]
 				SET 		[voucherTypeId] 		=	'".$this->model->getVoucherTypeId()."',
-							[businessPartnerId] 	= 	'".$this->model->getVoucherTypeId()."',
+							[businessPartnerId] 	= 	'".$this->model->getBusinessPartnerId()."',
 							[referenceNo] 			= 	'".$this->model->getReferenceNo()."',
 							[voucherLedgerTitle] 	= 	'".$this->model->getVoucherLedgerTitle()."',
 							[voucherLedgerDesc] 	= 	'".$this->model->getVoucherLedgerDesc()."',
@@ -945,70 +954,73 @@ class VoucherLedgerClass extends ConfigClass {
 				WHERE 		[voucherLedgerId]		=	'" . $this->model->getVoucherLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE		VOUCHERLEDGER
-				SET 		BUSINESSPARTNERID 	= 	'".$THIS->MODEL->GETVOUCHERTYPEID()."',
-							REFERENCENO 		= 	'".$THIS->MODEL->GETREFERENCENO()."',
-							VOUCHERLEDGERTITLE	=	'" . $this->model->getVoucherLedgerTitle() . "',
-							VOUCHERLEDGERDESC	=	'" . $this->model->getVoucherLedgerDesc() . "',
-							VOUCHERLEDGERDATE	=	'" . $this->model->getVoucherLedgerDate() . "',
-							VOUCHERLEDGERAMOUNT	=	'" . $this->model->getVoucherLedgerAmount() . "',									
-							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							ISRECONCILED		=	'" . $THIS->MODEL->GETISPOST(0, 'SINGLE') . "',
-							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		VOUCHERLEDGERID		=	'" . $this->model->getVoucherLedgerId(0, 'single') . "'";
+				UPDATE 		[".$this->q->getFinancialDatabase()."].[voucherLedger]
+				SET 		[voucherTypeId] 		=	'".$this->model->getVoucherTypeId()."',
+							[businessPartnerId] 	= 	'".$this->model->getBusinessPartnerId()."',
+							[referenceNo] 			= 	'".$this->model->getReferenceNo()."',
+							[voucherLedgerTitle] 	= 	'".$this->model->getVoucherLedgerTitle()."',
+							[voucherLedgerDesc] 	= 	'".$this->model->getVoucherLedgerDesc()."',
+							[voucherLedgerDate] 	= 	'".$this->model->getVoucherLedgerDate()."',
+							[voucherLedgerAmount] 	= 	'".$this->model->getVoucherLedgerAmount()."',	
+							[isDefault]				=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[isNew]					=	'" . $this->model->getIsNew(0, 'single') . "',
+							[isDraft]				=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[isUpdate]				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[isDelete]				=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[isActive]				=	'" . $this->model->getIsActive(0, 'single') . "',
+							[isApproved]			=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[isReview]				=	'" . $this->model->getIsReview(0, 'single') . "',
+							[isPost]				=	'" . $this->model->getIsPost(0, 'single') . "',
+							[isReconciled]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							[executeBy]				=	'" . $this->model->getExecuteBy() . "',
+							[executeTime]			=	" . $this->model->getExecuteTime() . "
+				WHERE 		[voucherLedgerId]		=	'" . $this->model->getVoucherLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE		VOUCHERLEDGER
-				SET 		BUSINESSPARTNERID 	= 	'".$THIS->MODEL->GETVOUCHERTYPEID()."',
-							REFERENCENO 		= 	'".$THIS->MODEL->GETREFERENCENO()."',
-							VOUCHERLEDGERTITLE	=	'" . $this->model->getVoucherLedgerTitle() . "',
-							VOUCHERLEDGERDESC	=	'" . $this->model->getVoucherLedgerDesc() . "',
-							VOUCHERLEDGERDATE	=	'" . $this->model->getVoucherLedgerDate() . "',
-							VOUCHERLEDGERAMOUNT	=	'" . $this->model->getVoucherLedgerAmount() . "',									
-							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							ISRECONCILED		=	'" . $THIS->MODEL->GETISPOST(0, 'SINGLE') . "',
-							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		VOUCHERLEDGERID		=	'" . $this->model->getVoucherLedgerId(0, 'single') . "'";
+				UPDATE 		[".$this->q->getFinancialDatabase()."].[voucherLedger]
+				SET 		[voucherTypeId] 		=	'".$this->model->getVoucherTypeId()."',
+							[businessPartnerId] 	= 	'".$this->model->getBusinessPartnerId()."',
+							[referenceNo] 			= 	'".$this->model->getReferenceNo()."',
+							[voucherLedgerTitle] 	= 	'".$this->model->getVoucherLedgerTitle()."',
+							[voucherLedgerDesc] 	= 	'".$this->model->getVoucherLedgerDesc()."',
+							[voucherLedgerDate] 	= 	'".$this->model->getVoucherLedgerDate()."',
+							[voucherLedgerAmount] 	= 	'".$this->model->getVoucherLedgerAmount()."',	
+							[isDefault]				=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[isNew]					=	'" . $this->model->getIsNew(0, 'single') . "',
+							[isDraft]				=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[isUpdate]				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[isDelete]				=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[isActive]				=	'" . $this->model->getIsActive(0, 'single') . "',
+							[isApproved]			=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[isReview]				=	'" . $this->model->getIsReview(0, 'single') . "',
+							[isPost]				=	'" . $this->model->getIsPost(0, 'single') . "',
+							[isReconciled]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							[executeBy]				=	'" . $this->model->getExecuteBy() . "',
+							[executeTime]			=	" . $this->model->getExecuteTime() . "
+				WHERE 		[voucherLedgerId]		=	'" . $this->model->getVoucherLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE		VOUCHERLEDGER
-				SET 		BUSINESSPARTNERID 	= 	'".$THIS->MODEL->GETVOUCHERTYPEID()."',
-							REFERENCENO 		= 	'".$THIS->MODEL->GETREFERENCENO()."',
-							VOUCHERLEDGERTITLE	=	'" . $this->model->getVoucherLedgerTitle() . "',
-							VOUCHERLEDGERDESC	=	'" . $this->model->getVoucherLedgerDesc() . "',
-							VOUCHERLEDGERDATE	=	'" . $this->model->getVoucherLedgerDate() . "',
-							VOUCHERLEDGERAMOUNT	=	'" . $this->model->getVoucherLedgerAmount() . "',									
-							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							ISRECONCILED		=	'" . $THIS->MODEL->GETISPOST(0, 'SINGLE') . "',
-							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		VOUCHERLEDGERID		=	'" . $this->model->getVoucherLedgerId(0, 'single') . "'";
+				UPDATE 		[".$this->q->getFinancialDatabase()."].[voucherLedger]
+				SET 		[voucherTypeId] 		=	'".$this->model->getVoucherTypeId()."',
+							[businessPartnerId] 	= 	'".$this->model->getBusinessPartnerId()."',
+							[referenceNo] 			= 	'".$this->model->getReferenceNo()."',
+							[voucherLedgerTitle] 	= 	'".$this->model->getVoucherLedgerTitle()."',
+							[voucherLedgerDesc] 	= 	'".$this->model->getVoucherLedgerDesc()."',
+							[voucherLedgerDate] 	= 	'".$this->model->getVoucherLedgerDate()."',
+							[voucherLedgerAmount] 	= 	'".$this->model->getVoucherLedgerAmount()."',	
+							[isDefault]				=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[isNew]					=	'" . $this->model->getIsNew(0, 'single') . "',
+							[isDraft]				=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[isUpdate]				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[isDelete]				=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[isActive]				=	'" . $this->model->getIsActive(0, 'single') . "',
+							[isApproved]			=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[isReview]				=	'" . $this->model->getIsReview(0, 'single') . "',
+							[isPost]				=	'" . $this->model->getIsPost(0, 'single') . "',
+							[isReconciled]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							[executeBy]				=	'" . $this->model->getExecuteBy() . "',
+							[executeTime]			=	" . $this->model->getExecuteTime() . "
+				WHERE 		[voucherLedgerId]		=	'" . $this->model->getVoucherLedgerId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();

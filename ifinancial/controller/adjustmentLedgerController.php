@@ -975,7 +975,7 @@ class AdjustmentLedgerClass extends ConfigClass {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
-			WHERE  	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getAdjustmentLedgerId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getAdjustmentLedgerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "

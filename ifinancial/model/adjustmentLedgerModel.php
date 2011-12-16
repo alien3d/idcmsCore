@@ -4,7 +4,6 @@ require_once ("../../class/classValidation.php");
 
 /**
  * The general journal is where double entry bookkeeping entries are recorded by debiting one or more accounts and crediting another one or more accounts with the same total amount. The total amount debited and the total amount credited should always be equal, thereby ensuring the accounting equation is maintained.Depending on the business's accounting information system, specialized journals may be used in conjunction with the general journal for record-keeping. In such case, use of the general journal may be limited to non-routine and adjusting entries.
- *
  * @name IDCMS.
  * @version 2
  * @author hafizan
@@ -23,7 +22,7 @@ class AdjustmentLedgerModel extends ValidationClass {
 	/**
 	 * @var int
 	 */
-	private $adjustmentLedgerTypeId;
+	private $adjustmentTypeId;
 	/**
 	 * @var int
 	 */
@@ -80,8 +79,11 @@ class AdjustmentLedgerModel extends ValidationClass {
 		if (isset($_POST ['adjustmentLedgerId'])) {
 			$this->setAdjustmentLedgerId($this->strict($_POST ['adjustmentLedgerId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['adjustmentLedgerTypeId'])) {
-			$this->setAdjustmentLedgerTypeId($this->strict($_POST ['adjustmentLedgerTypeId'], 'numeric'));
+		if (isset($_POST ['adjustmentTypeId'])) {
+			$this->setAdjustmentTypeId($this->strict($_POST ['adjustmentTypeId'], 'numeric'));
+		}
+		if (isset($_POST ['businessPartnerId'])) {
+			$this->setBusinessPartnerId($this->strict($_POST ['businessPartnerId'], 'numeric'));
 		}
 		if (isset($_POST ['invoiceCategoryId'])) {
 			$this->setInvoiceCategoryId($this->strict($_POST ['invoiceCategoryId'], 'numeric'));
@@ -106,12 +108,6 @@ class AdjustmentLedgerModel extends ValidationClass {
 		}
 		if (isset($_POST ['adjustmentLedgerDate'])) {
 			$this->setAdjustmentLedgerDate($this->strict($_POST ['adjustmentLedgerDate'], 'date'));
-		}
-		if (isset($_POST ['adjustmentLedgerStartDate'])) {
-			$this->setAdjustmentLedgerStartDate($this->strict($_POST ['adjustmentLedgerStartDate'], 'date'));
-		}
-		if (isset($_POST ['adjustmentLedgerEndDate'])) {
-			$this->setAdjustmentLedgerEndDate($this->strict($_POST ['adjustmentLedgerEndDate'], 'date'));
 		}
 		if (isset($_POST ['adjustmentLedgerAmount'])) {
 			$this->setAdjustmentLedgerAmount($this->strict($_POST ['adjustmentLedgerAmount'], 'float'));
@@ -495,42 +491,6 @@ class AdjustmentLedgerModel extends ValidationClass {
 	{
 	    $this->adjustmentLedgerDate = $adjustmentLedgerDate;
 	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getAdjustmentLedgerStartDate()
-	{
-	    return $this->adjustmentLedgerStartDate;
-	}
-
-	/**
-	 * 
-	 * @param $adjustmentLedgerStartDate
-	 */
-	public function setAdjustmentLedgerStartDate($adjustmentLedgerStartDate)
-	{
-	    $this->adjustmentLedgerStartDate = $adjustmentLedgerStartDate;
-	}
-	
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getAdjustmentLedgerEndDate()
-	{
-	    return $this->adjustmentLedgerEndDate;
-	}
-
-	/**
-	 * 
-	 * @param $adjustmentLedgerDate
-	 */
-	public function setAdjustmentLedgerEndDate($adjustmentLedgerEndDate)
-	{
-	    $this->adjustmentLedgerEndDate = $adjustmentLedgerEndDate;
-	}
 	
 	/**
 	 * 
@@ -554,18 +514,90 @@ class AdjustmentLedgerModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getAdjustmentLedgerTypeId()
+	public function getAdjustmentTypeId()
 	{
-	    return $this->adjustmentLedgerTypeId;
+	    return $this->adjustmentTypeId;
 	}
 
 	/**
 	 * 
-	 * @param $adjustmentLedgerTypeId
+	 * @param $adjustmentTypeId
 	 */
-	public function setAdjustmentLedgerTypeId($adjustmentLedgerTypeId)
+	public function setAdjustmentTypeId($adjustmentTypeId)
 	{
-	    $this->adjustmentLedgerTypeId = $adjustmentLedgerTypeId;
+	    $this->adjustmentTypeId = $adjustmentTypeId;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getBusinessPartnerId()
+	{
+	    return $this->businessPartnerId;
+	}
+
+	/**
+	 * 
+	 * @param $businessPartnerId
+	 */
+	public function setBusinessPartnerId($businessPartnerId)
+	{
+	    $this->businessPartnerId = $businessPartnerId;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getInvoiceCategoryId()
+	{
+	    return $this->invoiceCategoryId;
+	}
+
+	/**
+	 * 
+	 * @param $invoiceCategoryId
+	 */
+	public function setInvoiceCategoryId($invoiceCategoryId)
+	{
+	    $this->invoiceCategoryId = $invoiceCategoryId;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getInvoiceTypeId()
+	{
+	    return $this->invoiceTypeId;
+	}
+
+	/**
+	 * 
+	 * @param $invoiceTypeId
+	 */
+	public function setInvoiceTypeId($invoiceTypeId)
+	{
+	    $this->invoiceTypeId = $invoiceTypeId;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getInvoiceId()
+	{
+	    return $this->invoiceId;
+	}
+
+	/**
+	 * 
+	 * @param $invoiceId
+	 */
+	public function setInvoiceId($invoiceId)
+	{
+	    $this->invoiceId = $invoiceId;
 	}
 }
 

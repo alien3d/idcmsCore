@@ -4,7 +4,6 @@ require_once ("../../class/classValidation.php");
 
 /**
  * The general journal is where double entry bookkeeping entries are recorded by debiting one or more accounts and crediting another one or more accounts with the same total amount. The total amount debited and the total amount credited should always be equal, thereby ensuring the accounting equation is maintained.Depending on the business's accounting information system, specialized journals may be used in conjunction with the general journal for record-keeping. In such case, use of the general journal may be limited to non-routine and adjusting entries.
- *
  * @name IDCMS.
  * @version 2
  * @author hafizan
@@ -23,38 +22,34 @@ class DepositLedgerModel extends ValidationClass {
 	/**
 	 * @var int
 	 */
-	private $depositLedgerTypeId;
+	private $depositTypeId;
 	/**
-	* @var string
-	*/
+	 * @var int
+	 */
+	private $businessPartnerId;
+	/**
+	 * @var string
+	 */
 	private $documentNo;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $referenceNo;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $depositLedgerTitle;
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $depositLedgerDesc;
 	/**
-	* @var date
-	*/
+	 * @var date
+	 */
 	private $depositLedgerDate;
 	/**
-	* @var date
-	*/
-	private $depositLedgerStartDate;
-	/**
-	* @var date
-	*/
-	private $depositLedgerEndDate;
-	/**
-	* @var float
-	*/
+	 * @var float
+	 */
 	private $depositLedgerAmount;
 
 	/* (non-PHPdoc)
@@ -76,8 +71,11 @@ class DepositLedgerModel extends ValidationClass {
 		if (isset($_POST ['depositLedgerId'])) {
 			$this->setDepositLedgerId($this->strict($_POST ['depositLedgerId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['depositLedgerTypeId'])) {
-			$this->setDepositLedgerTypeId($this->strict($_POST ['depositLedgerTypeId'], 'numeric'));
+		if (isset($_POST ['depositTypeId'])) {
+			$this->setDepositTypeId($this->strict($_POST ['depositTypeId'], 'numeric'));
+		}
+		if (isset($_POST ['businessPartnerId'])) {
+			$this->setBusinessPartnerId($this->strict($_POST ['businessPartnerId'], 'numeric'));
 		}
 		if (isset($_POST ['documentNo'])) {
 			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'string'));
@@ -103,7 +101,7 @@ class DepositLedgerModel extends ValidationClass {
 		if (isset($_POST ['depositLedgerAmount'])) {
 			$this->setDepositLedgerAmount($this->strict($_POST ['depositLedgerAmount'], 'float'));
 		}
-		
+
 		/**
 		 * All the $_GET enviroment.
 		 */
@@ -157,10 +155,10 @@ class DepositLedgerModel extends ValidationClass {
 			}
 		}
 		$primaryKeyAll = '';
-		
+
 		for ($i = 0; $i < $this->getTotal(); $i++) {
 			if (isset($_GET ['depositLedgerId'])) {
-				$this->setDepositLedgerId($this->strict($_GET ['depositLedgerId'] [$i], 'numeric'), $i, 'array');				
+				$this->setDepositLedgerId($this->strict($_GET ['depositLedgerId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -394,165 +392,147 @@ class DepositLedgerModel extends ValidationClass {
 
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getDocumentNo()
 	{
-	    return $this->documentNo;
+		return $this->documentNo;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $documentNo
 	 */
 	public function setDocumentNo($documentNo)
 	{
-	    $this->documentNo = $documentNo;
+		$this->documentNo = $documentNo;
 	}
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getReferenceNo()
 	{
-	    return $this->referenceNo;
+		return $this->referenceNo;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $referenceNo
 	 */
 	public function setReferenceNo($referenceNo)
 	{
-	    $this->referenceNo = $referenceNo;
+		$this->referenceNo = $referenceNo;
 	}
 
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getDepositLedgerTitle()
 	{
-	    return $this->depositLedgerTitle;
+		return $this->depositLedgerTitle;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $depositLedgerTitle
 	 */
 	public function setDepositLedgerTitle($depositLedgerTitle)
 	{
-	    $this->depositLedgerTitle = $depositLedgerTitle;
+		$this->depositLedgerTitle = $depositLedgerTitle;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getDepositLedgerDesc()
 	{
-	    return $this->depositLedgerDesc;
+		return $this->depositLedgerDesc;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $depositLedgerDesc
 	 */
 	public function setDepositLedgerDesc($depositLedgerDesc)
 	{
-	    $this->depositLedgerDesc = $depositLedgerDesc;
+		$this->depositLedgerDesc = $depositLedgerDesc;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getDepositLedgerDate()
 	{
-	    return $this->depositLedgerDate;
+		return $this->depositLedgerDate;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $depositLedgerDate
 	 */
 	public function setDepositLedgerDate($depositLedgerDate)
 	{
-	    $this->depositLedgerDate = $depositLedgerDate;
+		$this->depositLedgerDate = $depositLedgerDate;
 	}
-
 	/**
-	 * 
-	 * @return 
-	 */
-	public function getDepositLedgerStartDate()
-	{
-	    return $this->depositLedgerStartDate;
-	}
-
-	/**
-	 * 
-	 * @param $depositLedgerStartDate
-	 */
-	public function setDepositLedgerStartDate($depositLedgerStartDate)
-	{
-	    $this->depositLedgerStartDate = $depositLedgerStartDate;
-	}
-	
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getDepositLedgerEndDate()
-	{
-	    return $this->depositLedgerEndDate;
-	}
-
-	/**
-	 * 
+	 *
 	 * @param $depositLedgerDate
 	 */
 	public function setDepositLedgerEndDate($depositLedgerEndDate)
 	{
-	    $this->depositLedgerEndDate = $depositLedgerEndDate;
-	}
-	
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getDepositLedgerAmount()
-	{
-	    return $this->depositLedgerAmount;
+		$this->depositLedgerEndDate = $depositLedgerEndDate;
 	}
 
 	/**
-	 * 
+	 *
+	 * @return
+	 */
+	public function getDepositLedgerAmount()
+	{
+		return $this->depositLedgerAmount;
+	}
+
+	/**
+	 *
 	 * @param $depositLedgerAmount
 	 */
 	public function setDepositLedgerAmount($depositLedgerAmount)
 	{
-	    $this->depositLedgerAmount = $depositLedgerAmount;
-	}	
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getDepositLedgerTypeId()
-	{
-	    return $this->depositLedgerTypeId;
+		$this->depositLedgerAmount = $depositLedgerAmount;
 	}
 
 	/**
-	 * 
-	 * @param $depositLedgerTypeId
+	 *
+	 * @return
 	 */
-	public function setDepositLedgerTypeId($depositLedgerTypeId)
+	public function getDepositTypeId()
 	{
-	    $this->depositLedgerTypeId = $depositLedgerTypeId;
+		return $this->depositTypeId;
+	}
+
+	/**
+	 *
+	 * @param $depositTypeId
+	 */
+	public function setDepositTypeId($depositTypeId)
+	{
+		$this->depositTypeId = $depositTypeId;
+	}
+
+	public function getBusinessPartnerId()
+	{
+		return $this->businessPartnerId;
+	}
+
+	public function setBusinessPartnerId($businessPartnerId)
+	{
+		$this->businessPartnerId = $businessPartnerId;
 	}
 }
 
