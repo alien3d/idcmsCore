@@ -147,7 +147,28 @@ class AdjustmentLedgerClass extends ConfigClass {
 			$sql="
 			INSERT INTO `".$this->q->getFinancialDatabase()."`.`adjustmentLedger` 
 				(    
-						`adjustmentLedgerId`,   `adjustmentLedgerTypeId`,   `documentNo`,`referenceNo`,   `adjustmentLedgerTitle`,    `adjustmentLedgerDesc`, `adjustmentLedgerDate`, `adjustmentLedgerStartDate`,    `adjustmentLedgerEndDate`,  `adjustmentLedgerAmount`,   `isDefault`,    `isNew`,    `isDraft`,  `isUpdate`, `isDelete`, `isActive`, `isApproved`,   `isReview`, `isPost`,   `executeBy`,    `executeTime`) VALUES ( null, '".$this->model->getAdjustmentLedgerTypeId()."',
+						`adjustmentLedgerId`,
+						`adjustmentLedgerTypeId`,
+						`documentNo`,
+						`referenceNo`,
+						`adjustmentLedgerTitle`,
+						`adjustmentLedgerDesc`,
+						`adjustmentLedgerDate`, 
+						`adjustmentLedgerStartDate`,   
+						`adjustmentLedgerEndDate`,  
+						`adjustmentLedgerAmount`,   
+						`isDefault`,    
+						`isNew`,    
+						`isDraft`,  
+						`isUpdate`, 
+						`isDelete`, 
+						`isActive`, 
+						`isApproved`,   
+						`isReview`,
+						`isPost`,  
+						`executeBy`,    
+						`executeTime`
+				) VALUES ( null, '".$this->model->getAdjustmentLedgerTypeId()."',
 '".$this->model->getDocumentNo()."',
 '".$this->model->getReferenceNo()."',
 '".$this->model->getAdjustmentLedgerTitle()."',
@@ -778,9 +799,9 @@ class AdjustmentLedgerClass extends ConfigClass {
 			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getAdjustmentLedgerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[" . $this->model->getTableName() . "]	[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
-			WHERE  	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "][" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getAdjustmentLedgerId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getAdjustmentLedgerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "

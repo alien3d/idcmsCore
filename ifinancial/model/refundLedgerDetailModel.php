@@ -14,16 +14,16 @@ require_once ("../../class/classValidation.php");
  * @http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class RefundDetailModel extends ValidationClass {
+class RefundLedgerDetailModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $refundDetailId;
+	private $refundLedgerDetailId;
 	/**
 	* @var int
 	*/
-	private $refundId;
+	private $refundLedgerId;
 	/**
 	* @var string
 	*/
@@ -40,7 +40,7 @@ class RefundDetailModel extends ValidationClass {
 	/**
 	* @var float
 	*/
-	private $refundDetailAmount;
+	private $refundLedgerDetailAmount;
 
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
@@ -51,15 +51,15 @@ class RefundDetailModel extends ValidationClass {
 		 *  Basic Information Table
 		 */
 		$this->setTableName('generalledgerjournaldetail');
-		$this->setPrimaryKeyName('refundDetailId');
+		$this->setPrimaryKeyName('refundLedgerDetailId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['refundDetailId'])) {
-			$this->setRefundDetailId($this->strict($_POST ['refundDetailId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['refundLedgerDetailId'])) {
+			$this->setRefundLedgerDetailId($this->strict($_POST ['refundLedgerDetailId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['refundId'])) {
-			$this->setRefundId($this->strict($_POST ['refundId'], 'numeric'));
+		if (isset($_POST ['refundLedgerId'])) {
+			$this->setRefundLedgerId($this->strict($_POST ['refundLedgerId'], 'numeric'));
 		}
 		if (isset($_POST ['generalLedgerChartOfAccountId'])) {
 			$this->setGeneralLedgerChartOfAccountId($this->strict($_POST ['generalLedgerChartOfAccountId'], 'numeric'));
@@ -70,15 +70,15 @@ class RefundDetailModel extends ValidationClass {
 		if (isset($_POST ['countryId'])) {
 			$this->setCountryId($this->strict($_POST ['countryId'], 'numeric'));
 		}
-		if (isset($_POST ['refundDetailAmount'])) {
-			$this->setRefundDetailAmount($this->strict($_POST ['refundDetailAmount'], 'float'));
+		if (isset($_POST ['refundLedgerDetailAmount'])) {
+			$this->setRefundLedgerDetailAmount($this->strict($_POST ['refundLedgerDetailAmount'], 'float'));
 		}
 		
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['refundDetailId'])) {
-			$this->setTotal(count($_GET ['refundDetailId']));
+		if (isset($_GET ['refundLedgerDetailId'])) {
+			$this->setTotal(count($_GET ['refundLedgerDetailId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -128,8 +128,8 @@ class RefundDetailModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['refundDetailId'])) {
-				$this->setRefundDetailId($this->strict($_GET ['refundDetailId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['refundLedgerDetailId'])) {
+				$this->setRefundLedgerDetailId($this->strict($_GET ['refundLedgerDetailId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -194,7 +194,7 @@ class RefundDetailModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getRefundDetailId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getRefundLedgerDetailId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -328,35 +328,35 @@ class RefundDetailModel extends ValidationClass {
 	}
 
 	/**
-	 * Set RefundDetail Identification  Value
+	 * Set RefundLedgerDetail Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setRefundDetailId($value, $key, $type) {
+	public function setRefundLedgerDetailId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->refundDetailId = $value;
+			$this->refundLedgerDetailId = $value;
 		} else if ($type == 'array') {
-			$this->refundDetailId [$key] = $value;
+			$this->refundLedgerDetailId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setRefundDetailId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setRefundLedgerDetailId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return RefundDetail Identification  Value
+	 * Return RefundLedgerDetail Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getRefundDetailId($key, $type) {
+	public function getRefundLedgerDetailId($key, $type) {
 		if ($type == 'single') {
-			return $this->refundDetailId;
+			return $this->refundLedgerDetailId;
 		} else if ($type == 'array') {
-			return $this->refundDetailId [$key];
+			return $this->refundLedgerDetailId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getRefundDetailId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getRefundLedgerDetailId ?"));
 			exit();
 		}
 	}
@@ -367,18 +367,18 @@ class RefundDetailModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getRefundId()
+	public function getRefundLedgerId()
 	{
-	    return $this->refundId;
+	    return $this->refundLedgerId;
 	}
 
 	/**
 	 * 
-	 * @param $refundId
+	 * @param $refundLedgerId
 	 */
-	public function setRefundId($refundId)
+	public function setRefundLedgerId($refundLedgerId)
 	{
-	    $this->refundId = $refundId;
+	    $this->refundLedgerId = $refundLedgerId;
 	}
 
 	/**
@@ -421,18 +421,18 @@ class RefundDetailModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getRefundDetailAmount()
+	public function getRefundLedgerDetailAmount()
 	{
-	    return $this->refundDetailAmount;
+	    return $this->refundLedgerDetailAmount;
 	}
 
 	/**
 	 * 
-	 * @param $refundDetailAmount
+	 * @param $refundLedgerDetailAmount
 	 */
-	public function setRefundDetailAmount($refundDetailAmount)
+	public function setRefundLedgerDetailAmount($refundLedgerDetailAmount)
 	{
-	    $this->refundDetailAmount = $refundDetailAmount;
+	    $this->refundLedgerDetailAmount = $refundLedgerDetailAmount;
 	}
 
 	/**

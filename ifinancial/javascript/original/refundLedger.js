@@ -10,7 +10,7 @@ Ext.onReady(function() {
     var duplicate = 0; // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/refundLedger.php?',
+        url: '../controller/refundLedgerController.php?',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -475,6 +475,288 @@ Ext.onReady(function() {
     }); // end popup window for normal log and advance log
     // end common Proxy ,Reader,Store,Filter,Grid
     // start additional Proxy ,Reader,Store,Filter,Grid
+	// start business Partner Request
+	
+	var businessPartnerProxy = new Ext.data.HttpProxy({
+			url : '../controller/businessPartnerController.php',
+			method : 'POST',
+			success : function (response, options) {
+				jsonResponse = Ext.decode(response.responseText);
+				if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+				} else {
+					Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+				}
+			},
+			failure : function (response, options) {
+				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+			}
+		});
+	var businessPartnerReader = new Ext.data.JsonReader({
+			totalProperty : 'total',
+			successProperty : 'success',
+			messageProperty : 'message',
+			idProperty : 'businessPartnerId'
+		});
+	var businessPartnerStore = new Ext.data.JsonStore({
+			proxy : businessPartnerProxy,
+			reader : businessPartnerReader,
+			autoLoad : true,
+			autoDestroy : true,
+			pruneModifiedRecords : true,
+			baseParams : {
+				method : 'read',
+				leafId : leafId,
+				isAdmin : isAdmin,
+				start : 0,
+				perPage : perPage
+			},
+			root : 'data',
+			fields : [{
+					name : 'businessPartnerId',
+					type : 'int'
+				}, {
+					name : 'businessPartnerCompany',
+					type : 'string'
+				}, {
+					name : 'businessPartnerLastName',
+					type : 'string'
+				}, {
+					name : 'businessPartnerFirstName',
+					type : 'string'
+				}, {
+					name : 'businessPartnerEmail',
+					type : 'string'
+				}, {
+					name : 'businessPartnerJobTitle',
+					type : 'string'
+				}, {
+					name : 'businessPartnerBusinessPhone',
+					type : 'string'
+				}, {
+					name : 'businessPartnerHomePhone',
+					type : 'string'
+				}, {
+					name : 'businessPartnerMobilePhone',
+					type : 'string'
+				}, {
+					name : 'businessPartnerFaxNum',
+					type : 'string'
+				}, {
+					name : 'businessPartnerAddress',
+					type : 'string'
+				}, {
+					name : 'businessPartnerCity',
+					type : 'string'
+				}, {
+					name : 'businessPartnerState',
+					type : 'string'
+				}, {
+					name : 'businessPartnerPostCode',
+					type : 'string'
+				}, {
+					name : 'businessPartnerCountry',
+					type : 'string'
+				}, {
+					name : 'businessPartnerWebPage',
+					type : 'string'
+				}, {
+					name : 'businessPartnerNotes',
+					type : 'string'
+				}, {
+					name : 'businessPartnerAttachments',
+					type : 'string'
+				}, {
+					name : 'businessPartnerCategoryId',
+					type : 'int'
+				}, {
+					name : 'isDefault',
+					type : 'boolean'
+				}, {
+					name : 'isNew',
+					type : 'boolean'
+				}, {
+					name : 'isDraft',
+					type : 'boolean'
+				}, {
+					name : 'isUpdate',
+					type : 'boolean'
+				}, {
+					name : 'isDelete',
+					type : 'boolean'
+				}, {
+					name : 'isActive',
+					type : 'boolean'
+				}, {
+					name : 'isApproved',
+					type : 'boolean'
+				}, {
+					name : 'isReview',
+					type : 'boolean'
+				}, {
+					name : 'isPost',
+					type : 'boolean'
+				}, {
+					name : 'executeBy',
+					type : 'int'
+				}, {
+					name : 'executeTime',
+					type : 'date',
+					dateFormat : 'Y-m-d H:i:s'
+				}
+			]
+	});
+	// end business Partner Request
+	// start chart of account request
+    var generalLedgerChartOfAccountProxy = new Ext.data.HttpProxy({
+        url: '../controller/generalLedgerChartOfAccountController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var generalLedgerChartOfAccountReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'generalLedgerChartOfAccountId'
+    });
+    var generalLedgerChartOfAccountStore = new Ext.data.JsonStore({
+        proxy: generalLedgerChartOfAccountProxy,
+        reader: generalLedgerChartOfAccountReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            leafId: leafId,
+            isAdmin: isAdmin,
+            start: 0,
+            perPage: perPage
+        },
+        root: 'data',
+        fields: [{
+            key: 'PRI',
+            foreignKey: 'no',
+            name: 'generalLedgerChartOfAccountId',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerChartOfAccountTitle',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerChartOfAccountDesc',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerChartOfAccountNo',
+            type: 'string'
+        },
+        {
+            key: 'MUL',
+            foreignKey: 'yes',
+            name: 'generalLedgerChartOfAccountTypeId',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerChartOfAccountReportType',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDefault',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isNew',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDraft',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isUpdate',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDelete',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isActive',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isApproved',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isReview',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isPost',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isConsolidation',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isSeperated',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'executeBy',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'executeTime',
+            type: 'date',
+            dateFormat: 'Y-m-d H:i:s'
+        }]
+    }); // end General Ledger Chart of account request
     // start chart of account request
     var generalLedgerChartOfAccountProxy = new Ext.data.HttpProxy({
         url: '../controller/generalLedgerChartOfAccountController.php',
@@ -675,138 +957,125 @@ Ext.onReady(function() {
             type: 'string'
         }]
     }); // end currency code request
-    // start generalLedgerJournalType request
-    var generalLedgerJournalTypeProxy = new Ext.data.HttpProxy({
-        url: '../../iFinancial/controller/generalLedgerJournalTypeController.php',
-        method: 'POST',
-        success: function(response, options) {
-            jsonResponse = Ext.decode(response.responseText);
-            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-            } else {
-                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-            }
-        },
-        failure: function(response, options) {
-            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
-        }
+    // start invoice request     
+var invoiceLedgerReader = new Ext.data.JsonReader({
+        totalProperty : 'total',
+        successProperty : 'success',
+        messageProperty : 'message',
+        idProperty : 'invoiceLedgerId'
     });
-    var generalLedgerJournalTypeReader = new Ext.data.JsonReader({
-        totalProperty: 'total',
-        successProperty: 'success',
-        messageProperty: 'message',
-        idProperty: 'generalLedgerJournalTypeId'
+     
+var invoiceLedgerStore = new Ext.data.JsonStore({
+        proxy : invoiceLedgerProxy,
+        reader : invoiceLedgerReader,
+        autoLoad : true,
+        autoDestroy : true,
+        pruneModifiedRecords : true,
+        baseParams : {
+            method : 'read',
+            leafId : leafId,
+            isAdmin : isAdmin,
+            start : 0,
+            perPage : perPage
+        },
+        root : 'data',
+        id : 'invoiceLedgerId',
+        fields : [{
+        key :'PRI',
+        foreignKey : 'no',
+        name : 'invoiceLedgerId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'documentNo',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'referenceNo',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceLedgerTitle',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceLedgerDesc',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceLedgerDate',
+        type : 'date',dateFormat : 'Y-m-d'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceLedgerAmount',
+        type : 'float'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'businessPartnerId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceCategoryId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceTypeId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDefault',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isNew',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDraft',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isUpdate',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDelete',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isActive',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isApproved',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isReview',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isPost',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeBy',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeTime',
+        type : 'date',dateFormat : 'Y-m-d H:i:s'}
+        ]
     });
-    var generalLedgerJournalTypeStore = new Ext.data.JsonStore({
-        proxy: generalLedgerJournalTypeProxy,
-        reader: generalLedgerJournalTypeReader,
-        autoLoad: true,
-        autoDestroy: true,
-        pruneModifiedRecords: true,
-        baseParams: {
-            method: 'read',
-            leafId: leafId,
-            isAdmin: isAdmin,
-            start: 0,
-            perPage: perPage
-        },
-        root: 'data',
-        id: 'generalLedgerJournalTypeId',
-        fields: [{
-            key: 'PRI',
-            foreignKey: 'no',
-            name: 'generalLedgerJournalTypeId',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerJournalTypeSequence',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerJournalCode',
-            type: 'string'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerJournalTypeDesc',
-            type: 'string'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isDefault',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isNew',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isDraft',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isUpdate',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isDelete',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isActive',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isApproved',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isReview',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isPost',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'executeBy',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'executeTime',
-            type: 'date',
-            dateFormat: 'Y-m-d H:i:s'
-        }]
-    }); // end of general ledger journal type
+	// end invoice request
     // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
-    var generalLedgerJournalProxy = new Ext.data.HttpProxy({
-        url: '../controller/refundLedger.php',
+    var refundLedgerProxy = new Ext.data.HttpProxy({
+        url: '../controller/refundLedgerController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -819,15 +1088,15 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var generalLedgerJournalReader = new Ext.data.JsonReader({
+    var refundLedgerReader = new Ext.data.JsonReader({
         totalProperty: 'total',
         successProperty: 'success',
         messageProperty: 'message',
-        idProperty: 'generalLedgerJournalId'
+        idProperty: 'refundLedgerId'
     });
-    var generalLedgerJournalStore = new Ext.data.JsonStore({
-        proxy: generalLedgerJournalProxy,
-        reader: generalLedgerJournalReader,
+    var refundLedgerStore = new Ext.data.JsonStore({
+        proxy: refundLedgerProxy,
+        reader: refundLedgerReader,
         autoLoad: true,
         autoDestroy: true,
         pruneModifiedRecords: true,
@@ -843,13 +1112,13 @@ Ext.onReady(function() {
         fields: [{
             key: 'PRI',
             foreignKey: 'no',
-            name: 'generalLedgerJournalId',
+            name: 'refundLedgerId',
             type: 'int'
         },
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalTypeId',
+            name: 'refundTypeId',
             type: 'int'
         },
         {
@@ -861,40 +1130,40 @@ Ext.onReady(function() {
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalTitle',
+            name: 'refundLedgerTitle',
             type: 'string'
         },
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalDesc',
+            name: 'refundLedgerDesc',
             type: 'string'
         },
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalDate',
+            name: 'refundLedgerDate',
             type: 'date',
             dateFormat: 'Y-m-d'
         },
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalStartDate',
+            name: 'refundLedgerStartDate',
             type: 'date',
             dateFormat: 'Y-m-d'
         },
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalEndDate',
+            name: 'refundLedgerEndDate',
             type: 'date',
             dateFormat: 'Y-m-d'
         },
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalAmount',
+            name: 'refundLedgerAmount',
             type: 'date',
             dateFormat: 'Y-m-d'
         },
@@ -968,7 +1237,7 @@ Ext.onReady(function() {
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalTypeDesc',
+            name: 'refundTypeDesc',
             type: 'string'
         },
         {
@@ -978,140 +1247,140 @@ Ext.onReady(function() {
             type: 'string'
         }]
     });
-    var generalLedgerJournalFilters = new Ext.ux.grid.GridFilters({
+    var refundLedgerFilters = new Ext.ux.grid.GridFilters({
         encode: encode,
         local: local,
         filters: [{
             type: 'int',
-            dataIndex: 'generalLedgerJournalId',
-            column: 'generalLedgerJournalId',
-            table: 'generalLedgerJournal',
+            dataIndex: 'refundLedgerId',
+            column: 'refundLedgerId',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'int',
-            dataIndex: 'generalLedgerJournalTypeId',
-            column: 'generalLedgerJournalTypeId',
-            table: 'generalLedgerJournal',
+            dataIndex: 'refundTypeId',
+            column: 'refundTypeId',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'string',
             dataIndex: 'documentNo',
             column: 'documentNo',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'string',
-            dataIndex: 'generalLedgerJournalTitle',
-            column: 'generalLedgerJournalTitle',
-            table: 'generalLedgerJournal',
+            dataIndex: 'refundLedgerTitle',
+            column: 'refundLedgerTitle',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'string',
-            dataIndex: 'generalLedgerJournalDesc',
-            column: 'generalLedgerJournalDesc',
-            table: 'generalLedgerJournal',
+            dataIndex: 'refundLedgerDesc',
+            column: 'refundLedgerDesc',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'date',
-            dataIndex: 'generalLedgerJournalDate',
-            column: 'generalLedgerJournalDate',
-            table: 'generalLedgerJournal',
+            dataIndex: 'refundLedgerDate',
+            column: 'refundLedgerDate',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'date',
-            dataIndex: 'generalLedgerJournalStartDate',
-            column: 'generalLedgerJournalStartDate',
-            table: 'generalLedgerJournal',
+            dataIndex: 'refundLedgerStartDate',
+            column: 'refundLedgerStartDate',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'date',
-            dataIndex: 'generalLedgerJournalEndDate',
-            column: 'generalLedgerJournalEndDate',
-            table: 'generalLedgerJournal',
+            dataIndex: 'refundLedgerEndDate',
+            column: 'refundLedgerEndDate',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'date',
-            dataIndex: 'generalLedgerJournalAmount',
-            column: 'generalLedgerJournalAmount',
-            table: 'generalLedgerJournal',
+            dataIndex: 'refundLedgerAmount',
+            column: 'refundLedgerAmount',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDefault',
             column: 'isDefault',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isNew',
             column: 'isNew',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDraft',
             column: 'isDraft',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isUpdate',
             column: 'isUpdate',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDelete',
             column: 'isDelete',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isActive',
             column: 'isActive',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isApproved',
             column: 'isApproved',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isReview',
             column: 'isReview',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isPost',
             column: 'isPost',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial',
             labelField: 'staffName',
             store: staffByStore,
@@ -1121,7 +1390,7 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'generalLedgerJournal',
+            table: 'refundLedger',
             database: 'ifinancial'
         }]
     });
@@ -1213,13 +1482,13 @@ Ext.onReady(function() {
         dataIndex: 'isPost',
         hidden: isPostHidden
     });
-    var generalLedgerJournalColumnModel = [{
-        dataIndex: 'generalLedgerJournalTypeId',
-        header: generalLedgerJournalTypeForeignKeyLabel,
+    var refundLedgerColumnModel = [{
+        dataIndex: 'refundTypeId',
+        header: refundTypeForeignKeyLabel,
         sortable: true,
         hidden: false,
         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-            return record.data.generalLedgerJournalTypeDesc;
+            return record.data.refundTypeDesc;
         }
     },
     {
@@ -1229,38 +1498,26 @@ Ext.onReady(function() {
         hidden: false
     },
     {
-        dataIndex: 'generalLedgerJournalTitle',
-        header: generalLedgerJournalTitleLabel,
+        dataIndex: 'refundLedgerTitle',
+        header: refundLedgerTitleLabel,
         sortable: true,
         hidden: false
     },
     {
-        dataIndex: 'generalLedgerJournalDesc',
-        header: generalLedgerJournalDescLabel,
+        dataIndex: 'refundLedgerDesc',
+        header: refundLedgerDescLabel,
         sortable: true,
         hidden: false
     },
     {
-        dataIndex: 'generalLedgerJournalDate',
-        header: generalLedgerJournalDateLabel,
+        dataIndex: 'refundLedgerDate',
+        header: refundLedgerDateLabel,
         sortable: true,
         hidden: false
     },
     {
-        dataIndex: 'generalLedgerJournalStartDate',
-        header: generalLedgerJournalStartDateLabel,
-        sortable: true,
-        hidden: false
-    },
-    {
-        dataIndex: 'generalLedgerJournalEndDate',
-        header: generalLedgerJournalEndDateLabel,
-        sortable: true,
-        hidden: false
-    },
-    {
-        dataIndex: 'generalLedgerJournalAmount',
-        header: generalLedgerJournalAmountLabel,
+        dataIndex: 'refundLedgerAmount',
+        header: refundLedgerAmountLabel,
         sortable: true,
         hidden: false
     },
@@ -1282,14 +1539,14 @@ Ext.onReady(function() {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var generalLedgerJournalFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    var generalLedgerJournalGrid = new Ext.grid.GridPanel({
+    var refundLedgerFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var refundLedgerGrid = new Ext.grid.GridPanel({
         border: false,
-        store: generalLedgerJournalStore,
+        store: refundLedgerStore,
         autoHeight: false,
-        columns: generalLedgerJournalColumnModel,
+        columns: refundLedgerColumnModel,
         loadMask: true,
-        plugins: [generalLedgerJournalFilters],
+        plugins: [refundLedgerFilters],
         autoScroll: true,
         selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
@@ -1301,17 +1558,17 @@ Ext.onReady(function() {
         iconCls: 'application_view_detail',
         listeners: {
             'rowclick': function(object, rowIndex, e) {
-                var record = generalLedgerJournalStore.getAt(rowIndex);
+                var record = refundLedgerStore.getAt(rowIndex);
                 formPanel.getForm().reset();
                 formPanel.form.load({
-                    url: '../controller/refundLedger.php',
+                    url: '../controller/refundLedgerController.php',
                     method: 'POST',
                     waitTitle: systemLabel,
                     waitMsg: waitMessageLabel,
                     params: {
                         method: 'read',
                         mode: 'update',
-                        generalLedgerJournalId: record.data.generalLedgerJournalId,
+                        refundLedgerId: record.data.refundLedgerId,
                         leafId: leafId,
                         isAdmin: isAdmin
                     },
@@ -1324,11 +1581,11 @@ Ext.onReady(function() {
                         Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                         Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                         Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                        generalLedgerJournalDetailStore.load({
+                        refundLedgerDetailStore.load({
                             params: {
                                 leafId: leafId,
                                 isAdmin: isAdmin,
-                                generalLedgerJournalId: record.data.generalLedgerJournalId
+                                refundLedgerId: record.data.refundLedgerId
                             }
                         });
                         if (Ext.getCmp('previousRecord').getValue() == 0) {
@@ -1337,7 +1594,7 @@ Ext.onReady(function() {
                         if (Ext.getCmp('nextRecord').getValue() == 0) {
                             Ext.getCmp('nextButton').disable();
                         }
-                        generalLedgerJournalDetailGrid.enable();
+                        refundLedgerDetailGrid.enable();
                         if (action.result.trialBalance > 0) {
                             Ext.getCmp('postButton').disable();
                             Ext.MessageBox.alert(systemErrorLabel, "Trial Balance no tally");
@@ -1374,9 +1631,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button, e) {
-                        generalLedgerJournalStore.each(function(record, fn, scope) {
-                            for (var access in generalLedgerJournalFlagArray) {
-                                record.set(generalLedgerJournalFlagArray[access], true);
+                        refundLedgerStore.each(function(record, fn, scope) {
+                            for (var access in refundLedgerFlagArray) {
+                                record.set(refundLedgerFlagArray[access], true);
                             }
                         });
                     }
@@ -1388,9 +1645,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button, e) {
-                        generalLedgerJournalStore.each(function(record, fn, scope) {
-                            for (var access in generalLedgerJournalFlagArray) {
-                                record.set(generalLedgerJournalFlagArray[access], false);
+                        refundLedgerStore.each(function(record, fn, scope) {
+                            for (var access in refundLedgerFlagArray) {
+                                record.set(refundLedgerFlagArray[access], false);
                             }
                         });
                     }
@@ -1402,12 +1659,12 @@ Ext.onReady(function() {
                 iconCls: 'bullet_disk',
                 listeners: {
                     'click': function(button, e) {
-                        var url = '../controller/refundLedger.php?';
+                        var url = '../controller/refundLedgerController.php?';
                         var sub_url = '';
-                        var modified = generalLedgerJournalStore.getModifiedRecords();
+                        var modified = refundLedgerStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            sub_url = sub_url + '&generalLedgerJournalId[]=' + modified[i].get('generalLedgerJournalId');
+                            sub_url = sub_url + '&refundLedgerId[]=' + modified[i].get('refundLedgerId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
                                     sub_url = sub_url + '&isDefault[]=' + modified[i].get('isDefault');
@@ -1453,7 +1710,7 @@ Ext.onReady(function() {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    generalLedgerJournalStore.reload();
+                                    refundLedgerStore.reload();
                                 } else if (jsonResponse.success == false) {
                                     Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                 }
@@ -1466,12 +1723,12 @@ Ext.onReady(function() {
                 }
             },
             '->', new Ext.ux.form.SearchField({
-                store: generalLedgerJournalStore,
+                store: refundLedgerStore,
                 width: 320
             })]
         },
         bbar: new Ext.PagingToolbar({
-            store: generalLedgerJournalStore,
+            store: refundLedgerStore,
             pageSize: perPage
         }),
         view: new Ext.ux.grid.BufferView({
@@ -1623,7 +1880,7 @@ Ext.onReady(function() {
                 Ext.getCmp('filterDay').setText('Filter Day : ' + dayDateRangeStartArrayData);
                 Ext.getCmp('filterMonth').setText('Filter Month : ' + monthDateRangeStartArrayData);
                 Ext.getCmp('filterYear').setText('Filter Year:' + yearDateRangeStartArrayData);
-                generalLedgerJournalStore.reload({
+                refundLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
@@ -1646,7 +1903,7 @@ Ext.onReady(function() {
                     Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
                 }
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
-                generalLedgerJournalStore.reload({
+                refundLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
@@ -1669,7 +1926,7 @@ Ext.onReady(function() {
                 Ext.getCmp('dateRangeStart').setValue(f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate());
                 Ext.getCmp('dateRangeEnd').setValue(l.getFullYear() + "-" + (l.getMonth() + 1) + "-" + l.getDate());
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
-                generalLedgerJournalStore.reload({
+                refundLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue(),
@@ -1693,7 +1950,7 @@ Ext.onReady(function() {
                     Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
                 }
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
-                generalLedgerJournalStore.reload({
+                refundLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
@@ -1716,7 +1973,7 @@ Ext.onReady(function() {
                     Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
                 }
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
-                generalLedgerJournalStore.reload({
+                refundLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
@@ -1782,7 +2039,7 @@ Ext.onReady(function() {
             id: 'filterBetweenButton',
             text: 'Search Between Date',
             handler: function(e, a) {
-                generalLedgerJournalStore.reload({
+                refundLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeBetweenStart').getValue(),
@@ -1829,7 +2086,7 @@ Ext.onReady(function() {
                 Ext.getCmp('filterDay').setText('Filter Day : ' + dayDateRangeStartArrayData);
                 Ext.getCmp('filterMonth').setText('Filter Month : ' + monthDateRangeStartArrayData);
                 Ext.getCmp('filterYear').setText('Filter Year:' + yearDateRangeStartArrayData);
-                generalLedgerJournalStore.reload({
+                refundLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
@@ -1837,29 +2094,55 @@ Ext.onReady(function() {
                 });
             }
         }],
-        items: [generalLedgerJournalGrid]
+        items: [refundLedgerGrid]
     }); // viewport just save information,items will do separate
     // start form entry
     var documentNoTemp = new Ext.form.Hidden({
         name: 'documentNoTemp',
         id: 'documentNoTemp'
     });
-    var generalLedgerJournalId = new Ext.form.Hidden({
-        name: 'generalLedgerJournalId',
-        id: 'generalLedgerJournalId'
+    var refundLedgerId = new Ext.form.Hidden({
+        name: 'refundLedgerId',
+        id: 'refundLedgerId'
     });
-    var generalLedgerJournalTypeId = new Ext.ux.form.ComboBoxMatch({
+	var businessPartnerId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalTypeForeignKeyLabel,
-        name: 'stateId',
-        hiddenName: 'generalLedgerJournalTypeId',
-        valueField: 'generalLedgerJournalTypeId',
-        hiddenId: 'generalLedgerJournalTypeId_fake',
-        id: 'generalLedgerJournalTypeId',
-        displayField: 'generalLedgerJournalTypeDesc',
+        fieldLabel: businessPartnerForeignKeyLabel,
+        name: 'businessPartnerId',
+        hiddenName: 'businessPartnerd',
+        valueField: 'businessPartnerId',
+        hiddenId: 'businessPartnerd_fake',
+        id: 'businessPartnerId',
+        displayField: 'businessPartnerDesc',
         typeAhead: false,
         triggerAction: 'all',
-        store: generalLedgerJournalTypeStore,
+        store: depositTypeStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
+        }
+    });
+    var refundTypeId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: refundTypeForeignKeyLabel,
+        name: 'stateId',
+        hiddenName: 'refundTypeId',
+        valueField: 'refundTypeId',
+        hiddenId: 'refundTypeId_fake',
+        id: 'refundTypeId',
+        displayField: 'refundTypeDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: refundTypeStore,
         anchor: '95%',
         selectOnFocus: true,
         mode: 'local',
@@ -1876,11 +2159,11 @@ Ext.onReady(function() {
         listeners: {
             'select': function(index, scrollIntoView) {
                 if (this.value == 2) {
-                    Ext.getCmp('generalLedgerJournalStartDate').enable();
-                    Ext.getCmp('generalLedgerJournalEndDate').enable();
+                    Ext.getCmp('refundLedgerStartDate').enable();
+                    Ext.getCmp('refundLedgerEndDate').enable();
                 } else {
-                    Ext.getCmp('generalLedgerJournalStartDate').disable();
-                    Ext.getCmp('generalLedgerJournalEndDate').disable();
+                    Ext.getCmp('refundLedgerStartDate').disable();
+                    Ext.getCmp('refundLedgerEndDate').disable();
                 }
             }
         }
@@ -1911,12 +2194,12 @@ Ext.onReady(function() {
         },
         anchor: '90%'
     });
-    var generalLedgerJournalTitle = new Ext.form.TextField({
+    var refundLedgerTitle = new Ext.form.TextField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalTitleLabel + '*',
-        hiddenName: 'generalLedgerJournalTitle',
-        name: 'generalLedgerJournalTitle',
-        id: 'generalLedgerJournalTitle',
+        fieldLabel: refundLedgerTitleLabel + '*',
+        hiddenName: 'refundLedgerTitle',
+        name: 'refundLedgerTitle',
+        id: 'refundLedgerTitle',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -1924,12 +2207,12 @@ Ext.onReady(function() {
         },
         anchor: '90%'
     });
-    var generalLedgerJournalDesc = new Ext.form.HtmlEditor({
+    var refundLedgerDesc = new Ext.form.HtmlEditor({
         labelAlign: 'top',
-        fieldLabel: generalLedgerJournalDescLabel,
-        hiddenName: 'generalLedgerJournalDesc',
-        name: 'generalLedgerJournalDesc',
-        id: 'generalLedgerJournalDesc',
+        fieldLabel: refundLedgerDescLabel,
+        hiddenName: 'refundLedgerDesc',
+        name: 'refundLedgerDesc',
+        id: 'refundLedgerDesc',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -1938,12 +2221,12 @@ Ext.onReady(function() {
         anchor: '90%',
         height: 55
     });
-    var generalLedgerJournalDate = new Ext.form.DateField({
+    var refundLedgerDate = new Ext.form.DateField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalDateLabel + '*',
-        hiddenName: 'generalLedgerJournalDate',
-        name: 'generalLedgerJournalDate',
-        id: 'generalLedgerJournalDate',
+        fieldLabel: refundLedgerDateLabel + '*',
+        hiddenName: 'refundLedgerDate',
+        name: 'refundLedgerDate',
+        id: 'refundLedgerDate',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -1951,12 +2234,12 @@ Ext.onReady(function() {
         },
         anchor: '90%'
     });
-    var generalLedgerJournalStartDate = new Ext.form.DateField({
+    var refundLedgerStartDate = new Ext.form.DateField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalStartDateLabel + '*',
-        hiddenName: 'generalLedgerJournalStartDate',
-        name: 'generalLedgerJournalStartDate',
-        id: 'generalLedgerJournalStartDate',
+        fieldLabel: refundLedgerStartDateLabel + '*',
+        hiddenName: 'refundLedgerStartDate',
+        name: 'refundLedgerStartDate',
+        id: 'refundLedgerStartDate',
         disabled: true,
         allowBlank: false,
         blankText: blankTextLabel,
@@ -1964,12 +2247,12 @@ Ext.onReady(function() {
             textTransform: 'uppercase'
         }
     });
-    var generalLedgerJournalEndDate = new Ext.form.DateField({
+    var refundLedgerEndDate = new Ext.form.DateField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalEndDateLabel + '*',
-        hiddenName: 'generalLedgerJournalEndDate',
-        name: 'generalLedgerJournalEndDate',
-        id: 'generalLedgerJournalEndDate',
+        fieldLabel: refundLedgerEndDateLabel + '*',
+        hiddenName: 'refundLedgerEndDate',
+        name: 'refundLedgerEndDate',
+        id: 'refundLedgerEndDate',
         disabled: true,
         allowBlank: false,
         blankText: blankTextLabel,
@@ -1977,12 +2260,12 @@ Ext.onReady(function() {
             textTransform: 'uppercase'
         }
     });
-    var generalLedgerJournalAmount = new Ext.form.TextField({
+    var refundLedgerAmount = new Ext.form.TextField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalAmountLabel + '*',
-        hiddenName: 'generalLedgerJournalAmount',
-        name: 'generalLedgerJournalAmount',
-        id: 'generalLedgerJournalAmount',
+        fieldLabel: refundLedgerAmountLabel + '*',
+        hiddenName: 'refundLedgerAmount',
+        name: 'refundLedgerAmount',
+        id: 'refundLedgerAmount',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -1993,10 +2276,10 @@ Ext.onReady(function() {
         vtype: 'dollar',
         listeners: {
             blur: function() {
-                var value = Ext.getCmp('generalLedgerJournalAmount').getValue();
+                var value = Ext.getCmp('refundLedgerAmount').getValue();
                 value = value.replace(",", "");
                 value = value.replace(" ", "");
-                Ext.getCmp('generalLedgerJournalAmount').setValue(value);
+                Ext.getCmp('refundLedgerAmount').setValue(value);
             }
         }
     });
@@ -2025,9 +2308,9 @@ Ext.onReady(function() {
         id: 'endRecord',
         value: ''
     }); // end of hidden value for navigation button
-    // start generalLedgerJournalDetail request
-    var generalLedgerJournalDetailProxy = new Ext.data.HttpProxy({
-        url: '../controller/generalLedgerJournalDetailController.php',
+    // start refundLedgerDetail request
+    var refundLedgerDetailProxy = new Ext.data.HttpProxy({
+        url: '../controller/refundLedgerDetailController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -2040,15 +2323,15 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var generalLedgerJournalDetailReader = new Ext.data.JsonReader({
+    var refundLedgerDetailReader = new Ext.data.JsonReader({
         totalProperty: 'total',
         successProperty: 'success',
         messageProperty: 'message',
-        idProperty: 'generalLedgerJournalDetailId'
+        idProperty: 'refundLedgerDetailId'
     });
-    var generalLedgerJournalDetailStore = new Ext.data.JsonStore({
-        proxy: generalLedgerJournalDetailProxy,
-        reader: generalLedgerJournalDetailReader,
+    var refundLedgerDetailStore = new Ext.data.JsonStore({
+        proxy: refundLedgerDetailProxy,
+        reader: refundLedgerDetailReader,
         autoLoad: false,
         autoDestroy: true,
         pruneModifiedRecords: true,
@@ -2060,17 +2343,17 @@ Ext.onReady(function() {
             perPage: perPage
         },
         root: 'data',
-        id: 'generalLedgerJournalDetailId',
+        id: 'refundLedgerDetailId',
         fields: [{
             key: 'PRI',
             foreignKey: 'no',
-            name: 'generalLedgerJournalDetailId',
+            name: 'refundLedgerDetailId',
             type: 'int'
         },
         {
             key: 'MUL',
             foreignKey: 'yes',
-            name: 'generalLedgerJournalId',
+            name: 'refundLedgerId',
             type: 'int'
         },
         {
@@ -2093,7 +2376,7 @@ Ext.onReady(function() {
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalDetailAmount',
+            name: 'refundLedgerDetailAmount',
             type: 'float'
         },
         {
@@ -2163,32 +2446,32 @@ Ext.onReady(function() {
             type: 'date',
             dateFormat: 'Y-m-d H:i:s'
         }]
-    }); // end generalLedgerJournalDetail request
+    }); // end refundLedgerDetail request
     var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters({
         encode: false,
         local: false,
         filters: [{
             type: 'int',
-            dataIndex: 'generalLedgerJournalDetailId',
-            column: 'generalLedgerJournalDetailId',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'refundLedgerDetailId',
+            column: 'refundLedgerDetailId',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         , {
             type: 'list',
-            dataIndex: 'generalLedgerJournalId',
-            column: 'generalLedgerJournalId',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'refundLedgerId',
+            column: 'refundLedgerId',
+            table: 'refundLedgerDetail',
             database: 'ifinancial',
-            labelField: 'generalLedgerJournalDesc',
-            store: generalLedgerJournalStore,
+            labelField: 'refundLedgerDesc',
+            store: refundLedgerStore,
             phpMode: true
         },
         , {
             type: 'list',
             dataIndex: 'generalLedgerChartOfAccountId',
             column: 'generalLedgerChartOfAccountId',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial',
             labelField: 'generalLedgerChartOfAccountDesc',
             store: generalLedgerChartOfAccountStore,
@@ -2198,7 +2481,7 @@ Ext.onReady(function() {
             type: 'list',
             dataIndex: 'countryId',
             column: 'countryId',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial',
             labelField: 'countryCurrencyCodeDesc',
             store: countryStore,
@@ -2206,79 +2489,79 @@ Ext.onReady(function() {
         },
         {
             type: 'float',
-            dataIndex: 'generalLedgerJournalDetailAmount',
-            column: 'generalLedgerJournalDetailAmount',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'refundLedgerDetailAmount',
+            column: 'refundLedgerDetailAmount',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDefault',
             column: 'isDefault',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isNew',
             column: 'isNew',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDraft',
             column: 'isDraft',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isUpdate',
             column: 'isUpdate',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDelete',
             column: 'isDelete',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isActive',
             column: 'isActive',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isApproved',
             column: 'isApproved',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isReview',
             column: 'isReview',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isPost',
             column: 'isPost',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial',
             labelField: 'staffName',
             store: staffByStore,
@@ -2288,31 +2571,31 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'int',
-            dataIndex: 'generalLedgerJournalDetailId',
-            column: 'generalLedgerJournalDetailId',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'refundLedgerDetailId',
+            column: 'refundLedgerDetailId',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         , {
             type: 'list',
-            dataIndex: 'generalLedgerJournalId',
-            column: 'generalLedgerJournalId',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'refundLedgerId',
+            column: 'refundLedgerId',
+            table: 'refundLedgerDetail',
             database: 'ifinancial',
-            labelField: 'generalLedgerJournalDesc',
-            store: generalLedgerJournalStore,
+            labelField: 'refundLedgerDesc',
+            store: refundLedgerStore,
             phpMode: true
         },
         , {
             type: 'list',
             dataIndex: 'generalLedgerChartOfAccountId',
             column: 'generalLedgerChartOfAccountId',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial',
             labelField: 'generalLedgerChartOfAccountDesc',
             store: generalLedgerChartOfAccountStore,
@@ -2322,7 +2605,7 @@ Ext.onReady(function() {
             type: 'list',
             dataIndex: 'countryId',
             column: 'countryId',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial',
             labelField: 'countryDesc',
             store: countryStore,
@@ -2330,79 +2613,79 @@ Ext.onReady(function() {
         },
         {
             type: 'float',
-            dataIndex: 'generalLedgerJournalDetailAmount',
-            column: 'generalLedgerJournalDetailAmount',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'refundLedgerDetailAmount',
+            column: 'refundLedgerDetailAmount',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDefault',
             column: 'isDefault',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isNew',
             column: 'isNew',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDraft',
             column: 'isDraft',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isUpdate',
             column: 'isUpdate',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDelete',
             column: 'isDelete',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isActive',
             column: 'isActive',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isApproved',
             column: 'isApproved',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isReview',
             column: 'isReview',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isPost',
             column: 'isPost',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial',
             labelField: 'staffName',
             store: staffByStore,
@@ -2412,13 +2695,13 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'generalLedgerJournalDetail',
+            table: 'refundLedgerDetail',
             database: 'ifinancial'
         }]
     });
-    var generalLedgerJournalDetailId = new Ext.form.Hidden({
-        name: 'generalLedgerJournalDetailId',
-        id: 'generalLedgerJournalDetailId'
+    var refundLedgerDetailId = new Ext.form.Hidden({
+        name: 'refundLedgerDetailId',
+        id: 'refundLedgerDetailId'
     });
     var generalLedgerChartOfAccountId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
@@ -2511,12 +2794,12 @@ Ext.onReady(function() {
             return new RegExp('\b(' + value + ')', 'i');
         }
     });
-    var generalLedgerJournalDetailAmount = new Ext.form.TextField({
+    var refundLedgerDetailAmount = new Ext.form.TextField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalDetailAmountLabel + '<span style="\'color:" red;\'="">*</span>',
-        hiddenName: 'generalLedgerJournalDetailAmount',
-        name: 'generalLedgerJournalDetailAmount',
-        id: 'generalLedgerJournalDetailAmount',
+        fieldLabel: refundLedgerDetailAmountLabel + '<span style="\'color:" red;\'="">*</span>',
+        hiddenName: 'refundLedgerDetailAmount',
+        name: 'refundLedgerDetailAmount',
+        id: 'refundLedgerDetailAmount',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -2527,10 +2810,10 @@ Ext.onReady(function() {
         vtype: 'dollar',
         listeners: {
             blur: function() {
-                var value = Ext.getCmp('generalLedgerJournalDetailAmount').getValue();
+                var value = Ext.getCmp('refundLedgerDetailAmount').getValue();
                 value = value.replace(",", "");
                 value = value.replace(" ", "");
-                Ext.getCmp('generalLedgerJournalDetailAmount').setValue(value);
+                Ext.getCmp('refundLedgerDetailAmount').setValue(value);
             }
         }
     });
@@ -2589,7 +2872,7 @@ Ext.onReady(function() {
             return res;
         };
     };
-    var generalLedgerJournalDetailColumnModel = [new Ext.grid.RowNumberer(), {
+    var refundLedgerDetailColumnModel = [new Ext.grid.RowNumberer(), {
         dataIndex: 'generalLedgerChartOfAccountId',
         header: generalLedgerChartOfAccountForeignKeyLabel,
         width: 200,
@@ -2618,8 +2901,8 @@ Ext.onReady(function() {
         renderer: Ext.util.Format.comboRenderer(transactionMode)
     },
     {
-        dataIndex: 'generalLedgerJournalDetailAmount',
-        header: generalLedgerJournalDetailAmountLabel,
+        dataIndex: 'refundLedgerDetailAmount',
+        header: refundLedgerDetailAmountLabel,
         width: 75,
         sortable: true,
         summaryType: 'sum',
@@ -2629,21 +2912,21 @@ Ext.onReady(function() {
         editor: {
             xtype: 'textfield',
             labelAlign: 'left',
-            fieldLabel: generalLedgerJournalDetailAmountLabel,
-            hiddenName: 'generalLedgerJournalDetailAmount',
-            name: 'generalLedgerJournalDetailAmount',
-            id: 'generalLedgerJournalDetailAmount',
+            fieldLabel: refundLedgerDetailAmountLabel,
+            hiddenName: 'refundLedgerDetailAmount',
+            name: 'refundLedgerDetailAmount',
+            id: 'refundLedgerDetailAmount',
             blankText: blankTextLabel,
             decimalPrecision: 2,
             vtype: 'dollar',
             anchor: '95%',
             listeners: {
                 blur: function() {
-                    var value = Ext.getCmp('generalLedgerJournalDetailAmount').getValue();
+                    var value = Ext.getCmp('refundLedgerDetailAmount').getValue();
                     value = value.replace(",", "");
                     value = Ext.util.Format.usMoney(value);
                     value = value.replace(" ", "");
-                    Ext.getCmp('generalLedgerJournalDetailAmount').setValue(value);
+                    Ext.getCmp('refundLedgerDetailAmount').setValue(value);
                 }
             }
         }
@@ -2666,53 +2949,53 @@ Ext.onReady(function() {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var generalLedgerJournalDetailEditor = new Ext.ux.grid.RowEditor({
+    var refundLedgerDetailEditor = new Ext.ux.grid.RowEditor({
         saveText: saveButtonLabel,
         cancelText: cancelButtonLabel,
         listeners: {
             cancelEdit: function(rowEditor, changes, record, rowIndex) {
-                generalLedgerJournalDetailStore.reload({
+                refundLedgerDetailStore.reload({
                     params: {
-                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                        refundLedgerId: Ext.getCmp('refundLedgerId').getValue()
                     }
                 });
             },
             afteredit: function(rowEditor, changes, record, rowIndex) {
                 this.save = true;
                 var record = this.grid.getStore().getAt(rowIndex);
-                if (parseInt(record.get('generalLedgerJournalDetailId')) == 'NaN') {
+                if (parseInt(record.get('refundLedgerDetailId')) == 'NaN') {
                     method = 'create';
-                } else if (record.get('generalLedgerJournalDetailId') == '') {
+                } else if (record.get('refundLedgerDetailId') == '') {
                     method = 'create';
-                } else if (record.get('generalLedgerJournalDetailId') == undefined) {
+                } else if (record.get('refundLedgerDetailId') == undefined) {
                     method = 'create';
-                } else if (parseInt(record.get('generalLedgerJournalDetailId')) > 0) {
+                } else if (parseInt(record.get('refundLedgerDetailId')) > 0) {
                     method = 'save';
                 } else {
                     method = 'create';
                 }
                 Ext.Ajax.request({
-                    url: '../controller/generalLedgerJournalDetailController.php',
+                    url: '../controller/refundLedgerDetailController.php',
                     method: 'POST',
                     params: {
                         leafId: leafId,
                         isAdmin: isAdmin,
                         method: method,
-                        generalLedgerJournalDetailId: record.get('generalLedgerJournalDetailId'),
-                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue(),
+                        refundLedgerDetailId: record.get('refundLedgerDetailId'),
+                        refundLedgerId: Ext.getCmp('refundLedgerId').getValue(),
                         generalLedgerChartOfAccountId: record.get('generalLedgerChartOfAccountId'),
                         transactionMode: record.get('transactionMode'),
                         countryId: record.get('countryId'),
-                        generalLedgerJournalDetailAmount: record.get('generalLedgerJournalDetailAmount')
+                        refundLedgerDetailAmount: record.get('refundLedgerDetailAmount')
                     },
                     success: function(response, options) {
                         jsonResponse = Ext.decode(response.responseText);
                         if (jsonResponse.success == false) {
                             Ext.MessageBox.alert(systemLabel, jsonResponse.message);
                         } else {
-                            generalLedgerJournalDetailStore.reload({
+                            refundLedgerDetailStore.reload({
                                 params: {
-                                    generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                                    refundLedgerId: Ext.getCmp('refundLedgerId').getValue()
                                 }
                             });
                             if (jsonResponse.masterDetail > 0) {
@@ -2739,16 +3022,16 @@ Ext.onReady(function() {
             }
         }
     });
-    var generalLedgerJournalDetailEntity = Ext.data.Record.create([{
+    var refundLedgerDetailEntity = Ext.data.Record.create([{
         key: 'PRI',
         foreignKey: 'no',
-        name: 'generalLedgerJournalDetailId',
+        name: 'refundLedgerDetailId',
         type: 'int'
     },
     {
         key: 'MUL',
         foreignKey: 'yes',
-        name: 'generalLedgerJournalId',
+        name: 'refundLedgerId',
         type: 'int'
     },
     {
@@ -2766,7 +3049,7 @@ Ext.onReady(function() {
     {
         key: '',
         foreignKey: 'no',
-        name: 'generalLedgerJournalDetailAmount',
+        name: 'refundLedgerDetailAmount',
         type: 'float'
     },
     {
@@ -2836,15 +3119,15 @@ Ext.onReady(function() {
         type: 'date',
         dateFormat: 'Y-m-d H:i:s'
     }]);
-    var generalLedgerJournalDetailFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    var generalLedgerJournalDetailGrid = new Ext.grid.GridPanel({
-        name: 'generalLedgerJournalDetailGrid',
-        id: 'generalLedgerJournalDetailGrid',
+    var refundLedgerDetailFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var refundLedgerDetailGrid = new Ext.grid.GridPanel({
+        name: 'refundLedgerDetailGrid',
+        id: 'refundLedgerDetailGrid',
         border: false,
-        store: generalLedgerJournalDetailStore,
+        store: refundLedgerDetailStore,
         height: 250,
         autoScroll: true,
-        columns: generalLedgerJournalDetailColumnModel,
+        columns: refundLedgerDetailColumnModel,
         viewConfig: {
             autoFill: true,
             forceFit: true,
@@ -2852,7 +3135,7 @@ Ext.onReady(function() {
         },
         layout: 'fit',
         disabled: true,
-        plugins: [generalLedgerJournalDetailEditor],
+        plugins: [refundLedgerDetailEditor],
         tbar: {
             items: [{
                 xtype: 'button',
@@ -2861,12 +3144,12 @@ Ext.onReady(function() {
                 name: 'add_record',
                 text: newButtonLabel,
                 handler: function() {
-                    var newRecord = new generalLedgerJournalDetailEntity({
-                        generalLedgerJournalDetailId: '',
-                        generalLedgerJournalId: '',
+                    var newRecord = new refundLedgerDetailEntity({
+                        refundLedgerDetailId: '',
+                        refundLedgerId: '',
                         generalLedgerChartOfAccountId: '',
                         countryId: '',
-                        generalLedgerJournalDetailAmount: '',
+                        refundLedgerDetailAmount: '',
                         isDefault: '',
                         isNew: '',
                         isDraft: '',
@@ -2879,10 +3162,10 @@ Ext.onReady(function() {
                         executeBy: '',
                         executeTime: ''
                     });
-                    generalLedgerJournalDetailEditor.stopEditing();
-                    generalLedgerJournalDetailStore.insert(0, newRecord);
-                    generalLedgerJournalDetailGrid.getSelectionModel().getSelections();
-                    generalLedgerJournalDetailEditor.startEditing(0);
+                    refundLedgerDetailEditor.stopEditing();
+                    refundLedgerDetailStore.insert(0, newRecord);
+                    refundLedgerDetailGrid.getSelectionModel().getSelections();
+                    refundLedgerDetailEditor.startEditing(0);
                 }
             },
             {
@@ -2891,9 +3174,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button, e) {
-                        generalLedgerJournalDetailStore.each(function(record, fn, scope) {
-                            for (var access in generalLedgerJournalDetailFlagArray) {
-                                record.set(generalLedgerJournalDetailFlagArray[access], true);
+                        refundLedgerDetailStore.each(function(record, fn, scope) {
+                            for (var access in refundLedgerDetailFlagArray) {
+                                record.set(refundLedgerDetailFlagArray[access], true);
                             }
                         });
                     }
@@ -2904,9 +3187,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button, e) {
-                        generalLedgerJournalDetailStore.each(function(record, fn, scope) {
-                            for (var access in generalLedgerJournalDetailFlagArray) {
-                                record.set(generalLedgerJournalDetailFlagArray[access], false);
+                        refundLedgerDetailStore.each(function(record, fn, scope) {
+                            for (var access in refundLedgerDetailFlagArray) {
+                                record.set(refundLedgerDetailFlagArray[access], false);
                             }
                         });
                     }
@@ -2918,12 +3201,12 @@ Ext.onReady(function() {
                 iconCls: 'bullet_disk',
                 listeners: {
                     'click': function(button, e) {
-                        var url = '../controller/generalLedgerJournalDetailController.php?';
+                        var url = '../controller/refundLedgerDetailController.php?';
                         var sub_url = '';
-                        var modified = generalLedgerJournalDetailStore.getModifiedRecords();
+                        var modified = refundLedgerDetailStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            sub_url = sub_url + '&generalLedgerJournalDetailId[]=' + modified[i].get('generalLedgerJournalDetailId');
+                            sub_url = sub_url + '&refundLedgerDetailId[]=' + modified[i].get('refundLedgerDetailId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
                                     sub_url = sub_url + '&isDefault[]=' + modified[i].get('isDefault');
@@ -2963,16 +3246,16 @@ Ext.onReady(function() {
                             params: {
                                 leafId: leafId,
                                 isAdmin: isAdmin,
-                                generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue(),
+                                refundLedgerId: Ext.getCmp('refundLedgerId').getValue(),
                                 method: 'updateStatus'
                             },
                             success: function(response, options) {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    generalLedgerJournalDetailStore.reload({
+                                    refundLedgerDetailStore.reload({
                                         params: {
-                                            generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                                            refundLedgerId: Ext.getCmp('refundLedgerId').getValue()
                                         }
                                     });
                                     if (jsonResponse.trialBalance > 0) {
@@ -3007,7 +3290,7 @@ Ext.onReady(function() {
             }]
         },
         bbar: new Ext.PagingToolbar({
-            store: generalLedgerJournalDetailStore,
+            store: refundLedgerDetailStore,
             pageSize: perPage
         }),
         view: new Ext.ux.grid.BufferView({
@@ -3016,7 +3299,7 @@ Ext.onReady(function() {
         })
     });
     var formPanel = new Ext.form.FormPanel({
-        url: '../controller/refundLedger.php',
+        url: '../controller/refundLedgerController.php',
         name: 'formPanel',
         id: 'formPanel',
         method: 'post',
@@ -3032,7 +3315,7 @@ Ext.onReady(function() {
                 bodyStyle: 'padding:5px',
                 border: true,
                 frame: true,
-                items: [generalLedgerJournalId, generalLedgerJournalTypeId, {
+                items: [refundLedgerId, refundTypeId,businessPartnerId,invoiceId, {
                     xtype: 'fieldset',
                     title: 'Date Range',
                     items: [{
@@ -3043,7 +3326,7 @@ Ext.onReady(function() {
                         defaults: {
                             flex: 1
                         },
-                        items: [generalLedgerJournalStartDate, generalLedgerJournalStartDate, generalLedgerJournalEndDate]
+                        items: [refundLedgerStartDate, refundLedgerStartDate, refundLedgerEndDate]
                     }]
                 },
                 {
@@ -3053,19 +3336,19 @@ Ext.onReady(function() {
                         columnWidth: .5,
                         layout: 'form',
                         border: false,
-                        items: [generalLedgerJournalTitle, generalLedgerJournalDesc, generalLedgerJournalDate, generalLedgerJournalAmount, referenceNo]
+                        items: [refundLedgerTitle, refundLedgerDesc, refundLedgerDate, refundLedgerAmount, referenceNo]
                     },
                     {
                         columnWidth: .5,
                         layout: 'form',
                         border: false,
                         labelAlign: 'top',
-                        items: [generalLedgerJournalDesc]
+                        items: [refundLedgerDesc]
                     }]
                 }]
             }]
         },
-        generalLedgerJournalDetailGrid],
+        refundLedgerDetailGrid],
         buttonVAlign: 'top',
         buttonAlign: 'left',
         iconCls: 'application_form',
@@ -3085,8 +3368,8 @@ Ext.onReady(function() {
             disabled: auditButtonLabelDisabled,
             handler: function() { // reload the store
                 if (auditWindow) {
-                    generalLedgerJournalStore.reload();
-                    generalLedgerJournalDetailStore.reload();
+                    refundLedgerStore.reload();
+                    refundLedgerDetailStore.reload();
                     auditWindow.show().center();
                 }
             }
@@ -3109,12 +3392,12 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
-                            Ext.getCmp('generalLedgerJournalDetailGrid').enable();
+                            Ext.getCmp('refundLedgerDetailGrid').enable();
                             Ext.getCmp('newButton').disable();
                             Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            Ext.getCmp('generalLedgerJournalId').setValue(action.result.generalLedgerJournalId);
-                            generalLedgerJournalStore.reload({
+                            Ext.getCmp('refundLedgerId').setValue(action.result.refundLedgerId);
+                            refundLedgerStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
@@ -3152,23 +3435,23 @@ Ext.onReady(function() {
                     params: {
                         method: method,
                         leafId: leafId,
-                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                        refundLedgerId: Ext.getCmp('refundLedgerId').getValue()
                     },
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                            Ext.getCmp('generalLedgerJournalDetailGrid').enable();
+                            Ext.getCmp('refundLedgerDetailGrid').enable();
                             Ext.getCmp('newButton').disable();
                             Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            generalLedgerJournalStore.reload({
+                            refundLedgerStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
                                     limit: perPage
                                 }
                             });
-                            Ext.getCmp('generalLedgerJournalId').setValue(action.result.generalLedgerJournalId);
+                            Ext.getCmp('refundLedgerId').setValue(action.result.refundLedgerId);
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
@@ -3204,10 +3487,10 @@ Ext.onReady(function() {
                     fn: function(response) {
                         if ('yes' == response) {
                             Ext.Ajax.request({
-                                url: '../controller/refundLedger.php',
+                                url: '../controller/refundLedgerController.php',
                                 params: {
                                     method: 'delete',
-                                    generalLedgerJournalId: record.data.generalLedgerJournalId,
+                                    refundLedgerId: record.data.refundLedgerId,
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },
@@ -3215,19 +3498,19 @@ Ext.onReady(function() {
                                     jsonResponse = Ext.decode(response.responseText);
                                     if (jsonResponse.success == true) {
                                         Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                        generalLedgerJournalStore.reload({
+                                        refundLedgerStore.reload({
                                             params: {
                                                 leafId: leafId,
                                                 start: 0,
                                                 limit: perPage
                                             }
                                         });
-                                        Ext.getCmp('generalLedgerJournalDetail').disable();
+                                        Ext.getCmp('refundLedgerDetail').disable();
                                         Ext.getCmp('newButton').disable();
                                         Ext.getCmp('saveButton').disable();
                                         Ext.getCmp('nextButton').disable();
                                         Ext.getCmp('previousButton').disable();
-                                        generalLedgerJournalStore.reload({
+                                        refundLedgerStore.reload({
                                             params: {
                                                 leafId: leafId,
                                                 start: 0,
@@ -3258,8 +3541,8 @@ Ext.onReady(function() {
                 Ext.getCmp('saveButton').disable();
                 Ext.getCmp('deleteButton').disable();
                 Ext.getCmp('postButton').disable();
-                Ext.getCmp('generalLedgerJournalDetailGrid').disable();
-                generalLedgerJournalDetailGrid.store.removeAll();
+                Ext.getCmp('refundLedgerDetailGrid').disable();
+                refundLedgerDetailGrid.store.removeAll();
                 formPanel.getForm().reset();
             }
         },
@@ -3273,13 +3556,13 @@ Ext.onReady(function() {
             handler: function() {
                 
                 Ext.Ajax.request({
-                    url: '../controller/refundLedger.php',
+                    url: '../controller/refundLedgerController.php',
                     method: 'POST',
                     params: {
                         method: 'posting',
                         leafId: leafId,
                         isAdmin: isAdmin,
-                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                        refundLedgerId: Ext.getCmp('refundLedgerId').getValue()
                                                            				
                     },
                     success: function(response, options) {
@@ -3292,10 +3575,10 @@ Ext.onReady(function() {
                             Ext.getCmp('saveButton').disable();
                             Ext.getCmp('deleteButton').disable();
                             Ext.getCmp('postButton').disable();
-                            Ext.getCmp('generalLedgerJournalDetailGrid').disable();
+                            Ext.getCmp('refundLedgerDetailGrid').disable();
                             formPanel.getForm().reset();
-                            generalLedgerJournalDetailGrid.store.removeAll();
-                            generalLedgerJournalStore.reload({
+                            refundLedgerDetailGrid.store.removeAll();
+                            refundLedgerStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
@@ -3332,7 +3615,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('firstRecord').getValue() == '') {
                     Ext.Ajax.request({
-                        url: '../controller/refundLedger.php',
+                        url: '../controller/refundLedgerController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -3344,13 +3627,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
                                 formPanel.form.load({
-                                    url: '../controller/refundLedger.php',
+                                    url: '../controller/refundLedgerController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        generalLedgerJournalId: Ext.getCmp('firstRecord').getValue(),
+                                        refundLedgerId: Ext.getCmp('firstRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -3367,14 +3650,14 @@ Ext.onReady(function() {
                                             Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                             Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
                                             Ext.getCmp('previousButton').disable();
-                                            generalLedgerJournalDetailStore.load({
+                                            refundLedgerDetailStore.load({
                                                 params: {
                                                     leafId: leafId,
                                                     isAdmin: isAdmin,
-                                                    generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                                    refundLedgerId: action.result.data.refundLedgerId
                                                 }
                                             });
-                                            generalLedgerJournalDetailGrid.enable();
+                                            refundLedgerDetailGrid.enable();
                                         } else {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
@@ -3393,13 +3676,13 @@ Ext.onReady(function() {
                     });
                 } else {
                     formPanel.form.load({
-                        url: '../controller/refundLedger.php',
+                        url: '../controller/refundLedgerController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            generalLedgerJournalId: Ext.getCmp('firstRecord').getValue(),
+                            refundLedgerId: Ext.getCmp('firstRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -3416,14 +3699,14 @@ Ext.onReady(function() {
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
                                 Ext.getCmp('previousButton').disable();
-                                generalLedgerJournalDetailStore.load({
+                                refundLedgerDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                        refundLedgerId: action.result.data.refundLedgerId
                                     }
                                 });
-                                generalLedgerJournalDetailGrid.enable();
+                                refundLedgerDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -3449,13 +3732,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('firstRecord').getValue() >= 1) {
                     formPanel.form.load({
-                        url: '../controller/refundLedger.php',
+                        url: '../controller/refundLedgerController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            generalLedgerJournalId: Ext.getCmp('previousRecord').getValue(),
+                            refundLedgerId: Ext.getCmp('previousRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -3466,17 +3749,17 @@ Ext.onReady(function() {
                                 Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                generalLedgerJournalDetailStore.load({
+                                refundLedgerDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                        refundLedgerId: action.result.data.refundLedgerId
                                     }
                                 });
                                 if (Ext.getCmp('previousRecord').getValue() == 0) {
                                     Ext.getCmp('previousButton').disable();
                                 }
-                                generalLedgerJournalDetailGrid.enable();
+                                refundLedgerDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -3504,13 +3787,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('nextRecord').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/refundLedger.php',
+                        url: '../controller/refundLedgerController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            generalLedgerJournalId: Ext.getCmp('nextRecord').getValue(),
+                            refundLedgerId: Ext.getCmp('nextRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -3521,11 +3804,11 @@ Ext.onReady(function() {
                                 Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                generalLedgerJournalDetailStore.load({
+                                refundLedgerDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                        refundLedgerId: action.result.data.refundLedgerId
                                     }
                                 });
                                 if (Ext.getCmp('nextRecord').getValue() > Ext.getCmp('lastRecord').getValue()) {
@@ -3535,7 +3818,7 @@ Ext.onReady(function() {
                                     Ext.getCmp('nextButton').disable();
                                 }
                                 Ext.getCmp('previousButton').enable();
-                                generalLedgerJournalDetailGrid.enable();
+                                refundLedgerDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -3559,7 +3842,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('lastRecord').getValue() == '' || Ext.getCmp('lastRecord').getValue() == undefined) {
                     Ext.Ajax.request({
-                        url: '../controller/refundLedger.php',
+                        url: '../controller/refundLedgerController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -3571,13 +3854,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
                                 formPanel.form.load({
-                                    url: '../controller/refundLedger.php',
+                                    url: '../controller/refundLedgerController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        generalLedgerJournalId: Ext.getCmp('lastRecord').getValue(),
+                                        refundLedgerId: Ext.getCmp('lastRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -3593,16 +3876,16 @@ Ext.onReady(function() {
                                             Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                             Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                             Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                            generalLedgerJournalDetailStore.load({
+                                            refundLedgerDetailStore.load({
                                                 params: {
                                                     leafId: leafId,
                                                     isAdmin: isAdmin,
-                                                    generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                                    refundLedgerId: action.result.data.refundLedgerId
                                                 }
                                             });
                                             Ext.getCmp('nextButton').disable();
                                             Ext.getCmp('previousButton').enable();
-                                            generalLedgerJournalDetailGrid.enable();
+                                            refundLedgerDetailGrid.enable();
                                         } else {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
@@ -3620,15 +3903,15 @@ Ext.onReady(function() {
                         }
                     });
                 }
-                if (Ext.getCmp('generalLedgerJournalId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
+                if (Ext.getCmp('refundLedgerId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/refundLedger.php',
+                        url: '../controller/refundLedgerController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            generalLedgerJournalId: Ext.getCmp('lastRecord').getValue(),
+                            refundLedgerId: Ext.getCmp('lastRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -3644,16 +3927,16 @@ Ext.onReady(function() {
                                 Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                generalLedgerJournalDetailStore.load({
+                                refundLedgerDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                        refundLedgerId: action.result.data.refundLedgerId
                                     }
                                 });
                                 Ext.getCmp('nextButton').disable();
                                 Ext.getCmp('previousButton').enable();
-                                generalLedgerJournalDetailGrid.enable();
+                                refundLedgerDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }

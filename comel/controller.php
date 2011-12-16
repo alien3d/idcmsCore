@@ -197,7 +197,7 @@ class ReligionDetailSampleClass extends ConfigClass {
 			\$sql = \"SET NAMES \"utf8\"\";
 			\$this->q->fast(\$sql);
 		}
-		\$items = array();"
+		\$items = array();";
 		$controller .= "if (\$this->getVendor() == self::MYSQL) {";
 			
 		$controller .= "if (\$this->model->getReligionDetailId(0, 'single')) {

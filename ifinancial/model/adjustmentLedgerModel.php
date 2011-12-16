@@ -14,16 +14,32 @@ require_once ("../../class/classValidation.php");
  * @http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class AdjustmentModel extends ValidationClass {
+class AdjustmentLedgerModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $adjustmentId;
+	private $adjustmentLedgerId;
 	/**
 	 * @var int
 	 */
-	private $adjustmentTypeId;
+	private $adjustmentLedgerTypeId;
+	/**
+	 * @var int
+	 */
+	private $businessPartnerId;
+	/**
+	 * @var int
+	 */
+	private $invoiceCategoryId;
+	/**
+	 * @var int
+	 */
+	private $invoiceTypeId;
+	/**
+	 * @var int
+	 */
+	private $invoiceId;
 	/**
 	* @var string
 	*/
@@ -35,27 +51,15 @@ class AdjustmentModel extends ValidationClass {
 	/**
 	* @var string
 	*/
-	private $adjustmentTitle;
+	private $adjustmentLedgerTitle;
 	/**
 	* @var string
 	*/
-	private $adjustmentDesc;
-	/**
-	* @var date
-	*/
-	private $adjustmentDate;
-	/**
-	* @var date
-	*/
-	private $adjustmentStartDate;
-	/**
-	* @var date
-	*/
-	private $adjustmentEndDate;
+	private $adjustmentLedgerDesc;
 	/**
 	* @var float
 	*/
-	private $adjustmentAmount;
+	private $adjustmentLedgerAmount;
 
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
@@ -66,49 +70,58 @@ class AdjustmentModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('adjustment');
-		$this->setPrimaryKeyName('adjustmentId');
+		$this->setTableName('adjustmentLedger');
+		$this->setPrimaryKeyName('adjustmentLedgerId');
 		//$this->setFilterCharacter($filterCharacter);
-		$this->setFilterDate('adjustmentDate');
+		$this->setFilterDate('adjustmentLedgerDate');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['adjustmentId'])) {
-			$this->setAdjustmentId($this->strict($_POST ['adjustmentId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['adjustmentLedgerId'])) {
+			$this->setAdjustmentLedgerId($this->strict($_POST ['adjustmentLedgerId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['adjustmentTypeId'])) {
-			$this->setAdjustmentTypeId($this->strict($_POST ['adjustmentTypeId'], 'numeric'));
+		if (isset($_POST ['adjustmentLedgerTypeId'])) {
+			$this->setAdjustmentLedgerTypeId($this->strict($_POST ['adjustmentLedgerTypeId'], 'numeric'));
 		}
+		if (isset($_POST ['invoiceCategoryId'])) {
+			$this->setInvoiceCategoryId($this->strict($_POST ['invoiceCategoryId'], 'numeric'));
+		}
+		if (isset($_POST ['invoiceTypeId'])) {
+			$this->setInvoiceTypeId($this->strict($_POST ['invoiceTypeId'], 'numeric'));
+		}
+		if (isset($_POST ['invoiceId'])) {
+			$this->setInvoiceId($this->strict($_POST ['invoiceId'], 'numeric'));
+		}		
 		if (isset($_POST ['documentNo'])) {
 			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'string'));
 		}
 		if (isset($_POST ['referenceNo'])) {
 			$this->setReferenceNo($this->strict($_POST ['referenceNo'], 'string'));
 		}
-		if (isset($_POST ['adjustmentTitle'])) {
-			$this->setAdjustmentTitle($this->strict($_POST ['adjustmentTitle'], 'string'));
+		if (isset($_POST ['adjustmentLedgerTitle'])) {
+			$this->setAdjustmentLedgerTitle($this->strict($_POST ['adjustmentLedgerTitle'], 'string'));
 		}
-		if (isset($_POST ['adjustmentDesc'])) {
-			$this->setAdjustmentDesc($this->strict($_POST ['adjustmentDesc'], 'string'));
+		if (isset($_POST ['adjustmentLedgerDesc'])) {
+			$this->setAdjustmentLedgerDesc($this->strict($_POST ['adjustmentLedgerDesc'], 'string'));
 		}
-		if (isset($_POST ['adjustmentDate'])) {
-			$this->setAdjustmentDate($this->strict($_POST ['adjustmentDate'], 'date'));
+		if (isset($_POST ['adjustmentLedgerDate'])) {
+			$this->setAdjustmentLedgerDate($this->strict($_POST ['adjustmentLedgerDate'], 'date'));
 		}
-		if (isset($_POST ['adjustmentStartDate'])) {
-			$this->setAdjustmentStartDate($this->strict($_POST ['adjustmentStartDate'], 'date'));
+		if (isset($_POST ['adjustmentLedgerStartDate'])) {
+			$this->setAdjustmentLedgerStartDate($this->strict($_POST ['adjustmentLedgerStartDate'], 'date'));
 		}
-		if (isset($_POST ['adjustmentEndDate'])) {
-			$this->setAdjustmentEndDate($this->strict($_POST ['adjustmentEndDate'], 'date'));
+		if (isset($_POST ['adjustmentLedgerEndDate'])) {
+			$this->setAdjustmentLedgerEndDate($this->strict($_POST ['adjustmentLedgerEndDate'], 'date'));
 		}
-		if (isset($_POST ['adjustmentAmount'])) {
-			$this->setAdjustmentAmount($this->strict($_POST ['adjustmentAmount'], 'float'));
+		if (isset($_POST ['adjustmentLedgerAmount'])) {
+			$this->setAdjustmentLedgerAmount($this->strict($_POST ['adjustmentLedgerAmount'], 'float'));
 		}
 		
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['adjustmentId'])) {
-			$this->setTotal(count($_GET ['adjustmentId']));
+		if (isset($_GET ['adjustmentLedgerId'])) {
+			$this->setTotal(count($_GET ['adjustmentLedgerId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -159,8 +172,8 @@ class AdjustmentModel extends ValidationClass {
 		$primaryKeyAll = '';
 		
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['adjustmentId'])) {
-				$this->setAdjustmentId($this->strict($_GET ['adjustmentId'] [$i], 'numeric'), $i, 'array');				
+			if (isset($_GET ['adjustmentLedgerId'])) {
+				$this->setAdjustmentLedgerId($this->strict($_GET ['adjustmentLedgerId'] [$i], 'numeric'), $i, 'array');				
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -225,7 +238,7 @@ class AdjustmentModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getAdjustmentId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getAdjustmentLedgerId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -359,35 +372,35 @@ class AdjustmentModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Adjustment Identification  Value
+	 * Set AdjustmentLedger Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setAdjustmentId($value, $key, $type) {
+	public function setAdjustmentLedgerId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->adjustmentId = $value;
+			$this->adjustmentLedgerId = $value;
 		} else if ($type == 'array') {
-			$this->adjustmentId [$key] = $value;
+			$this->adjustmentLedgerId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setAdjustmentId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setAdjustmentLedgerId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return Adjustment Identification  Value
+	 * Return AdjustmentLedger Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getAdjustmentId($key, $type) {
+	public function getAdjustmentLedgerId($key, $type) {
 		if ($type == 'single') {
-			return $this->adjustmentId;
+			return $this->adjustmentLedgerId;
 		} else if ($type == 'array') {
-			return $this->adjustmentId [$key];
+			return $this->adjustmentLedgerId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getAdjustmentId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getAdjustmentLedgerId ?"));
 			exit();
 		}
 	}
@@ -433,126 +446,126 @@ class AdjustmentModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getAdjustmentTitle()
+	public function getAdjustmentLedgerTitle()
 	{
-	    return $this->adjustmentTitle;
+	    return $this->adjustmentLedgerTitle;
 	}
 
 	/**
 	 * 
-	 * @param $adjustmentTitle
+	 * @param $adjustmentLedgerTitle
 	 */
-	public function setAdjustmentTitle($adjustmentTitle)
+	public function setAdjustmentLedgerTitle($adjustmentLedgerTitle)
 	{
-	    $this->adjustmentTitle = $adjustmentTitle;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getAdjustmentDesc()
-	{
-	    return $this->adjustmentDesc;
-	}
-
-	/**
-	 * 
-	 * @param $adjustmentDesc
-	 */
-	public function setAdjustmentDesc($adjustmentDesc)
-	{
-	    $this->adjustmentDesc = $adjustmentDesc;
+	    $this->adjustmentLedgerTitle = $adjustmentLedgerTitle;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getAdjustmentDate()
+	public function getAdjustmentLedgerDesc()
 	{
-	    return $this->adjustmentDate;
+	    return $this->adjustmentLedgerDesc;
 	}
 
 	/**
 	 * 
-	 * @param $adjustmentDate
+	 * @param $adjustmentLedgerDesc
 	 */
-	public function setAdjustmentDate($adjustmentDate)
+	public function setAdjustmentLedgerDesc($adjustmentLedgerDesc)
 	{
-	    $this->adjustmentDate = $adjustmentDate;
+	    $this->adjustmentLedgerDesc = $adjustmentLedgerDesc;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getAdjustmentStartDate()
+	public function getAdjustmentLedgerDate()
 	{
-	    return $this->adjustmentStartDate;
+	    return $this->adjustmentLedgerDate;
 	}
 
 	/**
 	 * 
-	 * @param $adjustmentStartDate
+	 * @param $adjustmentLedgerDate
 	 */
-	public function setAdjustmentStartDate($adjustmentStartDate)
+	public function setAdjustmentLedgerDate($adjustmentLedgerDate)
 	{
-	    $this->adjustmentStartDate = $adjustmentStartDate;
+	    $this->adjustmentLedgerDate = $adjustmentLedgerDate;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getAdjustmentLedgerStartDate()
+	{
+	    return $this->adjustmentLedgerStartDate;
+	}
+
+	/**
+	 * 
+	 * @param $adjustmentLedgerStartDate
+	 */
+	public function setAdjustmentLedgerStartDate($adjustmentLedgerStartDate)
+	{
+	    $this->adjustmentLedgerStartDate = $adjustmentLedgerStartDate;
 	}
 	
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getAdjustmentEndDate()
+	public function getAdjustmentLedgerEndDate()
 	{
-	    return $this->adjustmentEndDate;
+	    return $this->adjustmentLedgerEndDate;
 	}
 
 	/**
 	 * 
-	 * @param $adjustmentDate
+	 * @param $adjustmentLedgerDate
 	 */
-	public function setAdjustmentEndDate($adjustmentEndDate)
+	public function setAdjustmentLedgerEndDate($adjustmentLedgerEndDate)
 	{
-	    $this->adjustmentEndDate = $adjustmentEndDate;
+	    $this->adjustmentLedgerEndDate = $adjustmentLedgerEndDate;
 	}
 	
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getAdjustmentAmount()
+	public function getAdjustmentLedgerAmount()
 	{
-	    return $this->adjustmentAmount;
+	    return $this->adjustmentLedgerAmount;
 	}
 
 	/**
 	 * 
-	 * @param $adjustmentAmount
+	 * @param $adjustmentLedgerAmount
 	 */
-	public function setAdjustmentAmount($adjustmentAmount)
+	public function setAdjustmentLedgerAmount($adjustmentLedgerAmount)
 	{
-	    $this->adjustmentAmount = $adjustmentAmount;
+	    $this->adjustmentLedgerAmount = $adjustmentLedgerAmount;
 	}	
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getAdjustmentTypeId()
+	public function getAdjustmentLedgerTypeId()
 	{
-	    return $this->adjustmentTypeId;
+	    return $this->adjustmentLedgerTypeId;
 	}
 
 	/**
 	 * 
-	 * @param $adjustmentTypeId
+	 * @param $adjustmentLedgerTypeId
 	 */
-	public function setAdjustmentTypeId($adjustmentTypeId)
+	public function setAdjustmentLedgerTypeId($adjustmentLedgerTypeId)
 	{
-	    $this->adjustmentTypeId = $adjustmentTypeId;
+	    $this->adjustmentLedgerTypeId = $adjustmentLedgerTypeId;
 	}
 }
 

@@ -147,30 +147,56 @@ class DepositLedgerClass extends ConfigClass {
 			$sql="
 			INSERT INTO `".$this->q->getFinancialDatabase()."`.`depositLedger` 
 				(    
-						`depositLedgerId`,   `depositLedgerTypeId`,   `documentNo`,`referenceNo`,   `depositLedgerTitle`,    `depositLedgerDesc`, `depositLedgerDate`, `depositLedgerStartDate`,    `depositLedgerEndDate`,  `depositLedgerAmount`,   `isDefault`,    `isNew`,    `isDraft`,  `isUpdate`, `isDelete`, `isActive`, `isApproved`,   `isReview`, `isPost`,   `executeBy`,    `executeTime`) VALUES ( null, '".$this->model->getDepositLedgerTypeId()."',
-'".$this->model->getDocumentNo()."',
-'".$this->model->getReferenceNo()."',
-'".$this->model->getDepositLedgerTitle()."',
-'".$this->model->getDepositLedgerDesc()."',
-'".$this->model->getDepositLedgerDate()."',
-'".$this->model->getDepositLedgerStartDate()."',
-'".$this->model->getDepositLedgerEndDate()."',
-'".$this->model->getDepositLedgerAmount()."',
-'".$this->model->getIsDefault(0, 'single')."',
-'".$this->model->getIsNew(0, 'single')."',
-'".$this->model->getIsDraft(0, 'single')."',
-'".$this->model->getIsUpdate(0, 'single')."',
-'".$this->model->getIsDelete(0, 'single')."',
-'".$this->model->getIsActive(0, 'single')."',
-'".$this->model->getIsApproved(0, 'single')."',
-'".$this->model->getIsReview(0, 'single')."',
-'".$this->model->getIsPost(0, 'single')."',
-'".$this->model->getExecuteBy()."',
-".$this->model->getExecuteTime().");";
+						`depositLedgerId`,
+						`depositTypeId`,
+						`businessPartnerId`,		
+						`documentNo`,
+						`referenceNo`,   
+						`depositLedgerTitle`,    
+						`depositLedgerDesc`, 
+						`depositLedgerDate`, 
+						`depositLedgerAmount`,   
+						`isDefault`,    
+						`isNew`,    
+						`isDraft`,  
+						`isUpdate`, 
+						`isDelete`, 
+						`isActive`, 
+						`isApproved`,
+						`isReview`, 
+						`isPost`,
+						`isReconciled`,
+						`executeBy`,
+						`executeTime`
+				) VALUES ( 
+						null, 
+						'".$this->model->getDepositTypeId()."',
+						'".$this->model->getBusinessPartnerId()."',
+						'".$this->model->getDocumentNo()."',
+						'".$this->model->getReferenceNo()."',
+						'".$this->model->getDepositLedgerTitle()."',
+						'".$this->model->getDepositLedgerDesc()."',
+						'".$this->model->getDepositLedgerDate()."',
+						'".$this->model->getDepositLedgerAmount()."',
+						'".$this->model->getIsDefault(0, 'single')."',
+						'".$this->model->getIsNew(0, 'single')."',
+						'".$this->model->getIsDraft(0, 'single')."',
+						'".$this->model->getIsUpdate(0, 'single')."',
+						'".$this->model->getIsDelete(0, 'single')."',
+						'".$this->model->getIsActive(0, 'single')."',
+						'".$this->model->getIsApproved(0, 'single')."',
+						'".$this->model->getIsReview(0, 'single')."',
+						'".$this->model->getIsPost(0, 'single')."',
+						'".$this->model->getIsRenconciled(0, 'single')."',
+						'".$this->model->getExecuteBy()."',
+						".$this->model->getExecuteTime().");";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			INSERT INTO [".$this->q->getFinancialDatabase()."].[depositLedger]
 					(
+						[depositLedgerId],
+						[depositTypeId],
+						[businessPartnerId],
 						[documentNo],												
 						[depositLedgerTitle],
 						[depositLedgerDesc],
@@ -185,11 +211,15 @@ class DepositLedgerClass extends ConfigClass {
 						[isApproved],
 						[isReview],														
 						[isPost],
+						[isReconciled],
 						[executeBy],													
 						[executeTime]
 					)
 			VALUES
 					(
+						null, 
+						'".$this->model->getDepositTypeId()."',
+						'".$this->model->getBusinessPartnerId()."',
 						'" . $this->model->getDocumentNo() . "',
 						'" . $this->model->getDepositLedgerTitle() . "',
 						'" . $this->model->getDepositLedgerDesc() . "',
@@ -204,19 +234,23 @@ class DepositLedgerClass extends ConfigClass {
 						'" . $this->model->getIsApproved(0, 'single') . "',
 						'" . $this->model->getIsReview(0, 'single') . "',			
 						'" . $this->model->getIsPost(0, 'single') . "',
+						'".$this->model->getIsRenconciled(0, 'single')."',
 						'" . $this->model->getExecuteBy() . "',						
 						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	DEPOSIT
+			INSERT INTO	DEPOSITLEDGER
 					(
+						DEPOSITLEDGERLEDGERID,
+						DEPOSITLEDGERTYPEID,
+						BUSINESSPARTNERID,
 						DOCUMENTNO,												
-						DEPOSITTITLE,
-						DEPOSITDESC,
-						DEPOSITDATE,
-						DEPOSITAMOUNT,
+						DEPOSITLEDGERTITLE,
+						DEPOSITLEDGERDESC,
+						DEPOSITLEDGERDATE,
+						DEPOSITLEDGERAMOUNT,
 						ISDEFAULT,
 						ISNEW,														
 						ISDRAFT,
@@ -226,32 +260,45 @@ class DepositLedgerClass extends ConfigClass {
 						ISAPPROVED,
 						ISREVIEW,													
 						ISPOST,
+						ISRECONCILED,
 						EXECUTEBY,													
 						EXECUTETIME
 					)
 			VALUES
 					(
+						null, 
+						'".$this->model->getDepositTypeId()."',
+						'".$this->model->getBusinessPartnerId()."',
 						'" . $this->model->getDocumentNo() . "',
 						'" . $this->model->getDepositLedgerTitle() . "',
 						'" . $this->model->getDepositLedgerDesc() . "',
 						'" . $this->model->getDepositLedgerDate() . "',
 						'" . $this->model->getDepositLedgerAmount() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',				
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',			
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',			
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',			
+						'" . $this->model->getIsPost(0, 'single') . "',
+						'".$this->model->getIsRenconciled(0, 'single')."',
+						'" . $this->model->getExecuteBy() . "',						
+						" . $this->model->getExecuteTime() . "
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	DEPOSIT
+			INSERT INTO	DEPOSITLEDGER
 					(
+						DEPOSITLEDGERLEDGERID,
+						DEPOSITLEDGERTYPEID,
+						BUSINESSPARTNERID,
 						DOCUMENTNO,												
-						DEPOSITTITLE,
-						DEPOSITDESC,
-						DEPOSITDATE,
-						DEPOSITAMOUNT,
+						DEPOSITLEDGERTITLE,
+						DEPOSITLEDGERDESC,
+						DEPOSITLEDGERDATE,
+						DEPOSITLEDGERAMOUNT,
 						ISDEFAULT,
 						ISNEW,														
 						ISDRAFT,
@@ -260,33 +307,43 @@ class DepositLedgerClass extends ConfigClass {
 						ISACTIVE,													
 						ISAPPROVED,
 						ISREVIEW,													
+						ISRECONCILED,
 						ISPOST,
 						EXECUTEBY,													
 						EXECUTETIME
 					)
 			VALUES
 					(
+						null, 
+						'".$this->model->getDepositTypeId()."',
+						'".$this->model->getBusinessPartnerId()."',
 						'" . $this->model->getDocumentNo() . "',
 						'" . $this->model->getDepositLedgerTitle() . "',
 						'" . $this->model->getDepositLedgerDesc() . "',
 						'" . $this->model->getDepositLedgerDate() . "',
 						'" . $this->model->getDepositLedgerAmount() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',				
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',			
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',			
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',			
+						'" . $this->model->getIsPost(0, 'single') . "',
+						'".$this->model->getIsRenconciled(0, 'single')."',
+						'" . $this->model->getExecuteBy() . "',						
+						" . $this->model->getExecuteTime() . "
 					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	DEPOSIT
+			INSERT INTO	DEPOSITLEDGER
 					(
 						DOCUMENTNO,												
-						DEPOSITTITLE,
-						DEPOSITDESC,
-						DEPOSITDATE,
-						DEPOSITAMOUNT,
+						DEPOSITLEDGERTITLE,
+						DEPOSITLEDGERDESC,
+						DEPOSITLEDGERDATE,
+						DEPOSITLEDGERAMOUNT,
 						ISDEFAULT,
 						ISNEW,														
 						ISDRAFT,
@@ -296,22 +353,32 @@ class DepositLedgerClass extends ConfigClass {
 						ISAPPROVED,
 						ISREVIEW,													
 						ISPOST,
+						ISRECONCILED,
 						EXECUTEBY,													
 						EXECUTETIME
 					)
 			VALUES
 					(
+						null, 
+						'".$this->model->getDepositTypeId()."',
+						'".$this->model->getBusinessPartnerId()."',
 						'" . $this->model->getDocumentNo() . "',
 						'" . $this->model->getDepositLedgerTitle() . "',
 						'" . $this->model->getDepositLedgerDesc() . "',
 						'" . $this->model->getDepositLedgerDate() . "',
 						'" . $this->model->getDepositLedgerAmount() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',				
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',			
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',			
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',			
+						'" . $this->model->getIsPost(0, 'single') . "',
+						'".$this->model->getIsRenconciled(0, 'single')."',
+						'" . $this->model->getExecuteBy() . "',						
+						" . $this->model->getExecuteTime() . "
 					)";
 		} else {
 			echo json_encode(array("success" => false,"sql"=>$sql, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -351,14 +418,14 @@ class DepositLedgerClass extends ConfigClass {
 				$this->auditFilter = "  	[depositLedger].[isActive]		=	1
 										AND	[depositLedger].[isPost]		=	0 ";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "		DEPOSIT.ISACTIVE			=	1
-										AND DEPOSIT.ISPOST			=	0	";
+				$this->auditFilter = "		DEPOSITLEDGER.ISACTIVE			=	1
+										AND DEPOSITLEDGER.ISPOST			=	0	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "		DEPOSIT.ISACTIVE			=	1
-										AND DEPOSIT.ISPOST			=	0	";
+				$this->auditFilter = "		DEPOSITLEDGER.ISACTIVE			=	1
+										AND DEPOSITLEDGER.ISPOST			=	0	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "		DEPOSIT.ISACTIVE			=	1
-											AND DEPOSIT.ISPOST		=	0	";
+				$this->auditFilter = "		DEPOSITLEDGER.ISACTIVE			=	1
+											AND DEPOSITLEDGER.ISPOST		=	0	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -388,13 +455,12 @@ class DepositLedgerClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`depositLedger`.`depositLedgerId`,
-					`depositLedger`.`depositLedgerTypeId`,
+					`depositLedger`.`businessPartnerId`,
+					`depositLedger`.`depositTypeId`,
 					`depositLedger`.`documentNo`,
 					`depositLedger`.`depositLedgerTitle`,
 					`depositLedger`.`depositLedgerDesc`,
 					`depositLedger`.`depositLedgerDate`,
-					`depositLedger`.`depositLedgerStartDate`,
-					`depositLedger`.`depositLedgerEndDate`,
 					`depositLedger`.`depositLedgerAmount`,
 					`depositLedger`.`isDefault`,
 					`depositLedger`.`isNew`,
@@ -405,15 +471,16 @@ class DepositLedgerClass extends ConfigClass {
 					`depositLedger`.`isApproved`,
 					`depositLedger`.`isReview`,
 					`depositLedger`.`isPost`,
+					`depositLedger`.`isReconciled`,
 					`depositLedger`.`executeBy`,
 					`depositLedger`.`executeTime`,
-					`depositLedgerType`.`depositLedgerTypeDesc`,
+					`depositType`.`depositTypeDesc`,
                    	`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`depositLedger`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
             ON      `depositLedger`.`executeBy` = `staff`.`staffId`
-            JOIN	`".$this->q->getFinancialDatabase()."`.`depositLedgerType`
-            USING	(`depositLedgerTypeId`)
+            JOIN	`".$this->q->getFinancialDatabase()."`.`depositType`
+            USING	(`depositTypeId`)
             WHERE 	 " . $this->auditFilter;
 
 			if ($this->model->getDepositLedgerId(0, 'single')) {
@@ -424,13 +491,12 @@ class DepositLedgerClass extends ConfigClass {
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT		[depositLedger].[depositLedgerId],
-						[depositLedger].[depositLedgerTypeId],
+						[depositLedger].[businessPartnerId],
+						[depositLedger].[depositTypeId],
 						[depositLedger].[documentNo],
 						[depositLedger].[depositLedgerTitle],
 						[depositLedger].[depositLedgerDesc],
 						[depositLedger].[depositLedgerDate],
-						[depositLedger].[depositLedgerStartDate],
-						[depositLedger].[depositLedgerEndDate],
 						[depositLedger].[depositLedgerAmount],
 						[depositLedger].[isDefault],
 						[depositLedger].[isNew],
@@ -441,6 +507,7 @@ class DepositLedgerClass extends ConfigClass {
 						[depositLedger].[isApproved],
 						[depositLedger].[isReview],
 						[depositLedger].[isPost],
+						[depositLedger].[isReconciled],
 						[depositLedger].[executeBy],
 						[depositLedger].[executeTime],
 						[staff].[staffName]
@@ -453,27 +520,29 @@ class DepositLedgerClass extends ConfigClass {
 			//}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		DEPOSIT.DEPOSITID   		 	AS 	\"depositLedgerId\",
-						DEPOSIT.DOCUMENTNO 				AS 	\"documentNo\",
-						DEPOSIT.DEPOSITTITLE 			AS 	\"depositLedgerTitle\",
-						DEPOSIT.DEPOSITDESC 			AS 	\"depositLedgerDesc\",
-						DEPOSIT.DEPOSITDATE 			AS 	\"depositLedgerDate\",
-						DEPOSIT.DEPOSITAMOUNT 			AS 	\"depositLedgerAmount\",
-						DEPOSIT.ISDEFAULT    			AS	\"isDefault\",
-						DEPOSIT.ISNEW		  			AS	\"isNew\",
-						DEPOSIT.ISDRAFT	  				AS	\"isDraft\",
-						DEPOSIT.ISUPDATE     			AS	\"isUpdate\",
-						DEPOSIT.ISDELETE	  			AS	\"isDelete\",
-						DEPOSIT.ISACTIVE	  			AS	\"isActive\",
-						DEPOSIT.ISAPPROVED   			AS	\"isApproved\",
-						DEPOSIT.ISREVIEW	  			AS	\"isReview\",
-						DEPOSIT.ISPOST  	  			AS	\"isPost\",
-						DEPOSIT.EXECUTEBY    			AS	\"executeBy\",
-						DEPOSIT.EXECUTETIME  			AS	\"executeTime\",
-						STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		DEPOSIT
+			SELECT		DEPOSITLEDGER.DEPOSITLEDGERID		AS 	\"depositLedgerId\",
+						DEPOSITLEDGER.DOCUMENTNO 			AS 	\"documentNo\",
+						DEPOSITLEDGER.REFERENCENO 			AS 	\"referenceNo\",
+						DEPOSITLEDGER.DEPOSITLEDGERTITLE 	AS 	\"depositLedgerTitle\",
+						DEPOSITLEDGER.DEPOSITLEDGERDESC 	AS 	\"depositLedgerDesc\",
+						DEPOSITLEDGER.DEPOSITLEDGERDATE 	AS 	\"depositLedgerDate\",
+						DEPOSITLEDGER.DEPOSITLEDGERAMOUNT 	AS 	\"depositLedgerAmount\",
+						DEPOSITLEDGER.ISDEFAULT    			AS	\"isDefault\",
+						DEPOSITLEDGER.ISNEW		  			AS	\"isNew\",
+						DEPOSITLEDGER.ISDRAFT	  			AS	\"isDraft\",
+						DEPOSITLEDGER.ISUPDATE     			AS	\"isUpdate\",
+						DEPOSITLEDGER.ISDELETE	  			AS	\"isDelete\",
+						DEPOSITLEDGER.ISACTIVE	  			AS	\"isActive\",
+						DEPOSITLEDGER.ISAPPROVED   			AS	\"isApproved\",
+						DEPOSITLEDGER.ISREVIEW	  			AS	\"isReview\",
+						DEPOSITLEDGER.ISPOST  	  			AS	\"isPost\",
+						DEPOSITLEDGER.ISRECONCILED  	  	AS	\"isReconciled\",
+						DEPOSITLEDGER.EXECUTEBY    			AS	\"executeBy\",
+						DEPOSITLEDGER.EXECUTETIME  			AS	\"executeTime\",
+						STAFF.STAFFNAME		  				AS	\"staffName\"	
+			FROM 		DEPOSITLEDGER
 			JOIN		STAFF
-			ON			DEPOSIT.EXECUTEBY 	  	=	STAFF.STAFFID
+			ON			DEPOSITLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
 			//	if ($this->model->getDepositLedgerId(0, 'single')) {
 			//		$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getDepositLedgerId(0, 'single') . "'";
@@ -615,70 +684,73 @@ class DepositLedgerClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [depositLedgerDerived] AS
-							(
-								SELECT 		[depositLedger].[depositLedgerId],
-											[depositLedger].[documentNo],
-											[depositLedger].[depositLedgerTitle],
-											[depositLedger].[depositLedgerDesc],
-											[depositLedger].[depositLedgerDate],
-											[depositLedger].[depositLedgerAmount],
-											[depositLedger].[isDefault],
-											[depositLedger].[isNew],
-											[depositLedger].[isDraft],
-											[depositLedger].[isUpdate],
-											[depositLedger].[isDelete],
-											[depositLedger].[isApproved],
-											[depositLedger].[isReview],
-											[depositLedger].[isPost],
-											[depositLedger].[executeBy],
-											[depositLedger].[executeTime],
-											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [depositLedger].[depositLedgerId]) AS 'RowNumber'
-								FROM 	[".$this->q->getFinancialDatabase()."].[depositLedger]
-								JOIN	[".$this->q->getManagementDatabase()."].[staff]
-								ON		[depositLedger].[executeBy] = [staff].[staffId]
-								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
-							)
-							SELECT		*
-							FROM 		[depositLedgerDerived]
-							WHERE 		[RowNumber]
-							BETWEEN	" . ($this->getStart() + 1) . "
-							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
+				WITH [depositLedgerDerived] AS
+				(
+					SELECT 		[depositLedger].[depositLedgerId],
+								[depositLedger].[documentNo],
+								[depositLedger].[referenceNo],
+								[depositLedger].[depositLedgerTitle],
+								[depositLedger].[depositLedgerDesc],
+								[depositLedger].[depositLedgerDate],
+								[depositLedger].[depositLedgerAmount],
+								[depositLedger].[isDefault],
+								[depositLedger].[isNew],
+								[depositLedger].[isDraft],
+								[depositLedger].[isUpdate],
+								[depositLedger].[isDelete],
+								[depositLedger].[isApproved],
+								[depositLedger].[isReview],
+								[depositLedger].[isPost],
+								[depositLedger].[isReconciled],
+								[depositLedger].[executeBy],
+								[depositLedger].[executeTime],
+								[staff].[staffName],
+					ROW_NUMBER() OVER (ORDER BY [depositLedger].[depositLedgerId]) AS 'RowNumber'
+					FROM 	[".$this->q->getFinancialDatabase()."].[depositLedger]
+					JOIN	[".$this->q->getManagementDatabase()."].[staff]
+					ON		[depositLedger].[executeBy] = [staff].[staffId]
+					WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
+				)
+				SELECT		*
+				FROM 		[depositLedgerDerived]
+				WHERE 		[RowNumber]
+				BETWEEN	" . ($this->getStart() + 1) . "
+				AND 			" . ($this->getStart() + $this->getLimit()) . ";";
 			} else if ($this->getVendor() == self::ORACLE) {
 				/**
 				 * Oracle using derived table also
 				 */
 				$sql = "
-						SELECT *
-						FROM ( SELECT	a.*,
-												rownum r
-						FROM (
-								SELECT	DEPOSIT.DEPOSITID   		AS 	\"depositLedgerId\",
-										DEPOSIT.DOCUMENTNO 			AS 	\"documentNo\",
-										DEPOSIT.DEPOSITTITLE 		AS 	\"depositLedgerTitle\",
-										DEPOSIT.DEPOSITDESC 		AS 	\"depositLedgerDesc\",
-										DEPOSIT.DEPOSITDATE 		AS 	\"depositLedgerDate\",
-										DEPOSIT.DEPOSITAMOUNT 		AS 	\"depositLedgerAmount\",
-										DEPOSIT.ISDEFAULT    		AS	\"isDefault\",
-										DEPOSIT.ISNEW		  		AS	\"isNew\",
-										DEPOSIT.ISDRAFT	 			AS	\"isDraft\",
-										DEPOSIT.ISUPDATE     		AS	\"isUpdate\",
-										DEPOSIT.ISDELETE	  		AS	\"isDelete\",
-										DEPOSIT.ISACTIVE	  		AS	\"isActive\",
-										DEPOSIT.ISAPPROVED   		AS	\"isApproved\",
-										DEPOSIT.ISREVIEW	  		AS 	\"isReview\",
-										DEPOSIT.ISPOST		  		AS	\"isPost\",
-										DEPOSIT.EXECUTEBY    		AS	\"executeBy\",
-										DEPOSIT.EXECUTETIME  		AS	\"executeTime\",
-										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	DEPOSIT
-								JOIN	STAFF
-								ON		DEPOSIT.EXECUTEBY 	  	=	STAFF.STAFFID
-								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
-								 ) a
-						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
-						where r >=  '" . ($this->getStart() + 1) . "'";
+				SELECT *
+				FROM ( SELECT	a.*,
+										rownum r
+				FROM (
+						SELECT	DEPOSITLEDGER.DEPOSITLEDGERID   	AS 	\"depositLedgerId\",
+								DEPOSITLEDGER.DOCUMENTNO 			AS 	\"documentNo\",
+								DEPOSITLEDGER.REFERENCENO 			AS 	\"referenceNo\",
+								DEPOSITLEDGER.DEPOSITLEDGERTITLE 	AS 	\"depositLedgerTitle\",
+								DEPOSITLEDGER.DEPOSITLEDGERDESC 	AS 	\"depositLedgerDesc\",
+								DEPOSITLEDGER.DEPOSITLEDGERDATE 	AS 	\"depositLedgerDate\",
+								DEPOSITLEDGER.DEPOSITLEDGERAMOUNT 	AS 	\"depositLedgerAmount\",
+								DEPOSITLEDGER.ISDEFAULT    			AS	\"isDefault\",
+								DEPOSITLEDGER.ISNEW		  			AS	\"isNew\",
+								DEPOSITLEDGER.ISDRAFT	 			AS	\"isDraft\",
+								DEPOSITLEDGER.ISUPDATE     			AS	\"isUpdate\",
+								DEPOSITLEDGER.ISDELETE	  			AS	\"isDelete\",
+								DEPOSITLEDGER.ISACTIVE	  			AS	\"isActive\",
+								DEPOSITLEDGER.ISAPPROVED   			AS	\"isApproved\",
+								DEPOSITLEDGER.ISREVIEW	  			AS 	\"isReview\",
+								DEPOSITLEDGER.ISPOST		  		AS	\"isPost\",
+								DEPOSITLEDGER.EXECUTEBY    			AS	\"executeBy\",
+								DEPOSITLEDGER.EXECUTETIME  			AS	\"executeTime\",
+								STAFF.STAFFNAME		  				AS	\"staffName\"	
+						FROM 	DEPOSITLEDGER
+						JOIN	STAFF
+						ON		DEPOSITLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
+						WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
+						 ) a
+				where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
+				where r >=  '" . ($this->getStart() + 1) . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				/*
 				 * Old Version db2.same as oracle and microsoft sql server
@@ -773,14 +845,14 @@ class DepositLedgerClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getDepositLedgerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[" . $this->model->getTableName() . "]	[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
-			WHERE  	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "][" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getDepositLedgerId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getDepositLedgerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -809,107 +881,118 @@ class DepositLedgerClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`depositLedger`
-				SET 		`depositLedgerTypeId` = '".$this->model->getDepositLedgerTypeId()."',
-							 `depositLedgerTitle` = '".$this->model->getDepositLedgerTitle()."',
-							 `depositLedgerDesc` = '".$this->model->getDepositLedgerDesc()."',
-							 `depositLedgerDate` = '".$this->model->getDepositLedgerDate()."',
-							 `depositLedgerStartDate` = '".$this->model->getDepositLedgerStartDate()."',
-							 `depositLedgerEndDate` = '".$this->model->getDepositLedgerEndDate()."',
-							 `depositLedgerAmount` = '".$this->model->getDepositLedgerAmount()."',
- 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`depositLedgerId`		=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
+				SET 		`depositTypeId` 			= 	'".$this->model->getDepositTypeId()."',
+							`businessPartnerId` 		= 	'".$this->model->getBusinessPartnerId()."',
+							`referenceNo` 				= 	'".$this->model->getReferenceNo()."',
+							`depositLedgerTitle` 		= 	'".$this->model->getDepositLedgerTitle()."',
+							`depositLedgerDesc` 		= 	'".$this->model->getDepositLedgerDesc()."',
+							`depositLedgerDate` 		= 	'".$this->model->getDepositLedgerDate()."',
+							`depositLedgerAmount` 		=	'".$this->model->getDepositLedgerAmount()."',
+ 							`isDefault`					=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`isNew`						=	'" . $this->model->getIsNew(0, 'single') . "',
+							`isDraft`					=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`isUpdate`					=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`isDelete`					=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`isActive`					=	'" . $this->model->getIsActive(0, 'single') . "',
+							`isApproved`				=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`isReview`					=	'" . $this->model->getIsReview(0, 'single') . "',
+							`isPost`					=	'" . $this->model->getIsPost(0, 'single') . "',
+							`isReconciled`				=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							`executeBy`					=	'" . $this->model->getExecuteBy() . "',
+							`executeTime`				=	" . $this->model->getExecuteTime() . "
+				WHERE 		`depositLedgerId`			=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[".$this->q->getFinancialDatabase()."].[depositLedger]
-				SET 		[depositLedgerTypeId] = '".$this->model->getDepositLedgerTypeId()."',
-							[depositLedgerTitle] = '".$this->model->getDepositLedgerTitle()."',
-							[depositLedgerDesc] = '".$this->model->getDepositLedgerDesc()."',
-							[depositLedgerDate] = '".$this->model->getDepositLedgerDate()."',
-							[depositLedgerStartDate] = '".$this->model->getDepositLedgerStartDate()."',
-							[depositLedgerEndDate] = '".$this->model->getDepositLedgerEndDate()."',
-							[depositLedgerAmount] = '".$this->model->getDepositLedgerAmount()."',	
-							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[depositLedgerId]			=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
+				SET 		[depositTypeId] 			= 	'".$this->model->getDepositTypeId()."',
+							[businessPartnerId] 		= 	'".$this->model->getBusinessPartnerId()."',
+							[referenceNo] 				= 	'".$this->model->getReferenceNo()."',
+							[depositLedgerTitle] 		= 	'".$this->model->getDepositLedgerTitle()."',
+							[depositLedgerDesc] 		= 	'".$this->model->getDepositLedgerDesc()."',
+							[depositLedgerDate] 		= 	'".$this->model->getDepositLedgerDate()."',
+							[depositLedgerAmount] 		= 	'".$this->model->getDepositLedgerAmount()."',	
+							[isDefault]					=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[isNew]						=	'" . $this->model->getIsNew(0, 'single') . "',
+							[isDraft]					=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[isUpdate]					=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[isDelete]					=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[isActive]					=	'" . $this->model->getIsActive(0, 'single') . "',
+							[isApproved]				=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[isReview]					=	'" . $this->model->getIsReview(0, 'single') . "',
+							[isPost]					=	'" . $this->model->getIsPost(0, 'single') . "',
+							[isReconciled]				=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							[executeBy]					=	'" . $this->model->getExecuteBy() . "',
+							[executeTime]				=	" . $this->model->getExecuteTime() . "
+				WHERE 		[depositLedgerId]			=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE		DEPOSIT
-				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							DEPOSITTITLE		=	'" . $this->model->getDepositLedgerTitle() . "',
-							DEPOSITDESC		=	'" . $this->model->getDepositLedgerDesc() . "',
-							DEPOSITDATE		=	'" . $this->model->getDepositLedgerDate() . "',
-							DEPOSITAMOUNT		=	'" . $this->model->getDepositLedgerAmount() . "',									
-							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		DEPOSITID		=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
+				UPDATE	DEPOSITLEDGER
+				SET 	DOCUMENTNO				=	'" . $this->model->getDocumentNo() . "',							
+						BUSINESSPARTNERID 		= 	'".$this->model->getBusinessPartnerId()."',
+						REFERENCENO 			= 	'".$this->model->getReferenceNo()."',
+						DEPOSITLEDGERTITLE		=	'" . $this->model->getDepositLedgerTitle() . "',
+						DEPOSITLEDGERDESC		=	'" . $this->model->getDepositLedgerDesc() . "',
+						DEPOSITLEDGERDATE		=	'" . $this->model->getDepositLedgerDate() . "',
+						DEPOSITLEDGERAMOUNT		=	'" . $this->model->getDepositLedgerAmount() . "',									
+						ISDEFAULT				=	'" . $this->model->getIsDefault(0, 'single') . "',
+						ISNEW					=	'" . $this->model->getIsNew(0, 'single') . "',
+						ISDRAFT					=	'" . $this->model->getIsDraft(0, 'single') . "',
+						ISUPDATE				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						ISDELETE				=	'" . $this->model->getIsDelete(0, 'single') . "',
+						ISACTIVE				=	'" . $this->model->getIsActive(0, 'single') . "',
+						ISAPPROVED				=	'" . $this->model->getIsApproved(0, 'single') . "',
+						ISREVIEW				=	'" . $this->model->getIsReview(0, 'single') . "',
+						ISPOST					=	'" . $this->model->getIsPost(0, 'single') . "',
+						ISRECONCILED			=	'" . $this->model->getIsReconciled(0, 'single') . "',
+						EXECUTEBY				=	'" . $this->model->getExecuteBy() . "',
+						EXECUTETIME				=	" . $this->model->getExecuteTime() . "
+				WHERE 	DEPOSITLEDGERID			=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE	DEPOSIT
-			SET 			DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							DEPOSITTITLE		=	'" . $this->model->getDepositLedgerTitle() . "',
-							DEPOSITDESC		=	'" . $this->model->getDepositLedgerDesc() . "',
-							DEPOSITDATE		=	'" . $this->model->getDepositLedgerDate() . "',
-							DEPOSITAMOUNT		=	'" . $this->model->getDepositLedgerAmount() . "',
-							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		DEPOSITID		=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
+				UPDATE	DEPOSITLEDGER
+				SET 	DOCUMENTNO				=	'" . $this->model->getDocumentNo() . "',							
+						BUSINESSPARTNERID 		= 	'".$this->model->getBusinessPartnerId()."',
+						REFERENCENO 			= 	'".$this->model->getReferenceNo()."',
+						DEPOSITLEDGERTITLE		=	'" . $this->model->getDepositLedgerTitle() . "',
+						DEPOSITLEDGERDESC		=	'" . $this->model->getDepositLedgerDesc() . "',
+						DEPOSITLEDGERDATE		=	'" . $this->model->getDepositLedgerDate() . "',
+						DEPOSITLEDGERAMOUNT		=	'" . $this->model->getDepositLedgerAmount() . "',									
+						ISDEFAULT				=	'" . $this->model->getIsDefault(0, 'single') . "',
+						ISNEW					=	'" . $this->model->getIsNew(0, 'single') . "',
+						ISDRAFT					=	'" . $this->model->getIsDraft(0, 'single') . "',
+						ISUPDATE				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						ISDELETE				=	'" . $this->model->getIsDelete(0, 'single') . "',
+						ISACTIVE				=	'" . $this->model->getIsActive(0, 'single') . "',
+						ISAPPROVED				=	'" . $this->model->getIsApproved(0, 'single') . "',
+						ISREVIEW				=	'" . $this->model->getIsReview(0, 'single') . "',
+						ISPOST					=	'" . $this->model->getIsPost(0, 'single') . "',
+						ISRECONCILED			=	'" . $this->model->getIsReconciled(0, 'single') . "',
+						EXECUTEBY				=	'" . $this->model->getExecuteBy() . "',
+						EXECUTETIME				=	" . $this->model->getExecuteTime() . "
+				WHERE 	DEPOSITLEDGERID			=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE		DEPOSIT
-				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							DEPOSITTITLE		=	'" . $this->model->getDepositLedgerTitle() . "',
-							DEPOSITDESC		=	'" . $this->model->getDepositLedgerDesc() . "',
-							DEPOSITDATE		=	'" . $this->model->getDepositLedgerDate() . "',
-							DEPOSITAMOUNT		=	'" . $this->model->getDepositLedgerAmount() . "',
-							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		DEPOSITID			=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
+				UPDATE	DEPOSITLEDGER
+				SET 	DOCUMENTNO				=	'" . $this->model->getDocumentNo() . "',							
+						BUSINESSPARTNERID 		= 	'".$this->model->getBusinessPartnerId()."',
+						REFERENCENO 			= 	'".$this->model->getReferenceNo()."',
+						DEPOSITLEDGERTITLE		=	'" . $this->model->getDepositLedgerTitle() . "',
+						DEPOSITLEDGERDESC		=	'" . $this->model->getDepositLedgerDesc() . "',
+						DEPOSITLEDGERDATE		=	'" . $this->model->getDepositLedgerDate() . "',
+						DEPOSITLEDGERAMOUNT		=	'" . $this->model->getDepositLedgerAmount() . "',									
+						ISDEFAULT				=	'" . $this->model->getIsDefault(0, 'single') . "',
+						ISNEW					=	'" . $this->model->getIsNew(0, 'single') . "',
+						ISDRAFT					=	'" . $this->model->getIsDraft(0, 'single') . "',
+						ISUPDATE				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						ISDELETE				=	'" . $this->model->getIsDelete(0, 'single') . "',
+						ISACTIVE				=	'" . $this->model->getIsActive(0, 'single') . "',
+						ISAPPROVED				=	'" . $this->model->getIsApproved(0, 'single') . "',
+						ISREVIEW				=	'" . $this->model->getIsReview(0, 'single') . "',
+						ISPOST					=	'" . $this->model->getIsPost(0, 'single') . "',
+						ISRECONCILED			=	'" . $this->model->getIsReconciled(0, 'single') . "',
+						EXECUTEBY				=	'" . $this->model->getExecuteBy() . "',
+						EXECUTETIME				=	" . $this->model->getExecuteTime() . "
+				WHERE 	DEPOSITLEDGERID			=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -954,7 +1037,7 @@ class DepositLedgerClass extends ConfigClass {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
-			WHERE  	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getDepositLedgerId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getDepositLedgerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -1012,7 +1095,7 @@ class DepositLedgerClass extends ConfigClass {
 				WHERE 	[depositLedgerId]		=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE 	DEPOSIT
+				UPDATE 	DEPOSITLEDGER
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1024,10 +1107,10 @@ class DepositLedgerClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	DEPOSITID		=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
+				WHERE 	DEPOSITLEDGERID		=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE 	DEPOSIT
+				UPDATE 	DEPOSITLEDGER
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1039,10 +1122,10 @@ class DepositLedgerClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	DEPOSITID		=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
+				WHERE 	DEPOSITLEDGERID		=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE 	DEPOSIT
+				UPDATE 	DEPOSITLEDGER
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1054,7 +1137,7 @@ class DepositLedgerClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	DEPOSITID		=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
+				WHERE 	DEPOSITLEDGERID		=	'" . $this->model->getDepositLedgerId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -1533,19 +1616,19 @@ class DepositLedgerClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	DOCUMENTNO
-			FROM 	DEPOSIT
+			FROM 	DEPOSITLEDGER
 			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	DOCUMENTNO
-			FROM 	DEPOSIT
+			FROM 	DEPOSITLEDGER
 			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	DOCUMENTNO
-			FROM 	DEPOSIT
+			FROM 	DEPOSITLEDGER
 			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		ISACTIVE		=	1";
 		} else {

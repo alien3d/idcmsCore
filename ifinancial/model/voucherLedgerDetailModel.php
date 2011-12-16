@@ -3,26 +3,26 @@
 require_once ("../../class/classValidation.php");
 
 /**
- *A voucher is a bond which is worth a certain monetary value and which may be spent only for specific reasons or on specific goods. Examples include (but are not limited to) housing, travel, and food vouchers. The term voucher is also a synonym for receipt and is often used to refer to receipts used as evidence of, for example, the declaration that a service has been performed or that an expenditure has been made
+ *A voucherLedger is a bond which is worth a certain monetary value and which may be spent only for specific reasons or on specific goods. Examples include (but are not limited to) housing, travel, and food voucherLedgers. The term voucherLedger is also a synonym for receipt and is often used to refer to receipts used as evidence of, for example, the declaration that a service has been performed or that an expenditure has been made
  * @name IDCMS.
  * @version 2
  * @author hafizan
  * @package General Ledger
  * @subpackage Journal Detail
  * @link http://www.idcms.org
- * @http://en.wikipedia.org/wiki/Voucher
+ * @http://en.wikipedia.org/wiki/VoucherLedger
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class VoucherDetailModel extends ValidationClass {
+class VoucherLedgerDetailModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $voucherDetailId;
+	private $voucherLedgerDetailId;
 	/**
 	* @var int
 	*/
-	private $voucherId;
+	private $voucherLedgerId;
 	/**
 	* @var string
 	*/
@@ -39,7 +39,7 @@ class VoucherDetailModel extends ValidationClass {
 	/**
 	* @var float
 	*/
-	private $voucherDetailAmount;
+	private $voucherLedgerDetailAmount;
 
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
@@ -50,15 +50,15 @@ class VoucherDetailModel extends ValidationClass {
 		 *  Basic Information Table
 		 */
 		$this->setTableName('generalledgerjournaldetail');
-		$this->setPrimaryKeyName('voucherDetailId');
+		$this->setPrimaryKeyName('voucherLedgerDetailId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['voucherDetailId'])) {
-			$this->setVoucherDetailId($this->strict($_POST ['voucherDetailId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['voucherLedgerDetailId'])) {
+			$this->setVoucherLedgerDetailId($this->strict($_POST ['voucherLedgerDetailId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['voucherId'])) {
-			$this->setVoucherId($this->strict($_POST ['voucherId'], 'numeric'));
+		if (isset($_POST ['voucherLedgerId'])) {
+			$this->setVoucherLedgerId($this->strict($_POST ['voucherLedgerId'], 'numeric'));
 		}
 		if (isset($_POST ['generalLedgerChartOfAccountId'])) {
 			$this->setGeneralLedgerChartOfAccountId($this->strict($_POST ['generalLedgerChartOfAccountId'], 'numeric'));
@@ -69,15 +69,15 @@ class VoucherDetailModel extends ValidationClass {
 		if (isset($_POST ['countryId'])) {
 			$this->setCountryId($this->strict($_POST ['countryId'], 'numeric'));
 		}
-		if (isset($_POST ['voucherDetailAmount'])) {
-			$this->setVoucherDetailAmount($this->strict($_POST ['voucherDetailAmount'], 'float'));
+		if (isset($_POST ['voucherLedgerDetailAmount'])) {
+			$this->setVoucherLedgerDetailAmount($this->strict($_POST ['voucherLedgerDetailAmount'], 'float'));
 		}
 		
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['voucherDetailId'])) {
-			$this->setTotal(count($_GET ['voucherDetailId']));
+		if (isset($_GET ['voucherLedgerDetailId'])) {
+			$this->setTotal(count($_GET ['voucherLedgerDetailId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -127,8 +127,8 @@ class VoucherDetailModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['voucherDetailId'])) {
-				$this->setVoucherDetailId($this->strict($_GET ['voucherDetailId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['voucherLedgerDetailId'])) {
+				$this->setVoucherLedgerDetailId($this->strict($_GET ['voucherLedgerDetailId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -193,7 +193,7 @@ class VoucherDetailModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getVoucherDetailId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getVoucherLedgerDetailId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -327,35 +327,35 @@ class VoucherDetailModel extends ValidationClass {
 	}
 
 	/**
-	 * Set VoucherDetail Identification  Value
+	 * Set VoucherLedgerDetail Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setVoucherDetailId($value, $key, $type) {
+	public function setVoucherLedgerDetailId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->voucherDetailId = $value;
+			$this->voucherLedgerDetailId = $value;
 		} else if ($type == 'array') {
-			$this->voucherDetailId [$key] = $value;
+			$this->voucherLedgerDetailId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setVoucherDetailId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setVoucherLedgerDetailId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return VoucherDetail Identification  Value
+	 * Return VoucherLedgerDetail Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getVoucherDetailId($key, $type) {
+	public function getVoucherLedgerDetailId($key, $type) {
 		if ($type == 'single') {
-			return $this->voucherDetailId;
+			return $this->voucherLedgerDetailId;
 		} else if ($type == 'array') {
-			return $this->voucherDetailId [$key];
+			return $this->voucherLedgerDetailId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getVoucherDetailId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getVoucherLedgerDetailId ?"));
 			exit();
 		}
 	}
@@ -366,18 +366,18 @@ class VoucherDetailModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getVoucherId()
+	public function getVoucherLedgerId()
 	{
-	    return $this->voucherId;
+	    return $this->voucherLedgerId;
 	}
 
 	/**
 	 * 
-	 * @param $voucherId
+	 * @param $voucherLedgerId
 	 */
-	public function setVoucherId($voucherId)
+	public function setVoucherLedgerId($voucherLedgerId)
 	{
-	    $this->voucherId = $voucherId;
+	    $this->voucherLedgerId = $voucherLedgerId;
 	}
 
 	/**
@@ -420,18 +420,18 @@ class VoucherDetailModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getVoucherDetailAmount()
+	public function getVoucherLedgerDetailAmount()
 	{
-	    return $this->voucherDetailAmount;
+	    return $this->voucherLedgerDetailAmount;
 	}
 
 	/**
 	 * 
-	 * @param $voucherDetailAmount
+	 * @param $voucherLedgerDetailAmount
 	 */
-	public function setVoucherDetailAmount($voucherDetailAmount)
+	public function setVoucherLedgerDetailAmount($voucherLedgerDetailAmount)
 	{
-	    $this->voucherDetailAmount = $voucherDetailAmount;
+	    $this->voucherLedgerDetailAmount = $voucherLedgerDetailAmount;
 	}
 
 	/**

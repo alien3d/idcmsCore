@@ -14,16 +14,16 @@ require_once ("../../class/classValidation.php");
  * @http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class DepositDetailModel extends ValidationClass {
+class DepositLedgerDetailModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $depositDetailId;
+	private $depositLedgerDetailId;
 	/**
 	* @var int
 	*/
-	private $depositId;
+	private $depositLedgerId;
 	/**
 	* @var string
 	*/
@@ -40,7 +40,7 @@ class DepositDetailModel extends ValidationClass {
 	/**
 	* @var float
 	*/
-	private $depositDetailAmount;
+	private $depositLedgerDetailAmount;
 
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
@@ -51,15 +51,15 @@ class DepositDetailModel extends ValidationClass {
 		 *  Basic Information Table
 		 */
 		$this->setTableName('generalledgerjournaldetail');
-		$this->setPrimaryKeyName('depositDetailId');
+		$this->setPrimaryKeyName('depositLedgerDetailId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['depositDetailId'])) {
-			$this->setDepositDetailId($this->strict($_POST ['depositDetailId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['depositLedgerDetailId'])) {
+			$this->setDepositLedgerDetailId($this->strict($_POST ['depositLedgerDetailId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['depositId'])) {
-			$this->setDepositId($this->strict($_POST ['depositId'], 'numeric'));
+		if (isset($_POST ['depositLedgerId'])) {
+			$this->setDepositLedgerId($this->strict($_POST ['depositLedgerId'], 'numeric'));
 		}
 		if (isset($_POST ['generalLedgerChartOfAccountId'])) {
 			$this->setGeneralLedgerChartOfAccountId($this->strict($_POST ['generalLedgerChartOfAccountId'], 'numeric'));
@@ -70,15 +70,15 @@ class DepositDetailModel extends ValidationClass {
 		if (isset($_POST ['countryId'])) {
 			$this->setCountryId($this->strict($_POST ['countryId'], 'numeric'));
 		}
-		if (isset($_POST ['depositDetailAmount'])) {
-			$this->setDepositDetailAmount($this->strict($_POST ['depositDetailAmount'], 'float'));
+		if (isset($_POST ['depositLedgerDetailAmount'])) {
+			$this->setDepositLedgerDetailAmount($this->strict($_POST ['depositLedgerDetailAmount'], 'float'));
 		}
 		
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['depositDetailId'])) {
-			$this->setTotal(count($_GET ['depositDetailId']));
+		if (isset($_GET ['depositLedgerDetailId'])) {
+			$this->setTotal(count($_GET ['depositLedgerDetailId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -128,8 +128,8 @@ class DepositDetailModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['depositDetailId'])) {
-				$this->setDepositDetailId($this->strict($_GET ['depositDetailId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['depositLedgerDetailId'])) {
+				$this->setDepositLedgerDetailId($this->strict($_GET ['depositLedgerDetailId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -194,7 +194,7 @@ class DepositDetailModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getDepositDetailId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getDepositLedgerDetailId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -328,35 +328,35 @@ class DepositDetailModel extends ValidationClass {
 	}
 
 	/**
-	 * Set DepositDetail Identification  Value
+	 * Set DepositLedgerDetail Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setDepositDetailId($value, $key, $type) {
+	public function setDepositLedgerDetailId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->depositDetailId = $value;
+			$this->depositLedgerDetailId = $value;
 		} else if ($type == 'array') {
-			$this->depositDetailId [$key] = $value;
+			$this->depositLedgerDetailId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setDepositDetailId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setDepositLedgerDetailId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return DepositDetail Identification  Value
+	 * Return DepositLedgerDetail Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getDepositDetailId($key, $type) {
+	public function getDepositLedgerDetailId($key, $type) {
 		if ($type == 'single') {
-			return $this->depositDetailId;
+			return $this->depositLedgerDetailId;
 		} else if ($type == 'array') {
-			return $this->depositDetailId [$key];
+			return $this->depositLedgerDetailId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getDepositDetailId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getDepositLedgerDetailId ?"));
 			exit();
 		}
 	}
@@ -367,18 +367,18 @@ class DepositDetailModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getDepositId()
+	public function getDepositLedgerId()
 	{
-	    return $this->depositId;
+	    return $this->depositLedgerId;
 	}
 
 	/**
 	 * 
-	 * @param $depositId
+	 * @param $depositLedgerId
 	 */
-	public function setDepositId($depositId)
+	public function setDepositLedgerId($depositLedgerId)
 	{
-	    $this->depositId = $depositId;
+	    $this->depositLedgerId = $depositLedgerId;
 	}
 
 	/**
@@ -421,18 +421,18 @@ class DepositDetailModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getDepositDetailAmount()
+	public function getDepositLedgerDetailAmount()
 	{
-	    return $this->depositDetailAmount;
+	    return $this->depositLedgerDetailAmount;
 	}
 
 	/**
 	 * 
-	 * @param $depositDetailAmount
+	 * @param $depositLedgerDetailAmount
 	 */
-	public function setDepositDetailAmount($depositDetailAmount)
+	public function setDepositLedgerDetailAmount($depositLedgerDetailAmount)
 	{
-	    $this->depositDetailAmount = $depositDetailAmount;
+	    $this->depositLedgerDetailAmount = $depositLedgerDetailAmount;
 	}
 
 	/**

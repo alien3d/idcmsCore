@@ -618,7 +618,7 @@ Ext.onReady(function () {
 					dateFormat : 'Y-m-d H:i:s'
 				}
 			]
-		});
+	});
 	var businessPartnerFilters = new Ext.ux.grid.GridFilters({
 			encode : false,
 			local : false,

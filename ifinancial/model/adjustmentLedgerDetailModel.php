@@ -14,16 +14,16 @@ require_once ("../../class/classValidation.php");
  * @http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class AdjustmentDetailModel extends ValidationClass {
+class AdjustmentLedgerDetailModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $adjustmentDetailId;
+	private $adjustmentLedgerDetailId;
 	/**
 	* @var int
 	*/
-	private $adjustmentId;
+	private $adjustmentLedgerId;
 	/**
 	* @var string
 	*/
@@ -40,7 +40,7 @@ class AdjustmentDetailModel extends ValidationClass {
 	/**
 	* @var float
 	*/
-	private $adjustmentDetailAmount;
+	private $adjustmentLedgerDetailAmount;
 
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
@@ -51,15 +51,15 @@ class AdjustmentDetailModel extends ValidationClass {
 		 *  Basic Information Table
 		 */
 		$this->setTableName('generalledgerjournaldetail');
-		$this->setPrimaryKeyName('adjustmentDetailId');
+		$this->setPrimaryKeyName('adjustmentLedgerDetailId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['adjustmentDetailId'])) {
-			$this->setAdjustmentDetailId($this->strict($_POST ['adjustmentDetailId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['adjustmentLedgerDetailId'])) {
+			$this->setAdjustmentLedgerDetailId($this->strict($_POST ['adjustmentLedgerDetailId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['adjustmentId'])) {
-			$this->setAdjustmentId($this->strict($_POST ['adjustmentId'], 'numeric'));
+		if (isset($_POST ['adjustmentLedgerId'])) {
+			$this->setAdjustmentLedgerId($this->strict($_POST ['adjustmentLedgerId'], 'numeric'));
 		}
 		if (isset($_POST ['generalLedgerChartOfAccountId'])) {
 			$this->setGeneralLedgerChartOfAccountId($this->strict($_POST ['generalLedgerChartOfAccountId'], 'numeric'));
@@ -70,15 +70,15 @@ class AdjustmentDetailModel extends ValidationClass {
 		if (isset($_POST ['countryId'])) {
 			$this->setCountryId($this->strict($_POST ['countryId'], 'numeric'));
 		}
-		if (isset($_POST ['adjustmentDetailAmount'])) {
-			$this->setAdjustmentDetailAmount($this->strict($_POST ['adjustmentDetailAmount'], 'float'));
+		if (isset($_POST ['adjustmentLedgerDetailAmount'])) {
+			$this->setAdjustmentLedgerDetailAmount($this->strict($_POST ['adjustmentLedgerDetailAmount'], 'float'));
 		}
 		
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['adjustmentDetailId'])) {
-			$this->setTotal(count($_GET ['adjustmentDetailId']));
+		if (isset($_GET ['adjustmentLedgerDetailId'])) {
+			$this->setTotal(count($_GET ['adjustmentLedgerDetailId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -128,8 +128,8 @@ class AdjustmentDetailModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['adjustmentDetailId'])) {
-				$this->setAdjustmentDetailId($this->strict($_GET ['adjustmentDetailId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['adjustmentLedgerDetailId'])) {
+				$this->setAdjustmentLedgerDetailId($this->strict($_GET ['adjustmentLedgerDetailId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -194,7 +194,7 @@ class AdjustmentDetailModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getAdjustmentDetailId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getAdjustmentLedgerDetailId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -328,35 +328,35 @@ class AdjustmentDetailModel extends ValidationClass {
 	}
 
 	/**
-	 * Set AdjustmentDetail Identification  Value
+	 * Set AdjustmentLedgerDetail Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setAdjustmentDetailId($value, $key, $type) {
+	public function setAdjustmentLedgerDetailId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->adjustmentDetailId = $value;
+			$this->adjustmentLedgerDetailId = $value;
 		} else if ($type == 'array') {
-			$this->adjustmentDetailId [$key] = $value;
+			$this->adjustmentLedgerDetailId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setAdjustmentDetailId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setAdjustmentLedgerDetailId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return AdjustmentDetail Identification  Value
+	 * Return AdjustmentLedgerDetail Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getAdjustmentDetailId($key, $type) {
+	public function getAdjustmentLedgerDetailId($key, $type) {
 		if ($type == 'single') {
-			return $this->adjustmentDetailId;
+			return $this->adjustmentLedgerDetailId;
 		} else if ($type == 'array') {
-			return $this->adjustmentDetailId [$key];
+			return $this->adjustmentLedgerDetailId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getAdjustmentDetailId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getAdjustmentLedgerDetailId ?"));
 			exit();
 		}
 	}
@@ -367,18 +367,18 @@ class AdjustmentDetailModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getAdjustmentId()
+	public function getAdjustmentLedgerId()
 	{
-	    return $this->adjustmentId;
+	    return $this->adjustmentLedgerId;
 	}
 
 	/**
 	 * 
-	 * @param $adjustmentId
+	 * @param $adjustmentLedgerId
 	 */
-	public function setAdjustmentId($adjustmentId)
+	public function setAdjustmentLedgerId($adjustmentLedgerId)
 	{
-	    $this->adjustmentId = $adjustmentId;
+	    $this->adjustmentLedgerId = $adjustmentLedgerId;
 	}
 
 	/**
@@ -421,18 +421,18 @@ class AdjustmentDetailModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getAdjustmentDetailAmount()
+	public function getAdjustmentLedgerDetailAmount()
 	{
-	    return $this->adjustmentDetailAmount;
+	    return $this->adjustmentLedgerDetailAmount;
 	}
 
 	/**
 	 * 
-	 * @param $adjustmentDetailAmount
+	 * @param $adjustmentLedgerDetailAmount
 	 */
-	public function setAdjustmentDetailAmount($adjustmentDetailAmount)
+	public function setAdjustmentLedgerDetailAmount($adjustmentLedgerDetailAmount)
 	{
-	    $this->adjustmentDetailAmount = $adjustmentDetailAmount;
+	    $this->adjustmentLedgerDetailAmount = $adjustmentLedgerDetailAmount;
 	}
 
 	/**

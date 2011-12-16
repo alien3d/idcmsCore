@@ -14,16 +14,32 @@ require_once ("../../class/classValidation.php");
  * @http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class RefundModel extends ValidationClass {
+class RefundLedgerModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $refundId;
+	private $refundLedgerId;
 	/**
 	 * @var int
 	 */
-	private $refundTypeId;
+	private $refundLedgerTypeId;
+	/**
+	 * @var int
+	 */
+	private $businessPartnerId;
+	/**
+	 * @var int
+	 */
+	private $invoiceCategoryId;
+	/**
+	 * @var int
+	 */
+	private $invoiceTypeId;
+	/**
+	 * @var int
+	 */
+	private $invoiceId;
 	/**
 	* @var string
 	*/
@@ -35,27 +51,19 @@ class RefundModel extends ValidationClass {
 	/**
 	* @var string
 	*/
-	private $refundTitle;
+	private $refundLedgerTitle;
 	/**
 	* @var string
 	*/
-	private $refundDesc;
+	private $refundLedgerDesc;
 	/**
 	* @var date
 	*/
-	private $refundDate;
-	/**
-	* @var date
-	*/
-	private $refundStartDate;
-	/**
-	* @var date
-	*/
-	private $refundEndDate;
+	private $refundLedgerDate;
 	/**
 	* @var float
 	*/
-	private $refundAmount;
+	private $refundLedgerAmount;
 
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
@@ -66,18 +74,18 @@ class RefundModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('refund');
-		$this->setPrimaryKeyName('refundId');
+		$this->setTableName('refundLedger');
+		$this->setPrimaryKeyName('refundLedgerId');
 		//$this->setFilterCharacter($filterCharacter);
-		$this->setFilterDate('refundDate');
+		$this->setFilterDate('refundLedgerDate');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['refundId'])) {
-			$this->setRefundId($this->strict($_POST ['refundId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['refundLedgerId'])) {
+			$this->setRefundLedgerId($this->strict($_POST ['refundLedgerId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['refundTypeId'])) {
-			$this->setRefundTypeId($this->strict($_POST ['refundTypeId'], 'numeric'));
+		if (isset($_POST ['refundLedgerTypeId'])) {
+			$this->setRefundLedgerTypeId($this->strict($_POST ['refundLedgerTypeId'], 'numeric'));
 		}
 		if (isset($_POST ['documentNo'])) {
 			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'string'));
@@ -85,30 +93,30 @@ class RefundModel extends ValidationClass {
 		if (isset($_POST ['referenceNo'])) {
 			$this->setReferenceNo($this->strict($_POST ['referenceNo'], 'string'));
 		}
-		if (isset($_POST ['refundTitle'])) {
-			$this->setRefundTitle($this->strict($_POST ['refundTitle'], 'string'));
+		if (isset($_POST ['refundLedgerTitle'])) {
+			$this->setRefundLedgerTitle($this->strict($_POST ['refundLedgerTitle'], 'string'));
 		}
-		if (isset($_POST ['refundDesc'])) {
-			$this->setRefundDesc($this->strict($_POST ['refundDesc'], 'string'));
+		if (isset($_POST ['refundLedgerDesc'])) {
+			$this->setRefundLedgerDesc($this->strict($_POST ['refundLedgerDesc'], 'string'));
 		}
-		if (isset($_POST ['refundDate'])) {
-			$this->setRefundDate($this->strict($_POST ['refundDate'], 'date'));
+		if (isset($_POST ['refundLedgerDate'])) {
+			$this->setRefundLedgerDate($this->strict($_POST ['refundLedgerDate'], 'date'));
 		}
-		if (isset($_POST ['refundStartDate'])) {
-			$this->setRefundStartDate($this->strict($_POST ['refundStartDate'], 'date'));
+		if (isset($_POST ['refundLedgerStartDate'])) {
+			$this->setRefundLedgerStartDate($this->strict($_POST ['refundLedgerStartDate'], 'date'));
 		}
-		if (isset($_POST ['refundEndDate'])) {
-			$this->setRefundEndDate($this->strict($_POST ['refundEndDate'], 'date'));
+		if (isset($_POST ['refundLedgerEndDate'])) {
+			$this->setRefundLedgerEndDate($this->strict($_POST ['refundLedgerEndDate'], 'date'));
 		}
-		if (isset($_POST ['refundAmount'])) {
-			$this->setRefundAmount($this->strict($_POST ['refundAmount'], 'float'));
+		if (isset($_POST ['refundLedgerAmount'])) {
+			$this->setRefundLedgerAmount($this->strict($_POST ['refundLedgerAmount'], 'float'));
 		}
 		
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['refundId'])) {
-			$this->setTotal(count($_GET ['refundId']));
+		if (isset($_GET ['refundLedgerId'])) {
+			$this->setTotal(count($_GET ['refundLedgerId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -159,8 +167,8 @@ class RefundModel extends ValidationClass {
 		$primaryKeyAll = '';
 		
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['refundId'])) {
-				$this->setRefundId($this->strict($_GET ['refundId'] [$i], 'numeric'), $i, 'array');				
+			if (isset($_GET ['refundLedgerId'])) {
+				$this->setRefundLedgerId($this->strict($_GET ['refundLedgerId'] [$i], 'numeric'), $i, 'array');				
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -225,7 +233,7 @@ class RefundModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getRefundId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getRefundLedgerId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -359,35 +367,35 @@ class RefundModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Refund Identification  Value
+	 * Set RefundLedger Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setRefundId($value, $key, $type) {
+	public function setRefundLedgerId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->refundId = $value;
+			$this->refundLedgerId = $value;
 		} else if ($type == 'array') {
-			$this->refundId [$key] = $value;
+			$this->refundLedgerId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setRefundId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setRefundLedgerId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return Refund Identification  Value
+	 * Return RefundLedger Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getRefundId($key, $type) {
+	public function getRefundLedgerId($key, $type) {
 		if ($type == 'single') {
-			return $this->refundId;
+			return $this->refundLedgerId;
 		} else if ($type == 'array') {
-			return $this->refundId [$key];
+			return $this->refundLedgerId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getRefundId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getRefundLedgerId ?"));
 			exit();
 		}
 	}
@@ -433,126 +441,126 @@ class RefundModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getRefundTitle()
+	public function getRefundLedgerTitle()
 	{
-	    return $this->refundTitle;
+	    return $this->refundLedgerTitle;
 	}
 
 	/**
 	 * 
-	 * @param $refundTitle
+	 * @param $refundLedgerTitle
 	 */
-	public function setRefundTitle($refundTitle)
+	public function setRefundLedgerTitle($refundLedgerTitle)
 	{
-	    $this->refundTitle = $refundTitle;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getRefundDesc()
-	{
-	    return $this->refundDesc;
-	}
-
-	/**
-	 * 
-	 * @param $refundDesc
-	 */
-	public function setRefundDesc($refundDesc)
-	{
-	    $this->refundDesc = $refundDesc;
+	    $this->refundLedgerTitle = $refundLedgerTitle;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getRefundDate()
+	public function getRefundLedgerDesc()
 	{
-	    return $this->refundDate;
+	    return $this->refundLedgerDesc;
 	}
 
 	/**
 	 * 
-	 * @param $refundDate
+	 * @param $refundLedgerDesc
 	 */
-	public function setRefundDate($refundDate)
+	public function setRefundLedgerDesc($refundLedgerDesc)
 	{
-	    $this->refundDate = $refundDate;
+	    $this->refundLedgerDesc = $refundLedgerDesc;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getRefundStartDate()
+	public function getRefundLedgerDate()
 	{
-	    return $this->refundStartDate;
+	    return $this->refundLedgerDate;
 	}
 
 	/**
 	 * 
-	 * @param $refundStartDate
+	 * @param $refundLedgerDate
 	 */
-	public function setRefundStartDate($refundStartDate)
+	public function setRefundLedgerDate($refundLedgerDate)
 	{
-	    $this->refundStartDate = $refundStartDate;
+	    $this->refundLedgerDate = $refundLedgerDate;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getRefundLedgerStartDate()
+	{
+	    return $this->refundLedgerStartDate;
+	}
+
+	/**
+	 * 
+	 * @param $refundLedgerStartDate
+	 */
+	public function setRefundLedgerStartDate($refundLedgerStartDate)
+	{
+	    $this->refundLedgerStartDate = $refundLedgerStartDate;
 	}
 	
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getRefundEndDate()
+	public function getRefundLedgerEndDate()
 	{
-	    return $this->refundEndDate;
+	    return $this->refundLedgerEndDate;
 	}
 
 	/**
 	 * 
-	 * @param $refundDate
+	 * @param $refundLedgerDate
 	 */
-	public function setRefundEndDate($refundEndDate)
+	public function setRefundLedgerEndDate($refundLedgerEndDate)
 	{
-	    $this->refundEndDate = $refundEndDate;
+	    $this->refundLedgerEndDate = $refundLedgerEndDate;
 	}
 	
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getRefundAmount()
+	public function getRefundLedgerAmount()
 	{
-	    return $this->refundAmount;
+	    return $this->refundLedgerAmount;
 	}
 
 	/**
 	 * 
-	 * @param $refundAmount
+	 * @param $refundLedgerAmount
 	 */
-	public function setRefundAmount($refundAmount)
+	public function setRefundLedgerAmount($refundLedgerAmount)
 	{
-	    $this->refundAmount = $refundAmount;
+	    $this->refundLedgerAmount = $refundLedgerAmount;
 	}	
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getRefundTypeId()
+	public function getRefundLedgerTypeId()
 	{
-	    return $this->refundTypeId;
+	    return $this->refundLedgerTypeId;
 	}
 
 	/**
 	 * 
-	 * @param $refundTypeId
+	 * @param $refundLedgerTypeId
 	 */
-	public function setRefundTypeId($refundTypeId)
+	public function setRefundLedgerTypeId($refundLedgerTypeId)
 	{
-	    $this->refundTypeId = $refundTypeId;
+	    $this->refundLedgerTypeId = $refundLedgerTypeId;
 	}
 }
 

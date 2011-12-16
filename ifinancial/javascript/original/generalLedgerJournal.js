@@ -1851,7 +1851,7 @@ Ext.onReady(function() {
     var generalLedgerJournalTypeId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
         fieldLabel: generalLedgerJournalTypeForeignKeyLabel,
-        name: 'stateId',
+        name: 'generalLedgerJournalTypeId',
         hiddenName: 'generalLedgerJournalTypeId',
         valueField: 'generalLedgerJournalTypeId',
         hiddenId: 'generalLedgerJournalTypeId_fake',

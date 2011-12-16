@@ -10,7 +10,7 @@ Ext.onReady(function() {
     var duplicate = 0; // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/voucherLedger.php?',
+        url: '../controller/voucherLedgerController.php?',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -475,6 +475,137 @@ Ext.onReady(function() {
     }); // end popup window for normal log and advance log
     // end common Proxy ,Reader,Store,Filter,Grid
     // start additional Proxy ,Reader,Store,Filter,Grid
+	// start business Partner Request
+	
+	var businessPartnerProxy = new Ext.data.HttpProxy({
+			url : '../controller/businessPartnerController.php',
+			method : 'POST',
+			success : function (response, options) {
+				jsonResponse = Ext.decode(response.responseText);
+				if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+				} else {
+					Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+				}
+			},
+			failure : function (response, options) {
+				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+			}
+		});
+	var businessPartnerReader = new Ext.data.JsonReader({
+			totalProperty : 'total',
+			successProperty : 'success',
+			messageProperty : 'message',
+			idProperty : 'businessPartnerId'
+		});
+	var businessPartnerStore = new Ext.data.JsonStore({
+			proxy : businessPartnerProxy,
+			reader : businessPartnerReader,
+			autoLoad : true,
+			autoDestroy : true,
+			pruneModifiedRecords : true,
+			baseParams : {
+				method : 'read',
+				leafId : leafId,
+				isAdmin : isAdmin,
+				start : 0,
+				perPage : perPage
+			},
+			root : 'data',
+			fields : [{
+					name : 'businessPartnerId',
+					type : 'int'
+				}, {
+					name : 'businessPartnerCompany',
+					type : 'string'
+				}, {
+					name : 'businessPartnerLastName',
+					type : 'string'
+				}, {
+					name : 'businessPartnerFirstName',
+					type : 'string'
+				}, {
+					name : 'businessPartnerEmail',
+					type : 'string'
+				}, {
+					name : 'businessPartnerJobTitle',
+					type : 'string'
+				}, {
+					name : 'businessPartnerBusinessPhone',
+					type : 'string'
+				}, {
+					name : 'businessPartnerHomePhone',
+					type : 'string'
+				}, {
+					name : 'businessPartnerMobilePhone',
+					type : 'string'
+				}, {
+					name : 'businessPartnerFaxNum',
+					type : 'string'
+				}, {
+					name : 'businessPartnerAddress',
+					type : 'string'
+				}, {
+					name : 'businessPartnerCity',
+					type : 'string'
+				}, {
+					name : 'businessPartnerState',
+					type : 'string'
+				}, {
+					name : 'businessPartnerPostCode',
+					type : 'string'
+				}, {
+					name : 'businessPartnerCountry',
+					type : 'string'
+				}, {
+					name : 'businessPartnerWebPage',
+					type : 'string'
+				}, {
+					name : 'businessPartnerNotes',
+					type : 'string'
+				}, {
+					name : 'businessPartnerAttachments',
+					type : 'string'
+				}, {
+					name : 'businessPartnerCategoryId',
+					type : 'int'
+				}, {
+					name : 'isDefault',
+					type : 'boolean'
+				}, {
+					name : 'isNew',
+					type : 'boolean'
+				}, {
+					name : 'isDraft',
+					type : 'boolean'
+				}, {
+					name : 'isUpdate',
+					type : 'boolean'
+				}, {
+					name : 'isDelete',
+					type : 'boolean'
+				}, {
+					name : 'isActive',
+					type : 'boolean'
+				}, {
+					name : 'isApproved',
+					type : 'boolean'
+				}, {
+					name : 'isReview',
+					type : 'boolean'
+				}, {
+					name : 'isPost',
+					type : 'boolean'
+				}, {
+					name : 'executeBy',
+					type : 'int'
+				}, {
+					name : 'executeTime',
+					type : 'date',
+					dateFormat : 'Y-m-d H:i:s'
+				}
+			]
+	});
+	// end business Partner Request
     // start chart of account request
     var generalLedgerChartOfAccountProxy = new Ext.data.HttpProxy({
         url: '../controller/generalLedgerChartOfAccountController.php',
@@ -675,138 +806,115 @@ Ext.onReady(function() {
             type: 'string'
         }]
     }); // end currency code request
-    // start generalLedgerJournalType request
-    var generalLedgerJournalTypeProxy = new Ext.data.HttpProxy({
-        url: '../../iFinancial/controller/generalLedgerJournalTypeController.php',
-        method: 'POST',
-        success: function(response, options) {
+   var voucherTypeProxy = new Ext.data.HttpProxy({
+        url : '../controller/voucherTypeController.php',
+        method : 'POST',
+        success : function (response, options) {
             jsonResponse = Ext.decode(response.responseText);
-            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            if (jsonResponse.success == true) {
+             
+            // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+             
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
         },
-        failure: function(response, options) {
+        failure : function (response, options) {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var generalLedgerJournalTypeReader = new Ext.data.JsonReader({
-        totalProperty: 'total',
-        successProperty: 'success',
-        messageProperty: 'message',
-        idProperty: 'generalLedgerJournalTypeId'
+     
+var voucherTypeReader = new Ext.data.JsonReader({
+        totalProperty : 'total',
+        successProperty : 'success',
+        messageProperty : 'message',
+        idProperty : 'voucherTypeId'
     });
-    var generalLedgerJournalTypeStore = new Ext.data.JsonStore({
-        proxy: generalLedgerJournalTypeProxy,
-        reader: generalLedgerJournalTypeReader,
-        autoLoad: true,
-        autoDestroy: true,
-        pruneModifiedRecords: true,
-        baseParams: {
-            method: 'read',
-            leafId: leafId,
-            isAdmin: isAdmin,
-            start: 0,
-            perPage: perPage
+     
+var voucherTypeStore = new Ext.data.JsonStore({
+        proxy : voucherTypeProxy,
+        reader : voucherTypeReader,
+        autoLoad : true,
+        autoDestroy : true,
+        pruneModifiedRecords : true,
+        baseParams : {
+            method : 'read',
+            leafId : leafId,
+            isAdmin : isAdmin,
+            start : 0,
+            perPage : perPage
         },
-        root: 'data',
-        id: 'generalLedgerJournalTypeId',
-        fields: [{
-            key: 'PRI',
-            foreignKey: 'no',
-            name: 'generalLedgerJournalTypeId',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerJournalTypeSequence',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerJournalCode',
-            type: 'string'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerJournalTypeDesc',
-            type: 'string'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isDefault',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isNew',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isDraft',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isUpdate',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isDelete',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isActive',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isApproved',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isReview',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isPost',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'executeBy',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'executeTime',
-            type: 'date',
-            dateFormat: 'Y-m-d H:i:s'
-        }]
-    }); // end of general ledger journal type
+        root : 'data',
+        id : 'voucherTypeId',
+        fields : [{
+        key :'PRI',
+        foreignKey : 'no',
+        name : 'voucherTypeId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'voucherTypeSequence',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'voucherTypeCode',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'voucherTypeDesc',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDefault',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isNew',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDraft',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isUpdate',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDelete',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isActive',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isApproved',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isReview',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isPost',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeBy',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeTime',
+        type : 'date',dateFormat : 'Y-m-d H:i:s'}
+        ]
+    });
+ 
+// end voucherType request
     // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
-    var generalLedgerJournalProxy = new Ext.data.HttpProxy({
-        url: '../controller/voucherLedger.php',
+    var voucherLedgerProxy = new Ext.data.HttpProxy({
+        url: '../controller/voucherLedgerController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -819,15 +927,15 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var generalLedgerJournalReader = new Ext.data.JsonReader({
+    var voucherLedgerReader = new Ext.data.JsonReader({
         totalProperty: 'total',
         successProperty: 'success',
         messageProperty: 'message',
-        idProperty: 'generalLedgerJournalId'
+        idProperty: 'voucherLedgerId'
     });
-    var generalLedgerJournalStore = new Ext.data.JsonStore({
-        proxy: generalLedgerJournalProxy,
-        reader: generalLedgerJournalReader,
+    var voucherLedgerStore = new Ext.data.JsonStore({
+        proxy: voucherLedgerProxy,
+        reader: voucherLedgerReader,
         autoLoad: true,
         autoDestroy: true,
         pruneModifiedRecords: true,
@@ -843,13 +951,13 @@ Ext.onReady(function() {
         fields: [{
             key: 'PRI',
             foreignKey: 'no',
-            name: 'generalLedgerJournalId',
+            name: 'voucherLedgerId',
             type: 'int'
         },
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalTypeId',
+            name: 'voucherTypeId',
             type: 'int'
         },
         {
@@ -861,40 +969,26 @@ Ext.onReady(function() {
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalTitle',
+            name: 'voucherLedgerTitle',
             type: 'string'
         },
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalDesc',
+            name: 'voucherLedgerDesc',
             type: 'string'
         },
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalDate',
+            name: 'voucherLedgerDate',
             type: 'date',
             dateFormat: 'Y-m-d'
         },
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalStartDate',
-            type: 'date',
-            dateFormat: 'Y-m-d'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerJournalEndDate',
-            type: 'date',
-            dateFormat: 'Y-m-d'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerJournalAmount',
+            name: 'voucherLedgerAmount',
             type: 'date',
             dateFormat: 'Y-m-d'
         },
@@ -968,7 +1062,7 @@ Ext.onReady(function() {
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalTypeDesc',
+            name: 'voucherTypeDesc',
             type: 'string'
         },
         {
@@ -978,140 +1072,126 @@ Ext.onReady(function() {
             type: 'string'
         }]
     });
-    var generalLedgerJournalFilters = new Ext.ux.grid.GridFilters({
+    var voucherLedgerFilters = new Ext.ux.grid.GridFilters({
         encode: encode,
         local: local,
         filters: [{
             type: 'int',
-            dataIndex: 'generalLedgerJournalId',
-            column: 'generalLedgerJournalId',
-            table: 'generalLedgerJournal',
+            dataIndex: 'voucherLedgerId',
+            column: 'voucherLedgerId',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'int',
-            dataIndex: 'generalLedgerJournalTypeId',
-            column: 'generalLedgerJournalTypeId',
-            table: 'generalLedgerJournal',
+            dataIndex: 'voucherTypeId',
+            column: 'voucherTypeId',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'string',
             dataIndex: 'documentNo',
             column: 'documentNo',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'string',
-            dataIndex: 'generalLedgerJournalTitle',
-            column: 'generalLedgerJournalTitle',
-            table: 'generalLedgerJournal',
+            dataIndex: 'voucherLedgerTitle',
+            column: 'voucherLedgerTitle',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'string',
-            dataIndex: 'generalLedgerJournalDesc',
-            column: 'generalLedgerJournalDesc',
-            table: 'generalLedgerJournal',
+            dataIndex: 'voucherLedgerDesc',
+            column: 'voucherLedgerDesc',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'date',
-            dataIndex: 'generalLedgerJournalDate',
-            column: 'generalLedgerJournalDate',
-            table: 'generalLedgerJournal',
+            dataIndex: 'voucherLedgerDate',
+            column: 'voucherLedgerDate',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'date',
-            dataIndex: 'generalLedgerJournalStartDate',
-            column: 'generalLedgerJournalStartDate',
-            table: 'generalLedgerJournal',
-            database: 'ifinancial'
-        },
-        {
-            type: 'date',
-            dataIndex: 'generalLedgerJournalEndDate',
-            column: 'generalLedgerJournalEndDate',
-            table: 'generalLedgerJournal',
-            database: 'ifinancial'
-        },
-        {
-            type: 'date',
-            dataIndex: 'generalLedgerJournalAmount',
-            column: 'generalLedgerJournalAmount',
-            table: 'generalLedgerJournal',
+            dataIndex: 'voucherLedgerAmount',
+            column: 'voucherLedgerAmount',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDefault',
             column: 'isDefault',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isNew',
             column: 'isNew',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDraft',
             column: 'isDraft',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isUpdate',
             column: 'isUpdate',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDelete',
             column: 'isDelete',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isActive',
             column: 'isActive',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isApproved',
             column: 'isApproved',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isReview',
             column: 'isReview',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isPost',
             column: 'isPost',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial',
             labelField: 'staffName',
             store: staffByStore,
@@ -1121,7 +1201,7 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'generalLedgerJournal',
+            table: 'voucherLedger',
             database: 'ifinancial'
         }]
     });
@@ -1213,13 +1293,13 @@ Ext.onReady(function() {
         dataIndex: 'isPost',
         hidden: isPostHidden
     });
-    var generalLedgerJournalColumnModel = [{
-        dataIndex: 'generalLedgerJournalTypeId',
-        header: generalLedgerJournalTypeForeignKeyLabel,
+    var voucherLedgerColumnModel = [{
+        dataIndex: 'voucherTypeId',
+        header: voucherTypeForeignKeyLabel,
         sortable: true,
         hidden: false,
         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-            return record.data.generalLedgerJournalTypeDesc;
+            return record.data.voucherTypeDesc;
         }
     },
     {
@@ -1229,38 +1309,26 @@ Ext.onReady(function() {
         hidden: false
     },
     {
-        dataIndex: 'generalLedgerJournalTitle',
-        header: generalLedgerJournalTitleLabel,
+        dataIndex: 'voucherLedgerTitle',
+        header: voucherLedgerTitleLabel,
         sortable: true,
         hidden: false
     },
     {
-        dataIndex: 'generalLedgerJournalDesc',
-        header: generalLedgerJournalDescLabel,
+        dataIndex: 'voucherLedgerDesc',
+        header: voucherLedgerDescLabel,
         sortable: true,
         hidden: false
     },
     {
-        dataIndex: 'generalLedgerJournalDate',
-        header: generalLedgerJournalDateLabel,
+        dataIndex: 'voucherLedgerDate',
+        header: voucherLedgerDateLabel,
         sortable: true,
         hidden: false
     },
     {
-        dataIndex: 'generalLedgerJournalStartDate',
-        header: generalLedgerJournalStartDateLabel,
-        sortable: true,
-        hidden: false
-    },
-    {
-        dataIndex: 'generalLedgerJournalEndDate',
-        header: generalLedgerJournalEndDateLabel,
-        sortable: true,
-        hidden: false
-    },
-    {
-        dataIndex: 'generalLedgerJournalAmount',
-        header: generalLedgerJournalAmountLabel,
+        dataIndex: 'voucherLedgerAmount',
+        header: voucherLedgerAmountLabel,
         sortable: true,
         hidden: false
     },
@@ -1282,14 +1350,14 @@ Ext.onReady(function() {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var generalLedgerJournalFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    var generalLedgerJournalGrid = new Ext.grid.GridPanel({
+    var voucherLedgerFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var voucherLedgerGrid = new Ext.grid.GridPanel({
         border: false,
-        store: generalLedgerJournalStore,
+        store: voucherLedgerStore,
         autoHeight: false,
-        columns: generalLedgerJournalColumnModel,
+        columns: voucherLedgerColumnModel,
         loadMask: true,
-        plugins: [generalLedgerJournalFilters],
+        plugins: [voucherLedgerFilters],
         autoScroll: true,
         selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
@@ -1301,17 +1369,17 @@ Ext.onReady(function() {
         iconCls: 'application_view_detail',
         listeners: {
             'rowclick': function(object, rowIndex, e) {
-                var record = generalLedgerJournalStore.getAt(rowIndex);
+                var record = voucherLedgerStore.getAt(rowIndex);
                 formPanel.getForm().reset();
                 formPanel.form.load({
-                    url: '../controller/voucherLedger.php',
+                    url: '../controller/voucherLedgerController.php',
                     method: 'POST',
                     waitTitle: systemLabel,
                     waitMsg: waitMessageLabel,
                     params: {
                         method: 'read',
                         mode: 'update',
-                        generalLedgerJournalId: record.data.generalLedgerJournalId,
+                        voucherLedgerId: record.data.voucherLedgerId,
                         leafId: leafId,
                         isAdmin: isAdmin
                     },
@@ -1324,11 +1392,11 @@ Ext.onReady(function() {
                         Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                         Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                         Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                        generalLedgerJournalDetailStore.load({
+                        voucherLedgerDetailStore.load({
                             params: {
                                 leafId: leafId,
                                 isAdmin: isAdmin,
-                                generalLedgerJournalId: record.data.generalLedgerJournalId
+                                voucherLedgerId: record.data.voucherLedgerId
                             }
                         });
                         if (Ext.getCmp('previousRecord').getValue() == 0) {
@@ -1337,7 +1405,7 @@ Ext.onReady(function() {
                         if (Ext.getCmp('nextRecord').getValue() == 0) {
                             Ext.getCmp('nextButton').disable();
                         }
-                        generalLedgerJournalDetailGrid.enable();
+                        voucherLedgerDetailGrid.enable();
                         if (action.result.trialBalance > 0) {
                             Ext.getCmp('postButton').disable();
                             Ext.MessageBox.alert(systemErrorLabel, "Trial Balance no tally");
@@ -1374,9 +1442,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button, e) {
-                        generalLedgerJournalStore.each(function(record, fn, scope) {
-                            for (var access in generalLedgerJournalFlagArray) {
-                                record.set(generalLedgerJournalFlagArray[access], true);
+                        voucherLedgerStore.each(function(record, fn, scope) {
+                            for (var access in voucherLedgerFlagArray) {
+                                record.set(voucherLedgerFlagArray[access], true);
                             }
                         });
                     }
@@ -1388,9 +1456,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button, e) {
-                        generalLedgerJournalStore.each(function(record, fn, scope) {
-                            for (var access in generalLedgerJournalFlagArray) {
-                                record.set(generalLedgerJournalFlagArray[access], false);
+                        voucherLedgerStore.each(function(record, fn, scope) {
+                            for (var access in voucherLedgerFlagArray) {
+                                record.set(voucherLedgerFlagArray[access], false);
                             }
                         });
                     }
@@ -1402,12 +1470,12 @@ Ext.onReady(function() {
                 iconCls: 'bullet_disk',
                 listeners: {
                     'click': function(button, e) {
-                        var url = '../controller/voucherLedger.php?';
+                        var url = '../controller/voucherLedgerController.php?';
                         var sub_url = '';
-                        var modified = generalLedgerJournalStore.getModifiedRecords();
+                        var modified = voucherLedgerStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            sub_url = sub_url + '&generalLedgerJournalId[]=' + modified[i].get('generalLedgerJournalId');
+                            sub_url = sub_url + '&voucherLedgerId[]=' + modified[i].get('voucherLedgerId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
                                     sub_url = sub_url + '&isDefault[]=' + modified[i].get('isDefault');
@@ -1453,7 +1521,7 @@ Ext.onReady(function() {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    generalLedgerJournalStore.reload();
+                                    voucherLedgerStore.reload();
                                 } else if (jsonResponse.success == false) {
                                     Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                 }
@@ -1466,12 +1534,12 @@ Ext.onReady(function() {
                 }
             },
             '->', new Ext.ux.form.SearchField({
-                store: generalLedgerJournalStore,
+                store: voucherLedgerStore,
                 width: 320
             })]
         },
         bbar: new Ext.PagingToolbar({
-            store: generalLedgerJournalStore,
+            store: voucherLedgerStore,
             pageSize: perPage
         }),
         view: new Ext.ux.grid.BufferView({
@@ -1623,7 +1691,7 @@ Ext.onReady(function() {
                 Ext.getCmp('filterDay').setText('Filter Day : ' + dayDateRangeStartArrayData);
                 Ext.getCmp('filterMonth').setText('Filter Month : ' + monthDateRangeStartArrayData);
                 Ext.getCmp('filterYear').setText('Filter Year:' + yearDateRangeStartArrayData);
-                generalLedgerJournalStore.reload({
+                voucherLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
@@ -1646,7 +1714,7 @@ Ext.onReady(function() {
                     Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
                 }
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
-                generalLedgerJournalStore.reload({
+                voucherLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
@@ -1669,7 +1737,7 @@ Ext.onReady(function() {
                 Ext.getCmp('dateRangeStart').setValue(f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate());
                 Ext.getCmp('dateRangeEnd').setValue(l.getFullYear() + "-" + (l.getMonth() + 1) + "-" + l.getDate());
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
-                generalLedgerJournalStore.reload({
+                voucherLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue(),
@@ -1693,7 +1761,7 @@ Ext.onReady(function() {
                     Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
                 }
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
-                generalLedgerJournalStore.reload({
+                voucherLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
@@ -1716,7 +1784,7 @@ Ext.onReady(function() {
                     Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
                 }
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
-                generalLedgerJournalStore.reload({
+                voucherLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
@@ -1782,7 +1850,7 @@ Ext.onReady(function() {
             id: 'filterBetweenButton',
             text: 'Search Between Date',
             handler: function(e, a) {
-                generalLedgerJournalStore.reload({
+                voucherLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeBetweenStart').getValue(),
@@ -1829,7 +1897,7 @@ Ext.onReady(function() {
                 Ext.getCmp('filterDay').setText('Filter Day : ' + dayDateRangeStartArrayData);
                 Ext.getCmp('filterMonth').setText('Filter Month : ' + monthDateRangeStartArrayData);
                 Ext.getCmp('filterYear').setText('Filter Year:' + yearDateRangeStartArrayData);
-                generalLedgerJournalStore.reload({
+                voucherLedgerStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
                         dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
@@ -1837,29 +1905,29 @@ Ext.onReady(function() {
                 });
             }
         }],
-        items: [generalLedgerJournalGrid]
+        items: [voucherLedgerGrid]
     }); // viewport just save information,items will do separate
     // start form entry
     var documentNoTemp = new Ext.form.Hidden({
         name: 'documentNoTemp',
         id: 'documentNoTemp'
     });
-    var generalLedgerJournalId = new Ext.form.Hidden({
-        name: 'generalLedgerJournalId',
-        id: 'generalLedgerJournalId'
+    var voucherLedgerId = new Ext.form.Hidden({
+        name: 'voucherLedgerId',
+        id: 'voucherLedgerId'
     });
-    var generalLedgerJournalTypeId = new Ext.ux.form.ComboBoxMatch({
+	var businessPartnerId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalTypeForeignKeyLabel,
-        name: 'stateId',
-        hiddenName: 'generalLedgerJournalTypeId',
-        valueField: 'generalLedgerJournalTypeId',
-        hiddenId: 'generalLedgerJournalTypeId_fake',
-        id: 'generalLedgerJournalTypeId',
-        displayField: 'generalLedgerJournalTypeDesc',
+        fieldLabel: businessPartnerForeignKeyLabel,
+        name: 'businessPartnerId',
+        hiddenName: 'businessPartnerd',
+        valueField: 'businessPartnerId',
+        hiddenId: 'businessPartnerd_fake',
+        id: 'businessPartnerId',
+        displayField: 'businessPartnerDesc',
         typeAhead: false,
         triggerAction: 'all',
-        store: generalLedgerJournalTypeStore,
+        store: depositTypeStore,
         anchor: '95%',
         selectOnFocus: true,
         mode: 'local',
@@ -1872,17 +1940,32 @@ Ext.onReady(function() {
             }
             value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
             return new RegExp('\b(' + value + ')', 'i');
-        },
-        listeners: {
-            'select': function(index, scrollIntoView) {
-                if (this.value == 2) {
-                    Ext.getCmp('generalLedgerJournalStartDate').enable();
-                    Ext.getCmp('generalLedgerJournalEndDate').enable();
-                } else {
-                    Ext.getCmp('generalLedgerJournalStartDate').disable();
-                    Ext.getCmp('generalLedgerJournalEndDate').disable();
-                }
+        }
+    });
+    var voucherTypeId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: voucherTypeForeignKeyLabel,
+        name: 'voucherTypeId',
+        hiddenName: 'voucherTypeId',
+        valueField: 'voucherTypeId',
+        hiddenId: 'voucherTypeId_fake',
+        id: 'voucherTypeId',
+        displayField: 'voucherTypeDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: voucherTypeStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
             }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
         }
     });
     var documentNo = new Ext.form.TextField({
@@ -1911,12 +1994,12 @@ Ext.onReady(function() {
         },
         anchor: '90%'
     });
-    var generalLedgerJournalTitle = new Ext.form.TextField({
+    var voucherLedgerTitle = new Ext.form.TextField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalTitleLabel + '*',
-        hiddenName: 'generalLedgerJournalTitle',
-        name: 'generalLedgerJournalTitle',
-        id: 'generalLedgerJournalTitle',
+        fieldLabel: voucherLedgerTitleLabel + '*',
+        hiddenName: 'voucherLedgerTitle',
+        name: 'voucherLedgerTitle',
+        id: 'voucherLedgerTitle',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -1924,12 +2007,12 @@ Ext.onReady(function() {
         },
         anchor: '90%'
     });
-    var generalLedgerJournalDesc = new Ext.form.HtmlEditor({
+    var voucherLedgerDesc = new Ext.form.HtmlEditor({
         labelAlign: 'top',
-        fieldLabel: generalLedgerJournalDescLabel,
-        hiddenName: 'generalLedgerJournalDesc',
-        name: 'generalLedgerJournalDesc',
-        id: 'generalLedgerJournalDesc',
+        fieldLabel: voucherLedgerDescLabel,
+        hiddenName: 'voucherLedgerDesc',
+        name: 'voucherLedgerDesc',
+        id: 'voucherLedgerDesc',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -1938,12 +2021,12 @@ Ext.onReady(function() {
         anchor: '90%',
         height: 55
     });
-    var generalLedgerJournalDate = new Ext.form.DateField({
+    var voucherLedgerDate = new Ext.form.DateField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalDateLabel + '*',
-        hiddenName: 'generalLedgerJournalDate',
-        name: 'generalLedgerJournalDate',
-        id: 'generalLedgerJournalDate',
+        fieldLabel: voucherLedgerDateLabel + '*',
+        hiddenName: 'voucherLedgerDate',
+        name: 'voucherLedgerDate',
+        id: 'voucherLedgerDate',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -1951,12 +2034,12 @@ Ext.onReady(function() {
         },
         anchor: '90%'
     });
-    var generalLedgerJournalStartDate = new Ext.form.DateField({
+    var voucherLedgerStartDate = new Ext.form.DateField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalStartDateLabel + '*',
-        hiddenName: 'generalLedgerJournalStartDate',
-        name: 'generalLedgerJournalStartDate',
-        id: 'generalLedgerJournalStartDate',
+        fieldLabel: voucherLedgerStartDateLabel + '*',
+        hiddenName: 'voucherLedgerStartDate',
+        name: 'voucherLedgerStartDate',
+        id: 'voucherLedgerStartDate',
         disabled: true,
         allowBlank: false,
         blankText: blankTextLabel,
@@ -1964,12 +2047,12 @@ Ext.onReady(function() {
             textTransform: 'uppercase'
         }
     });
-    var generalLedgerJournalEndDate = new Ext.form.DateField({
+    var voucherLedgerEndDate = new Ext.form.DateField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalEndDateLabel + '*',
-        hiddenName: 'generalLedgerJournalEndDate',
-        name: 'generalLedgerJournalEndDate',
-        id: 'generalLedgerJournalEndDate',
+        fieldLabel: voucherLedgerEndDateLabel + '*',
+        hiddenName: 'voucherLedgerEndDate',
+        name: 'voucherLedgerEndDate',
+        id: 'voucherLedgerEndDate',
         disabled: true,
         allowBlank: false,
         blankText: blankTextLabel,
@@ -1977,12 +2060,12 @@ Ext.onReady(function() {
             textTransform: 'uppercase'
         }
     });
-    var generalLedgerJournalAmount = new Ext.form.TextField({
+    var voucherLedgerAmount = new Ext.form.TextField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalAmountLabel + '*',
-        hiddenName: 'generalLedgerJournalAmount',
-        name: 'generalLedgerJournalAmount',
-        id: 'generalLedgerJournalAmount',
+        fieldLabel: voucherLedgerAmountLabel + '*',
+        hiddenName: 'voucherLedgerAmount',
+        name: 'voucherLedgerAmount',
+        id: 'voucherLedgerAmount',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -1993,10 +2076,10 @@ Ext.onReady(function() {
         vtype: 'dollar',
         listeners: {
             blur: function() {
-                var value = Ext.getCmp('generalLedgerJournalAmount').getValue();
+                var value = Ext.getCmp('voucherLedgerAmount').getValue();
                 value = value.replace(",", "");
                 value = value.replace(" ", "");
-                Ext.getCmp('generalLedgerJournalAmount').setValue(value);
+                Ext.getCmp('voucherLedgerAmount').setValue(value);
             }
         }
     });
@@ -2025,9 +2108,9 @@ Ext.onReady(function() {
         id: 'endRecord',
         value: ''
     }); // end of hidden value for navigation button
-    // start generalLedgerJournalDetail request
-    var generalLedgerJournalDetailProxy = new Ext.data.HttpProxy({
-        url: '../controller/generalLedgerJournalDetailController.php',
+    // start voucherLedgerDetail request
+    var voucherLedgerDetailProxy = new Ext.data.HttpProxy({
+        url: '../controller/voucherLedgerDetailController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -2040,15 +2123,15 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var generalLedgerJournalDetailReader = new Ext.data.JsonReader({
+    var voucherLedgerDetailReader = new Ext.data.JsonReader({
         totalProperty: 'total',
         successProperty: 'success',
         messageProperty: 'message',
-        idProperty: 'generalLedgerJournalDetailId'
+        idProperty: 'voucherLedgerDetailId'
     });
-    var generalLedgerJournalDetailStore = new Ext.data.JsonStore({
-        proxy: generalLedgerJournalDetailProxy,
-        reader: generalLedgerJournalDetailReader,
+    var voucherLedgerDetailStore = new Ext.data.JsonStore({
+        proxy: voucherLedgerDetailProxy,
+        reader: voucherLedgerDetailReader,
         autoLoad: false,
         autoDestroy: true,
         pruneModifiedRecords: true,
@@ -2060,17 +2143,17 @@ Ext.onReady(function() {
             perPage: perPage
         },
         root: 'data',
-        id: 'generalLedgerJournalDetailId',
+        id: 'voucherLedgerDetailId',
         fields: [{
             key: 'PRI',
             foreignKey: 'no',
-            name: 'generalLedgerJournalDetailId',
+            name: 'voucherLedgerDetailId',
             type: 'int'
         },
         {
             key: 'MUL',
             foreignKey: 'yes',
-            name: 'generalLedgerJournalId',
+            name: 'voucherLedgerId',
             type: 'int'
         },
         {
@@ -2093,7 +2176,7 @@ Ext.onReady(function() {
         {
             key: '',
             foreignKey: 'no',
-            name: 'generalLedgerJournalDetailAmount',
+            name: 'voucherLedgerDetailAmount',
             type: 'float'
         },
         {
@@ -2163,32 +2246,32 @@ Ext.onReady(function() {
             type: 'date',
             dateFormat: 'Y-m-d H:i:s'
         }]
-    }); // end generalLedgerJournalDetail request
+    }); // end voucherLedgerDetail request
     var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters({
         encode: false,
         local: false,
         filters: [{
             type: 'int',
-            dataIndex: 'generalLedgerJournalDetailId',
-            column: 'generalLedgerJournalDetailId',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'voucherLedgerDetailId',
+            column: 'voucherLedgerDetailId',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         , {
             type: 'list',
-            dataIndex: 'generalLedgerJournalId',
-            column: 'generalLedgerJournalId',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'voucherLedgerId',
+            column: 'voucherLedgerId',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial',
-            labelField: 'generalLedgerJournalDesc',
-            store: generalLedgerJournalStore,
+            labelField: 'voucherLedgerDesc',
+            store: voucherLedgerStore,
             phpMode: true
         },
         , {
             type: 'list',
             dataIndex: 'generalLedgerChartOfAccountId',
             column: 'generalLedgerChartOfAccountId',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial',
             labelField: 'generalLedgerChartOfAccountDesc',
             store: generalLedgerChartOfAccountStore,
@@ -2198,7 +2281,7 @@ Ext.onReady(function() {
             type: 'list',
             dataIndex: 'countryId',
             column: 'countryId',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial',
             labelField: 'countryCurrencyCodeDesc',
             store: countryStore,
@@ -2206,79 +2289,79 @@ Ext.onReady(function() {
         },
         {
             type: 'float',
-            dataIndex: 'generalLedgerJournalDetailAmount',
-            column: 'generalLedgerJournalDetailAmount',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'voucherLedgerDetailAmount',
+            column: 'voucherLedgerDetailAmount',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDefault',
             column: 'isDefault',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isNew',
             column: 'isNew',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDraft',
             column: 'isDraft',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isUpdate',
             column: 'isUpdate',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDelete',
             column: 'isDelete',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isActive',
             column: 'isActive',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isApproved',
             column: 'isApproved',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isReview',
             column: 'isReview',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isPost',
             column: 'isPost',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial',
             labelField: 'staffName',
             store: staffByStore,
@@ -2288,31 +2371,31 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'int',
-            dataIndex: 'generalLedgerJournalDetailId',
-            column: 'generalLedgerJournalDetailId',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'voucherLedgerDetailId',
+            column: 'voucherLedgerDetailId',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         , {
             type: 'list',
-            dataIndex: 'generalLedgerJournalId',
-            column: 'generalLedgerJournalId',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'voucherLedgerId',
+            column: 'voucherLedgerId',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial',
-            labelField: 'generalLedgerJournalDesc',
-            store: generalLedgerJournalStore,
+            labelField: 'voucherLedgerDesc',
+            store: voucherLedgerStore,
             phpMode: true
         },
         , {
             type: 'list',
             dataIndex: 'generalLedgerChartOfAccountId',
             column: 'generalLedgerChartOfAccountId',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial',
             labelField: 'generalLedgerChartOfAccountDesc',
             store: generalLedgerChartOfAccountStore,
@@ -2322,7 +2405,7 @@ Ext.onReady(function() {
             type: 'list',
             dataIndex: 'countryId',
             column: 'countryId',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial',
             labelField: 'countryDesc',
             store: countryStore,
@@ -2330,79 +2413,79 @@ Ext.onReady(function() {
         },
         {
             type: 'float',
-            dataIndex: 'generalLedgerJournalDetailAmount',
-            column: 'generalLedgerJournalDetailAmount',
-            table: 'generalLedgerJournalDetail',
+            dataIndex: 'voucherLedgerDetailAmount',
+            column: 'voucherLedgerDetailAmount',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDefault',
             column: 'isDefault',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isNew',
             column: 'isNew',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDraft',
             column: 'isDraft',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isUpdate',
             column: 'isUpdate',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isDelete',
             column: 'isDelete',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isActive',
             column: 'isActive',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isApproved',
             column: 'isApproved',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isReview',
             column: 'isReview',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'boolean',
             dataIndex: 'isPost',
             column: 'isPost',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial',
             labelField: 'staffName',
             store: staffByStore,
@@ -2412,13 +2495,13 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'generalLedgerJournalDetail',
+            table: 'voucherLedgerDetail',
             database: 'ifinancial'
         }]
     });
-    var generalLedgerJournalDetailId = new Ext.form.Hidden({
-        name: 'generalLedgerJournalDetailId',
-        id: 'generalLedgerJournalDetailId'
+    var voucherLedgerDetailId = new Ext.form.Hidden({
+        name: 'voucherLedgerDetailId',
+        id: 'voucherLedgerDetailId'
     });
     var generalLedgerChartOfAccountId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
@@ -2511,12 +2594,12 @@ Ext.onReady(function() {
             return new RegExp('\b(' + value + ')', 'i');
         }
     });
-    var generalLedgerJournalDetailAmount = new Ext.form.TextField({
+    var voucherLedgerDetailAmount = new Ext.form.TextField({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalDetailAmountLabel + '<span style="\'color:" red;\'="">*</span>',
-        hiddenName: 'generalLedgerJournalDetailAmount',
-        name: 'generalLedgerJournalDetailAmount',
-        id: 'generalLedgerJournalDetailAmount',
+        fieldLabel: voucherLedgerDetailAmountLabel + '<span style="\'color:" red;\'="">*</span>',
+        hiddenName: 'voucherLedgerDetailAmount',
+        name: 'voucherLedgerDetailAmount',
+        id: 'voucherLedgerDetailAmount',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -2527,10 +2610,10 @@ Ext.onReady(function() {
         vtype: 'dollar',
         listeners: {
             blur: function() {
-                var value = Ext.getCmp('generalLedgerJournalDetailAmount').getValue();
+                var value = Ext.getCmp('voucherLedgerDetailAmount').getValue();
                 value = value.replace(",", "");
                 value = value.replace(" ", "");
-                Ext.getCmp('generalLedgerJournalDetailAmount').setValue(value);
+                Ext.getCmp('voucherLedgerDetailAmount').setValue(value);
             }
         }
     });
@@ -2589,7 +2672,7 @@ Ext.onReady(function() {
             return res;
         };
     };
-    var generalLedgerJournalDetailColumnModel = [new Ext.grid.RowNumberer(), {
+    var voucherLedgerDetailColumnModel = [new Ext.grid.RowNumberer(), {
         dataIndex: 'generalLedgerChartOfAccountId',
         header: generalLedgerChartOfAccountForeignKeyLabel,
         width: 200,
@@ -2618,8 +2701,8 @@ Ext.onReady(function() {
         renderer: Ext.util.Format.comboRenderer(transactionMode)
     },
     {
-        dataIndex: 'generalLedgerJournalDetailAmount',
-        header: generalLedgerJournalDetailAmountLabel,
+        dataIndex: 'voucherLedgerDetailAmount',
+        header: voucherLedgerDetailAmountLabel,
         width: 75,
         sortable: true,
         summaryType: 'sum',
@@ -2629,21 +2712,21 @@ Ext.onReady(function() {
         editor: {
             xtype: 'textfield',
             labelAlign: 'left',
-            fieldLabel: generalLedgerJournalDetailAmountLabel,
-            hiddenName: 'generalLedgerJournalDetailAmount',
-            name: 'generalLedgerJournalDetailAmount',
-            id: 'generalLedgerJournalDetailAmount',
+            fieldLabel: voucherLedgerDetailAmountLabel,
+            hiddenName: 'voucherLedgerDetailAmount',
+            name: 'voucherLedgerDetailAmount',
+            id: 'voucherLedgerDetailAmount',
             blankText: blankTextLabel,
             decimalPrecision: 2,
             vtype: 'dollar',
             anchor: '95%',
             listeners: {
                 blur: function() {
-                    var value = Ext.getCmp('generalLedgerJournalDetailAmount').getValue();
+                    var value = Ext.getCmp('voucherLedgerDetailAmount').getValue();
                     value = value.replace(",", "");
                     value = Ext.util.Format.usMoney(value);
                     value = value.replace(" ", "");
-                    Ext.getCmp('generalLedgerJournalDetailAmount').setValue(value);
+                    Ext.getCmp('voucherLedgerDetailAmount').setValue(value);
                 }
             }
         }
@@ -2666,53 +2749,53 @@ Ext.onReady(function() {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var generalLedgerJournalDetailEditor = new Ext.ux.grid.RowEditor({
+    var voucherLedgerDetailEditor = new Ext.ux.grid.RowEditor({
         saveText: saveButtonLabel,
         cancelText: cancelButtonLabel,
         listeners: {
             cancelEdit: function(rowEditor, changes, record, rowIndex) {
-                generalLedgerJournalDetailStore.reload({
+                voucherLedgerDetailStore.reload({
                     params: {
-                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                        voucherLedgerId: Ext.getCmp('voucherLedgerId').getValue()
                     }
                 });
             },
             afteredit: function(rowEditor, changes, record, rowIndex) {
                 this.save = true;
                 var record = this.grid.getStore().getAt(rowIndex);
-                if (parseInt(record.get('generalLedgerJournalDetailId')) == 'NaN') {
+                if (parseInt(record.get('voucherLedgerDetailId')) == 'NaN') {
                     method = 'create';
-                } else if (record.get('generalLedgerJournalDetailId') == '') {
+                } else if (record.get('voucherLedgerDetailId') == '') {
                     method = 'create';
-                } else if (record.get('generalLedgerJournalDetailId') == undefined) {
+                } else if (record.get('voucherLedgerDetailId') == undefined) {
                     method = 'create';
-                } else if (parseInt(record.get('generalLedgerJournalDetailId')) > 0) {
+                } else if (parseInt(record.get('voucherLedgerDetailId')) > 0) {
                     method = 'save';
                 } else {
                     method = 'create';
                 }
                 Ext.Ajax.request({
-                    url: '../controller/generalLedgerJournalDetailController.php',
+                    url: '../controller/voucherLedgerDetailController.php',
                     method: 'POST',
                     params: {
                         leafId: leafId,
                         isAdmin: isAdmin,
                         method: method,
-                        generalLedgerJournalDetailId: record.get('generalLedgerJournalDetailId'),
-                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue(),
+                        voucherLedgerDetailId: record.get('voucherLedgerDetailId'),
+                        voucherLedgerId: Ext.getCmp('voucherLedgerId').getValue(),
                         generalLedgerChartOfAccountId: record.get('generalLedgerChartOfAccountId'),
                         transactionMode: record.get('transactionMode'),
                         countryId: record.get('countryId'),
-                        generalLedgerJournalDetailAmount: record.get('generalLedgerJournalDetailAmount')
+                        voucherLedgerDetailAmount: record.get('voucherLedgerDetailAmount')
                     },
                     success: function(response, options) {
                         jsonResponse = Ext.decode(response.responseText);
                         if (jsonResponse.success == false) {
                             Ext.MessageBox.alert(systemLabel, jsonResponse.message);
                         } else {
-                            generalLedgerJournalDetailStore.reload({
+                            voucherLedgerDetailStore.reload({
                                 params: {
-                                    generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                                    voucherLedgerId: Ext.getCmp('voucherLedgerId').getValue()
                                 }
                             });
                             if (jsonResponse.masterDetail > 0) {
@@ -2739,16 +2822,16 @@ Ext.onReady(function() {
             }
         }
     });
-    var generalLedgerJournalDetailEntity = Ext.data.Record.create([{
+    var voucherLedgerDetailEntity = Ext.data.Record.create([{
         key: 'PRI',
         foreignKey: 'no',
-        name: 'generalLedgerJournalDetailId',
+        name: 'voucherLedgerDetailId',
         type: 'int'
     },
     {
         key: 'MUL',
         foreignKey: 'yes',
-        name: 'generalLedgerJournalId',
+        name: 'voucherLedgerId',
         type: 'int'
     },
     {
@@ -2766,7 +2849,7 @@ Ext.onReady(function() {
     {
         key: '',
         foreignKey: 'no',
-        name: 'generalLedgerJournalDetailAmount',
+        name: 'voucherLedgerDetailAmount',
         type: 'float'
     },
     {
@@ -2836,15 +2919,15 @@ Ext.onReady(function() {
         type: 'date',
         dateFormat: 'Y-m-d H:i:s'
     }]);
-    var generalLedgerJournalDetailFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    var generalLedgerJournalDetailGrid = new Ext.grid.GridPanel({
-        name: 'generalLedgerJournalDetailGrid',
-        id: 'generalLedgerJournalDetailGrid',
+    var voucherLedgerDetailFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var voucherLedgerDetailGrid = new Ext.grid.GridPanel({
+        name: 'voucherLedgerDetailGrid',
+        id: 'voucherLedgerDetailGrid',
         border: false,
-        store: generalLedgerJournalDetailStore,
+        store: voucherLedgerDetailStore,
         height: 250,
         autoScroll: true,
-        columns: generalLedgerJournalDetailColumnModel,
+        columns: voucherLedgerDetailColumnModel,
         viewConfig: {
             autoFill: true,
             forceFit: true,
@@ -2852,7 +2935,7 @@ Ext.onReady(function() {
         },
         layout: 'fit',
         disabled: true,
-        plugins: [generalLedgerJournalDetailEditor],
+        plugins: [voucherLedgerDetailEditor],
         tbar: {
             items: [{
                 xtype: 'button',
@@ -2861,12 +2944,12 @@ Ext.onReady(function() {
                 name: 'add_record',
                 text: newButtonLabel,
                 handler: function() {
-                    var newRecord = new generalLedgerJournalDetailEntity({
-                        generalLedgerJournalDetailId: '',
-                        generalLedgerJournalId: '',
+                    var newRecord = new voucherLedgerDetailEntity({
+                        voucherLedgerDetailId: '',
+                        voucherLedgerId: '',
                         generalLedgerChartOfAccountId: '',
                         countryId: '',
-                        generalLedgerJournalDetailAmount: '',
+                        voucherLedgerDetailAmount: '',
                         isDefault: '',
                         isNew: '',
                         isDraft: '',
@@ -2879,10 +2962,10 @@ Ext.onReady(function() {
                         executeBy: '',
                         executeTime: ''
                     });
-                    generalLedgerJournalDetailEditor.stopEditing();
-                    generalLedgerJournalDetailStore.insert(0, newRecord);
-                    generalLedgerJournalDetailGrid.getSelectionModel().getSelections();
-                    generalLedgerJournalDetailEditor.startEditing(0);
+                    voucherLedgerDetailEditor.stopEditing();
+                    voucherLedgerDetailStore.insert(0, newRecord);
+                    voucherLedgerDetailGrid.getSelectionModel().getSelections();
+                    voucherLedgerDetailEditor.startEditing(0);
                 }
             },
             {
@@ -2891,9 +2974,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button, e) {
-                        generalLedgerJournalDetailStore.each(function(record, fn, scope) {
-                            for (var access in generalLedgerJournalDetailFlagArray) {
-                                record.set(generalLedgerJournalDetailFlagArray[access], true);
+                        voucherLedgerDetailStore.each(function(record, fn, scope) {
+                            for (var access in voucherLedgerDetailFlagArray) {
+                                record.set(voucherLedgerDetailFlagArray[access], true);
                             }
                         });
                     }
@@ -2904,9 +2987,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button, e) {
-                        generalLedgerJournalDetailStore.each(function(record, fn, scope) {
-                            for (var access in generalLedgerJournalDetailFlagArray) {
-                                record.set(generalLedgerJournalDetailFlagArray[access], false);
+                        voucherLedgerDetailStore.each(function(record, fn, scope) {
+                            for (var access in voucherLedgerDetailFlagArray) {
+                                record.set(voucherLedgerDetailFlagArray[access], false);
                             }
                         });
                     }
@@ -2918,12 +3001,12 @@ Ext.onReady(function() {
                 iconCls: 'bullet_disk',
                 listeners: {
                     'click': function(button, e) {
-                        var url = '../controller/generalLedgerJournalDetailController.php?';
+                        var url = '../controller/voucherLedgerDetailController.php?';
                         var sub_url = '';
-                        var modified = generalLedgerJournalDetailStore.getModifiedRecords();
+                        var modified = voucherLedgerDetailStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            sub_url = sub_url + '&generalLedgerJournalDetailId[]=' + modified[i].get('generalLedgerJournalDetailId');
+                            sub_url = sub_url + '&voucherLedgerDetailId[]=' + modified[i].get('voucherLedgerDetailId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
                                     sub_url = sub_url + '&isDefault[]=' + modified[i].get('isDefault');
@@ -2963,16 +3046,16 @@ Ext.onReady(function() {
                             params: {
                                 leafId: leafId,
                                 isAdmin: isAdmin,
-                                generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue(),
+                                voucherLedgerId: Ext.getCmp('voucherLedgerId').getValue(),
                                 method: 'updateStatus'
                             },
                             success: function(response, options) {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    generalLedgerJournalDetailStore.reload({
+                                    voucherLedgerDetailStore.reload({
                                         params: {
-                                            generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                                            voucherLedgerId: Ext.getCmp('voucherLedgerId').getValue()
                                         }
                                     });
                                     if (jsonResponse.trialBalance > 0) {
@@ -3007,7 +3090,7 @@ Ext.onReady(function() {
             }]
         },
         bbar: new Ext.PagingToolbar({
-            store: generalLedgerJournalDetailStore,
+            store: voucherLedgerDetailStore,
             pageSize: perPage
         }),
         view: new Ext.ux.grid.BufferView({
@@ -3016,7 +3099,7 @@ Ext.onReady(function() {
         })
     });
     var formPanel = new Ext.form.FormPanel({
-        url: '../controller/voucherLedger.php',
+        url: '../controller/voucherLedgerController.php',
         name: 'formPanel',
         id: 'formPanel',
         method: 'post',
@@ -3032,7 +3115,7 @@ Ext.onReady(function() {
                 bodyStyle: 'padding:5px',
                 border: true,
                 frame: true,
-                items: [generalLedgerJournalId, generalLedgerJournalTypeId, {
+                items: [voucherLedgerId, voucherTypeId,businessPartnerId, {
                     xtype: 'fieldset',
                     title: 'Date Range',
                     items: [{
@@ -3043,7 +3126,7 @@ Ext.onReady(function() {
                         defaults: {
                             flex: 1
                         },
-                        items: [generalLedgerJournalStartDate, generalLedgerJournalStartDate, generalLedgerJournalEndDate]
+                        items: [voucherLedgerStartDate, voucherLedgerStartDate, voucherLedgerEndDate]
                     }]
                 },
                 {
@@ -3053,19 +3136,19 @@ Ext.onReady(function() {
                         columnWidth: .5,
                         layout: 'form',
                         border: false,
-                        items: [generalLedgerJournalTitle, generalLedgerJournalDesc, generalLedgerJournalDate, generalLedgerJournalAmount, referenceNo]
+                        items: [voucherLedgerTitle, voucherLedgerDesc, voucherLedgerDate, voucherLedgerAmount, referenceNo]
                     },
                     {
                         columnWidth: .5,
                         layout: 'form',
                         border: false,
                         labelAlign: 'top',
-                        items: [generalLedgerJournalDesc]
+                        items: [voucherLedgerDesc]
                     }]
                 }]
             }]
         },
-        generalLedgerJournalDetailGrid],
+        voucherLedgerDetailGrid],
         buttonVAlign: 'top',
         buttonAlign: 'left',
         iconCls: 'application_form',
@@ -3085,8 +3168,8 @@ Ext.onReady(function() {
             disabled: auditButtonLabelDisabled,
             handler: function() { // reload the store
                 if (auditWindow) {
-                    generalLedgerJournalStore.reload();
-                    generalLedgerJournalDetailStore.reload();
+                    voucherLedgerStore.reload();
+                    voucherLedgerDetailStore.reload();
                     auditWindow.show().center();
                 }
             }
@@ -3109,12 +3192,12 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
-                            Ext.getCmp('generalLedgerJournalDetailGrid').enable();
+                            Ext.getCmp('voucherLedgerDetailGrid').enable();
                             Ext.getCmp('newButton').disable();
                             Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            Ext.getCmp('generalLedgerJournalId').setValue(action.result.generalLedgerJournalId);
-                            generalLedgerJournalStore.reload({
+                            Ext.getCmp('voucherLedgerId').setValue(action.result.voucherLedgerId);
+                            voucherLedgerStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
@@ -3152,23 +3235,23 @@ Ext.onReady(function() {
                     params: {
                         method: method,
                         leafId: leafId,
-                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                        voucherLedgerId: Ext.getCmp('voucherLedgerId').getValue()
                     },
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                            Ext.getCmp('generalLedgerJournalDetailGrid').enable();
+                            Ext.getCmp('voucherLedgerDetailGrid').enable();
                             Ext.getCmp('newButton').disable();
                             Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            generalLedgerJournalStore.reload({
+                            voucherLedgerStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
                                     limit: perPage
                                 }
                             });
-                            Ext.getCmp('generalLedgerJournalId').setValue(action.result.generalLedgerJournalId);
+                            Ext.getCmp('voucherLedgerId').setValue(action.result.voucherLedgerId);
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
@@ -3204,10 +3287,10 @@ Ext.onReady(function() {
                     fn: function(response) {
                         if ('yes' == response) {
                             Ext.Ajax.request({
-                                url: '../controller/voucherLedger.php',
+                                url: '../controller/voucherLedgerController.php',
                                 params: {
                                     method: 'delete',
-                                    generalLedgerJournalId: record.data.generalLedgerJournalId,
+                                    voucherLedgerId: record.data.voucherLedgerId,
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },
@@ -3215,19 +3298,19 @@ Ext.onReady(function() {
                                     jsonResponse = Ext.decode(response.responseText);
                                     if (jsonResponse.success == true) {
                                         Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                        generalLedgerJournalStore.reload({
+                                        voucherLedgerStore.reload({
                                             params: {
                                                 leafId: leafId,
                                                 start: 0,
                                                 limit: perPage
                                             }
                                         });
-                                        Ext.getCmp('generalLedgerJournalDetail').disable();
+                                        Ext.getCmp('voucherLedgerDetail').disable();
                                         Ext.getCmp('newButton').disable();
                                         Ext.getCmp('saveButton').disable();
                                         Ext.getCmp('nextButton').disable();
                                         Ext.getCmp('previousButton').disable();
-                                        generalLedgerJournalStore.reload({
+                                        voucherLedgerStore.reload({
                                             params: {
                                                 leafId: leafId,
                                                 start: 0,
@@ -3258,8 +3341,8 @@ Ext.onReady(function() {
                 Ext.getCmp('saveButton').disable();
                 Ext.getCmp('deleteButton').disable();
                 Ext.getCmp('postButton').disable();
-                Ext.getCmp('generalLedgerJournalDetailGrid').disable();
-                generalLedgerJournalDetailGrid.store.removeAll();
+                Ext.getCmp('voucherLedgerDetailGrid').disable();
+                voucherLedgerDetailGrid.store.removeAll();
                 formPanel.getForm().reset();
             }
         },
@@ -3273,13 +3356,13 @@ Ext.onReady(function() {
             handler: function() {
                 
                 Ext.Ajax.request({
-                    url: '../controller/voucherLedger.php',
+                    url: '../controller/voucherLedgerController.php',
                     method: 'POST',
                     params: {
                         method: 'posting',
                         leafId: leafId,
                         isAdmin: isAdmin,
-                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                        voucherLedgerId: Ext.getCmp('voucherLedgerId').getValue()
                                                            				
                     },
                     success: function(response, options) {
@@ -3292,10 +3375,10 @@ Ext.onReady(function() {
                             Ext.getCmp('saveButton').disable();
                             Ext.getCmp('deleteButton').disable();
                             Ext.getCmp('postButton').disable();
-                            Ext.getCmp('generalLedgerJournalDetailGrid').disable();
+                            Ext.getCmp('voucherLedgerDetailGrid').disable();
                             formPanel.getForm().reset();
-                            generalLedgerJournalDetailGrid.store.removeAll();
-                            generalLedgerJournalStore.reload({
+                            voucherLedgerDetailGrid.store.removeAll();
+                            voucherLedgerStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
@@ -3332,7 +3415,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('firstRecord').getValue() == '') {
                     Ext.Ajax.request({
-                        url: '../controller/voucherLedger.php',
+                        url: '../controller/voucherLedgerController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -3344,13 +3427,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
                                 formPanel.form.load({
-                                    url: '../controller/voucherLedger.php',
+                                    url: '../controller/voucherLedgerController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        generalLedgerJournalId: Ext.getCmp('firstRecord').getValue(),
+                                        voucherLedgerId: Ext.getCmp('firstRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -3367,14 +3450,14 @@ Ext.onReady(function() {
                                             Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                             Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
                                             Ext.getCmp('previousButton').disable();
-                                            generalLedgerJournalDetailStore.load({
+                                            voucherLedgerDetailStore.load({
                                                 params: {
                                                     leafId: leafId,
                                                     isAdmin: isAdmin,
-                                                    generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                                    voucherLedgerId: action.result.data.voucherLedgerId
                                                 }
                                             });
-                                            generalLedgerJournalDetailGrid.enable();
+                                            voucherLedgerDetailGrid.enable();
                                         } else {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
@@ -3393,13 +3476,13 @@ Ext.onReady(function() {
                     });
                 } else {
                     formPanel.form.load({
-                        url: '../controller/voucherLedger.php',
+                        url: '../controller/voucherLedgerController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            generalLedgerJournalId: Ext.getCmp('firstRecord').getValue(),
+                            voucherLedgerId: Ext.getCmp('firstRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -3416,14 +3499,14 @@ Ext.onReady(function() {
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
                                 Ext.getCmp('previousButton').disable();
-                                generalLedgerJournalDetailStore.load({
+                                voucherLedgerDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                        voucherLedgerId: action.result.data.voucherLedgerId
                                     }
                                 });
-                                generalLedgerJournalDetailGrid.enable();
+                                voucherLedgerDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -3449,13 +3532,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('firstRecord').getValue() >= 1) {
                     formPanel.form.load({
-                        url: '../controller/voucherLedger.php',
+                        url: '../controller/voucherLedgerController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            generalLedgerJournalId: Ext.getCmp('previousRecord').getValue(),
+                            voucherLedgerId: Ext.getCmp('previousRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -3466,17 +3549,17 @@ Ext.onReady(function() {
                                 Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                generalLedgerJournalDetailStore.load({
+                                voucherLedgerDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                        voucherLedgerId: action.result.data.voucherLedgerId
                                     }
                                 });
                                 if (Ext.getCmp('previousRecord').getValue() == 0) {
                                     Ext.getCmp('previousButton').disable();
                                 }
-                                generalLedgerJournalDetailGrid.enable();
+                                voucherLedgerDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -3504,13 +3587,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('nextRecord').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/voucherLedger.php',
+                        url: '../controller/voucherLedgerController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            generalLedgerJournalId: Ext.getCmp('nextRecord').getValue(),
+                            voucherLedgerId: Ext.getCmp('nextRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -3521,11 +3604,11 @@ Ext.onReady(function() {
                                 Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                generalLedgerJournalDetailStore.load({
+                                voucherLedgerDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                        voucherLedgerId: action.result.data.voucherLedgerId
                                     }
                                 });
                                 if (Ext.getCmp('nextRecord').getValue() > Ext.getCmp('lastRecord').getValue()) {
@@ -3535,7 +3618,7 @@ Ext.onReady(function() {
                                     Ext.getCmp('nextButton').disable();
                                 }
                                 Ext.getCmp('previousButton').enable();
-                                generalLedgerJournalDetailGrid.enable();
+                                voucherLedgerDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -3559,7 +3642,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('lastRecord').getValue() == '' || Ext.getCmp('lastRecord').getValue() == undefined) {
                     Ext.Ajax.request({
-                        url: '../controller/voucherLedger.php',
+                        url: '../controller/voucherLedgerController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -3571,13 +3654,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
                                 formPanel.form.load({
-                                    url: '../controller/voucherLedger.php',
+                                    url: '../controller/voucherLedgerController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        generalLedgerJournalId: Ext.getCmp('lastRecord').getValue(),
+                                        voucherLedgerId: Ext.getCmp('lastRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -3593,16 +3676,16 @@ Ext.onReady(function() {
                                             Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                             Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                             Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                            generalLedgerJournalDetailStore.load({
+                                            voucherLedgerDetailStore.load({
                                                 params: {
                                                     leafId: leafId,
                                                     isAdmin: isAdmin,
-                                                    generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                                    voucherLedgerId: action.result.data.voucherLedgerId
                                                 }
                                             });
                                             Ext.getCmp('nextButton').disable();
                                             Ext.getCmp('previousButton').enable();
-                                            generalLedgerJournalDetailGrid.enable();
+                                            voucherLedgerDetailGrid.enable();
                                         } else {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
@@ -3620,15 +3703,15 @@ Ext.onReady(function() {
                         }
                     });
                 }
-                if (Ext.getCmp('generalLedgerJournalId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
+                if (Ext.getCmp('voucherLedgerId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/voucherLedger.php',
+                        url: '../controller/voucherLedgerController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            generalLedgerJournalId: Ext.getCmp('lastRecord').getValue(),
+                            voucherLedgerId: Ext.getCmp('lastRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -3644,16 +3727,16 @@ Ext.onReady(function() {
                                 Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                generalLedgerJournalDetailStore.load({
+                                voucherLedgerDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
+                                        voucherLedgerId: action.result.data.voucherLedgerId
                                     }
                                 });
                                 Ext.getCmp('nextButton').disable();
                                 Ext.getCmp('previousButton').enable();
-                                generalLedgerJournalDetailGrid.enable();
+                                voucherLedgerDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
