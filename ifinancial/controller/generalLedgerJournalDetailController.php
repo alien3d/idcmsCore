@@ -1023,7 +1023,12 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
+		echo json_encode(
+			array(	"success" => true, 
+				 	"message" => $this->systemString->getDeleteMessage(),
+					"time"=>$time,
+				  	"trialBalance"=>$this->trialBalanceChecking(),
+				  	"tally"=>$this->tallyChecking()));
 		exit();
 	}
 
@@ -1416,7 +1421,93 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			}
 			**/
 	}
-
+/**
+	 * To check Total Chart Of Account Categoris  Equal Both Side  So can Post  To General Ledger
+	 * @return number
+	 */
+	function trialBalanceChecking(){
+		// sum all asset amount
+		$sqlAsset="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultAsset = $this->q->fast($sql);
+		$rowAsset  = $this->q->fetchArray($resultAsset);
+		$asset 	 	= $row['total'];
+		// sum all liability amount
+		$sqlLiability="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultLiability = $this->q->fast($sqlLiability);
+		$rowLiability  = $this->q->fetchArray($resultLiability);
+		$liability 	 	= $row['total'];
+		// sum all income amount
+		$sqlIncome="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultIncome = $this->q->fast($sqlIncome);
+		$rowIncome  = $this->q->fetchArray($resultIncome);
+		$income 	 	= $row['total'];
+		// sum all expenses amount
+		$sqlExpenses="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultExpenses= $this->q->fast($sqlExpenses);
+		$rowExpenses  = $this->q->fetchArray($resultAsset);
+		$expenses 	 	= $row['total'];
+		return(($asset - $liabilty)  + ($income - $expenses));
+		
+	}
+	/**
+	 * To check Total Debit  and Credit  Equal Both Side  So can Post  To General Ledger
+	 * @return number
+	 */
+	function tallyChecking(){
+		// sum all debit amount
+		$sqlDebit="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerJournalDetail`.`transactionMode`='D'
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultDebit = $this->q->fast($sqlDebit);
+		$rowDebit  = $this->q->fetchArray($resultDebit);
+		$debit 	 	= $rowDebit['total'];
+		// sum all credit amount
+		$sqlAsset="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerJournalDetail`.`transactionMode`='C'
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultCredit = $this->q->fast($sqlCredit);
+		$rowCredit  = $this->q->fetchArray($resultCredit);
+		$credit	 	= $rowCredit['total'];
+		return ($debit - $credit); 
+	}
 	function firstRecord($value) {
 		$this->recordSet->firstRecord($value);
 	}

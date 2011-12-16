@@ -328,7 +328,9 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		array("success" => true,
 			      "message" => $this->systemString->getCreateMessage(), 
 			      "generalLedgerJournalId" => $generalLedgerJournalId,
-        		  "time"=>$time));
+        		  "time"=>$time,
+				  "trialBalance"=>$this->trialBalanceChecking(),
+				  "tally"=>$this->tallyChecking()));
 		exit();
 	}
 
@@ -341,15 +343,20 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	`generalLedgerJournal`.`isActive`		=	1	";
+				$this->auditFilter = "		`generalLedgerJournal`.`isActive`		=	1
+										AND	`generalLedgerJournal`.`isActive`		=	0";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "  [generalLedgerJournal].[isActive]		=	1	";
+				$this->auditFilter = "  	[generalLedgerJournal].[isActive]		=	1	
+										AND	[generalLedgerJournal].[isActive]		=	0 ";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	GENERALLEDGERJOURNAL.ISACTIVE	=	1	";
+				$this->auditFilter = "		GENERALLEDGERJOURNAL.ISACTIVE			=	1
+										AND GENERALLEDGERJOURNAL.ISACTIVE			=	0	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	GENERALLEDGERJOURNAL.ISACTIVE	=	1	";
+				$this->auditFilter = "		GENERALLEDGERJOURNAL.ISACTIVE			=	1
+										AND GENERALLEDGERJOURNAL.ISACTIVE			=	0	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	GENERALLEDGERJOURNAL.ISACTIVE	=	1	";
+				$this->auditFilter = "		GENERALLEDGERJOURNAL.ISACTIVE			=	1
+											AND GENERALLEDGERJOURNAL.ISACTIVE		=	0	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -866,7 +873,14 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array("success" => true, 
+			      "message" => $this->systemString->getUpdateMessage(),
+				   "time"=>$time,
+				  "trialBalance"=>$this->trialBalanceChecking(),
+				  "tally"=>$this->tallyChecking()));
 		exit();
 	}
 
@@ -1006,7 +1020,14 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $this->systemString->getDeleteMessage(),
+					"time"=>$time,
+				  "trialBalance"=>$this->trialBalanceChecking(),
+				  "tally"=>$this->tallyChecking()));
 		exit();
 	}
 
@@ -1407,9 +1428,33 @@ class GeneralLedgerJournalClass extends ConfigClass {
 	 * To Post data To General Ledger
 	 */
 	function posting() {
+		/*
+		*@todo update posting to the ledger
+		*/
+		$this->q->start();
+		$sqlGeneralLedgerJournalDetail="
+		SELECT `generalLedgerJournalDetailId`, 
+			  `generalLedgerJournalId`, `generalLedgerChartOfAccountId`, `countryId`, `transactionMode`, `generalLedgerJournalDetailAmount`, `isDefault`, `isNew`, `isDraft`, `isUpdate`, `isDelete`, `isActive`, `isApproved`, `isReview`, `isPost`, `executeBy`, `executeTime` FROM `generalLedgerJournalDetail` WHERE 1";
 		
+		$resultGeneralLedgerJournalDetail=$this->q->fast($sqlGeneralLedgerJournalDetail);
+		while($row = $this->q->fetchArray()) {
+			$sqlGeneralLedger="INSERT INTO `generalLedger`(`generalLedgerId`, `documentNo`, `invoiceNo`, `paymentNo`, `adjustmentNo`, `depositNo`, `generalLedgerTitle`, `generalLedgerDesc`, `generalLedgerDate`, `countryId`, `countryCurrencyCode`, `transactionMode`, `generalLedgerForeignAmount`, `generalLedgerLocalAmount`, `generalLedgerChartOfAccountCategoryId`, `generalLedgerChartOfAccountTypeId`, `generalLedgerChartOfAccountId`, `generalLedgerChartOfAccountNo`, `generalLedgerChartOfAccountDesc`, `businessPartnerId`, `businessPartnerDesc`, `isDefault`, `isNew`, `isDraft`, `isUpdate`, `isDelete`, `isActive`, `isApproved`, `isReview`, `isPost`, `isAuthorized`, `executeBy`, `executeTime`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9],[value-10],[value-11],[value-12],[value-13],[value-14],[value-15],[value-16],[value-17],[value-18],[value-19],[value-20],[value-21],[value-22],[value-23],[value-24],[value-25],[value-26],[value-27],[value-28],[value-29],[value-30],[value-31],[value-32],[value-33])";
+		}
+		/*
+		 * Update The main Header Table isPost =1
+		 */
+		$sqlGeneralLedgerJournal=" 
+		UPDATE 	`generalLedgerJournal` 
+		SET 	`isPost`=1 
+		WHERE 	`generalCJournalId`='".$this->model->getGeneralLedgerJournalId(0, 'single')."'";
+		$this->q->commit();
 	}
-	/**
+	
+	
+	function firstRecord($value) {
+		$this->recordSet->firstRecord($value);
+	}
+/**
 	 * To check Total Chart Of Account Categoris  Equal Both Side  So can Post  To General Ledger
 	 * @return number
 	 */
@@ -1427,7 +1472,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		$rowAsset  = $this->q->fetchArray($resultAsset);
 		$asset 	 	= $row['total'];
 		// sum all liability amount
-		$sqlAsset="
+		$sqlLiability="
 		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
 		FROM 	`generalLedgerJournalDetail`
 		JOIN	`generalLedgerChartOfAccount`
@@ -1435,11 +1480,11 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
 		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
 		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
-		$resultAsset = $this->q->fast($sql);
-		$rowAsset  = $this->q->fetchArray($resultAsset);
-		$asset 	 	= $row['total'];
+		$resultLiability = $this->q->fast($sqlLiability);
+		$rowLiability  = $this->q->fetchArray($resultLiability);
+		$liability 	 	= $row['total'];
 		// sum all income amount
-		$sqlAsset="
+		$sqlIncome="
 		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
 		FROM 	`generalLedgerJournalDetail`
 		JOIN	`generalLedgerChartOfAccount`
@@ -1447,11 +1492,11 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
 		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
 		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
-		$resultAsset = $this->q->fast($sql);
-		$rowAsset  = $this->q->fetchArray($resultAsset);
-		$asset 	 	= $row['total'];
+		$resultIncome = $this->q->fast($sqlIncome);
+		$rowIncome  = $this->q->fetchArray($resultIncome);
+		$income 	 	= $row['total'];
 		// sum all expenses amount
-		$sqlAsset="
+		$sqlExpenses="
 		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
 		FROM 	`generalLedgerJournalDetail`
 		JOIN	`generalLedgerChartOfAccount`
@@ -1459,9 +1504,9 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
 		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
 		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
-		$resultAsset = $this->q->fast($sql);
-		$rowAsset  = $this->q->fetchArray($resultAsset);
-		$asset 	 	= $row['total'];
+		$resultExpenses= $this->q->fast($sqlExpenses);
+		$rowExpenses  = $this->q->fetchArray($resultAsset);
+		$expenses 	 	= $row['total'];
 		return(($asset - $liabilty)  + ($income - $expenses));
 		
 	}
@@ -1496,11 +1541,6 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		$credit	 	= $rowCredit['total'];
 		return ($debit - $credit); 
 	}
-	
-	function firstRecord($value) {
-		$this->recordSet->firstRecord($value);
-	}
-
 	function nextRecord($value, $primaryKeyValue) {
 		$this->recordSet->nextRecord($value, $primaryKeyValue);
 	}

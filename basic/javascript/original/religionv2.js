@@ -586,8 +586,8 @@ Ext.onReady(function() {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'religion',,
-			database :'iCore'
+            table: 'religion',
+			database :'iCore',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -595,8 +595,8 @@ Ext.onReady(function() {
         {
             type: 'date',
             dataIndex: 'executeTime',
-            column: 'executeTime',,
-			database :'iCore'
+            column: 'executeTime',
+			database :'iCore',
             table: 'religion'
         }]
     });

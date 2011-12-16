@@ -2459,6 +2459,17 @@ Ext.onReady(function () {
 										generalLedgerJournalId : Ext.getCmp('generalLedgerJournalId').getValue()
 									}
 								});
+								if(jsonResponse.trialBalance > 0 ){
+									Ext.getCmp('postButton').disable();
+									Ext.MessageBox.alert(systemErrorLabel,"Trial Balance no tally");
+								}
+								if(jsonResponse.tally > 0 ){
+									Ext.getCmp('postButton').disable();
+									Ext.MessageBox.alert(systemErrorLabel,"Total Debit and Credit not Tally");
+								}
+								if(jsonResponse.tally == 0 && jsonResponse.trialBalance == 0 ){
+									Ext.getCmp('postButton').enable();
+								}
 							}
 						},
 						failure : function (response, options) {
@@ -2676,6 +2687,7 @@ Ext.onReady(function () {
 									params : {
 										leafId : leafId,
 										isAdmin : isAdmin,
+										generalLedgerJournalId : Ext.getCmp('generalLedgerJournalId').getValue(),
 										method : 'updateStatus'
 									},
 									success : function (response, options) {
@@ -2687,6 +2699,17 @@ Ext.onReady(function () {
 													generalLedgerJournalId : Ext.getCmp('generalLedgerJournalId').getValue()
 												}
 											});
+											if(jsonResponse.trialBalance > 0 ){
+												Ext.getCmp('postButton').disable();
+												Ext.MessageBox.alert(systemErrorLabel,"Trial Balance no tally");
+											}
+											if(jsonResponse.tally > 0 ){
+												Ext.getCmp('postButton').disable();
+												Ext.MessageBox.alert(systemErrorLabel,"Total Debit and Credit not Tally");
+											}
+											if(jsonResponse.tally == 0 && jsonResponse.trialBalance == 0 ){
+												Ext.getCmp('postButton').enable();
+											}
 										} else if (jsonResponse.success == false) {
 											Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
 										}

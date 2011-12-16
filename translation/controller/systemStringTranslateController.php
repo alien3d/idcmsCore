@@ -743,13 +743,13 @@ class SystemStringTranslateClass extends ConfigClass {
 									$sqlLooping .= " END,";
 							
 									
-							}
+							
 								}
 						}
 						
 					}				
-						
-					break;
+				}		
+				break;
 				case 'isActive' :
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsActive($i, 'array')) > 0) {
