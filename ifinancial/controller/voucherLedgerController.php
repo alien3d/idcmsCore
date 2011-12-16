@@ -477,7 +477,7 @@ class VoucherLedgerClass extends ConfigClass {
 					`voucherLedger`.`isReconciled`,
 					`voucherLedger`.`executeBy`,
 					`voucherLedger`.`executeTime`,
-					`voucherLedgerType`.`voucherLedgerTypeDesc`,
+					`voucherType`.`voucherTypeDesc`,
                    	`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`voucherLedger`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`

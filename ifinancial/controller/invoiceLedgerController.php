@@ -147,7 +147,7 @@ class InvoiceLedgerClass extends ConfigClass {
 			$sql="
 			INSERT INTO `".$this->q->getFinancialDatabase()."`.`invoiceLedger` 
 				(    
-						`invoiceLedgerId`,   `invoiceLedgerTypeId`,   `documentNo`,`referenceNo`,   `invoiceLedgerTitle`,    `invoiceLedgerDesc`, `invoiceLedgerDate`, `invoiceLedgerStartDate`,    `invoiceLedgerEndDate`,  `invoiceLedgerAmount`,   `isDefault`,    `isNew`,    `isDraft`,  `isUpdate`, `isDelete`, `isActive`, `isApproved`,   `isReview`, `isPost`,   `executeBy`,    `executeTime`) VALUES ( null, '".$this->model->getInvoiceLedgerTypeId()."',
+						`invoiceLedgerId`,   `invoiceTypeId`,   `documentNo`,`referenceNo`,   `invoiceLedgerTitle`,    `invoiceLedgerDesc`, `invoiceLedgerDate`, `invoiceLedgerStartDate`,    `invoiceLedgerEndDate`,  `invoiceLedgerAmount`,   `isDefault`,    `isNew`,    `isDraft`,  `isUpdate`, `isDelete`, `isActive`, `isApproved`,   `isReview`, `isPost`,   `executeBy`,    `executeTime`) VALUES ( null, '".$this->model->getInvoiceTypeId()."',
 '".$this->model->getDocumentNo()."',
 '".$this->model->getReferenceNo()."',
 '".$this->model->getInvoiceLedgerTitle()."',
@@ -388,7 +388,7 @@ class InvoiceLedgerClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`invoiceLedger`.`invoiceLedgerId`,
-					`invoiceLedger`.`invoiceLedgerTypeId`,
+					`invoiceLedger`.`invoiceTypeId`,
 					`invoiceLedger`.`documentNo`,
 					`invoiceLedger`.`invoiceLedgerTitle`,
 					`invoiceLedger`.`invoiceLedgerDesc`,
@@ -407,13 +407,13 @@ class InvoiceLedgerClass extends ConfigClass {
 					`invoiceLedger`.`isPost`,
 					`invoiceLedger`.`executeBy`,
 					`invoiceLedger`.`executeTime`,
-					`invoiceLedgerType`.`invoiceLedgerTypeDesc`,
+					`invoiceType`.`invoiceTypeDesc`,
                    	`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`invoiceLedger`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
             ON      `invoiceLedger`.`executeBy` = `staff`.`staffId`
-            JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceLedgerType`
-            USING	(`invoiceLedgerTypeId`)
+            JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceType`
+            USING	(`invoiceTypeId`)
             WHERE 	 " . $this->auditFilter;
 
 			if ($this->model->getInvoiceLedgerId(0, 'single')) {
@@ -424,7 +424,7 @@ class InvoiceLedgerClass extends ConfigClass {
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT		[".$this->q->getFinancialDatabase()."].[invoiceLedger].[invoiceLedgerId],
-						[".$this->q->getFinancialDatabase()."].[invoiceLedger].[invoiceLedgerTypeId],
+						[".$this->q->getFinancialDatabase()."].[invoiceLedger].[invoiceTypeId],
 						[".$this->q->getFinancialDatabase()."].[invoiceLedger].[documentNo],
 						[".$this->q->getFinancialDatabase()."].[invoiceLedger].[invoiceLedgerTitle],
 						[".$this->q->getFinancialDatabase()."].[invoiceLedger].[invoiceLedgerDesc],
@@ -809,7 +809,7 @@ class InvoiceLedgerClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`invoiceLedger`
-				SET 		`invoiceLedgerTypeId` = '".$this->model->getInvoiceLedgerTypeId()."',
+				SET 		`invoiceTypeId` = '".$this->model->getInvoiceTypeId()."',
 							 `invoiceLedgerTitle` = '".$this->model->getInvoiceLedgerTitle()."',
 							 `invoiceLedgerDesc` = '".$this->model->getInvoiceLedgerDesc()."',
 							 `invoiceLedgerDate` = '".$this->model->getInvoiceLedgerDate()."',
@@ -831,7 +831,7 @@ class InvoiceLedgerClass extends ConfigClass {
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[".$this->q->getFinancialDatabase()."].[invoiceLedger]
-				SET 		[invoiceLedgerTypeId] = '".$this->model->getInvoiceLedgerTypeId()."',
+				SET 		[invoiceTypeId] = '".$this->model->getInvoiceTypeId()."',
 							[invoiceLedgerTitle] = '".$this->model->getInvoiceLedgerTitle()."',
 							[invoiceLedgerDesc] = '".$this->model->getInvoiceLedgerDesc()."',
 							[invoiceLedgerDate] = '".$this->model->getInvoiceLedgerDate()."',

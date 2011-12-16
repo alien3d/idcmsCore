@@ -757,157 +757,7 @@ Ext.onReady(function() {
             dateFormat: 'Y-m-d H:i:s'
         }]
     }); // end General Ledger Chart of account request
-    // start chart of account request
-    var generalLedgerChartOfAccountProxy = new Ext.data.HttpProxy({
-        url: '../controller/generalLedgerChartOfAccountController.php',
-        method: 'POST',
-        success: function(response, options) {
-            jsonResponse = Ext.decode(response.responseText);
-            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-            } else {
-                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-            }
-        },
-        failure: function(response, options) {
-            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
-        }
-    });
-    var generalLedgerChartOfAccountReader = new Ext.data.JsonReader({
-        totalProperty: 'total',
-        successProperty: 'success',
-        messageProperty: 'message',
-        idProperty: 'generalLedgerChartOfAccountId'
-    });
-    var generalLedgerChartOfAccountStore = new Ext.data.JsonStore({
-        proxy: generalLedgerChartOfAccountProxy,
-        reader: generalLedgerChartOfAccountReader,
-        autoLoad: true,
-        autoDestroy: true,
-        pruneModifiedRecords: true,
-        baseParams: {
-            method: 'read',
-            leafId: leafId,
-            isAdmin: isAdmin,
-            start: 0,
-            perPage: perPage
-        },
-        root: 'data',
-        fields: [{
-            key: 'PRI',
-            foreignKey: 'no',
-            name: 'generalLedgerChartOfAccountId',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerChartOfAccountTitle',
-            type: 'string'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerChartOfAccountDesc',
-            type: 'string'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerChartOfAccountNo',
-            type: 'string'
-        },
-        {
-            key: 'MUL',
-            foreignKey: 'yes',
-            name: 'generalLedgerChartOfAccountTypeId',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'generalLedgerChartOfAccountReportType',
-            type: 'string'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isDefault',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isNew',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isDraft',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isUpdate',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isDelete',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isActive',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isApproved',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isReview',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isPost',
-            type: 'boolean'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isConsolidation',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'isSeperated',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'executeBy',
-            type: 'int'
-        },
-        {
-            key: '',
-            foreignKey: 'no',
-            name: 'executeTime',
-            type: 'date',
-            dateFormat: 'Y-m-d H:i:s'
-        }]
-    }); // end General Ledger Chart of account request
+    
     // start currency code request
     var countryProxy = new Ext.data.HttpProxy({
         url: '../controller/countryController.php',
@@ -957,6 +807,7 @@ Ext.onReady(function() {
             type: 'string'
         }]
     }); // end currency code request
+    //  start invoice category request
     var invoiceLedgerProxy = new Ext.data.HttpProxy({
         url : '../controller/invoiceLedgerController.php',
         method : 'POST',
@@ -974,6 +825,242 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
+    var invoiceCategoryProxy = new Ext.data.HttpProxy({
+        url : '../controller/invoiceCategoryController.php',
+        method : 'POST',
+        success : function (response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) {
+             
+            // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+             
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure : function (response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+     
+var invoiceCategoryReader = new Ext.data.JsonReader({
+        totalProperty : 'total',
+        successProperty : 'success',
+        messageProperty : 'message',
+        idProperty : 'invoiceCategoryId'
+    });
+     
+var invoiceCategoryStore = new Ext.data.JsonStore({
+        proxy : invoiceCategoryProxy,
+        reader : invoiceCategoryReader,
+        autoLoad : true,
+        autoDestroy : true,
+        pruneModifiedRecords : true,
+        baseParams : {
+            method : 'read',
+            leafId : leafId,
+            isAdmin : isAdmin,
+            start : 0,
+            perPage : perPage
+        },
+        root : 'data',
+        id : 'invoiceCategoryId',
+        fields : [{
+        key :'PRI',
+        foreignKey : 'no',
+        name : 'invoiceCategoryId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceCategorySequence',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceCategoryCode',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceCategoryDesc',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDefault',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isNew',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDraft',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isUpdate',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDelete',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isActive',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isApproved',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isReview',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isPost',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeBy',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeTime',
+        type : 'date',dateFormat : 'Y-m-d H:i:s'}
+        ]
+    });
+ 
+// end invoiceCategory request
+//start invoiceType request
+
+var invoiceTypeProxy = new Ext.data.HttpProxy({
+        url : '../controller/invoiceTypeController.php',
+        method : 'POST',
+        success : function (response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) {
+             
+            // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+             
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure : function (response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+     
+var invoiceTypeReader = new Ext.data.JsonReader({
+        totalProperty : 'total',
+        successProperty : 'success',
+        messageProperty : 'message',
+        idProperty : 'invoiceTypeId'
+    });
+     
+var invoiceTypeStore = new Ext.data.JsonStore({
+        proxy : invoiceTypeProxy,
+        reader : invoiceTypeReader,
+        autoLoad : true,
+        autoDestroy : true,
+        pruneModifiedRecords : true,
+        baseParams : {
+            method : 'read',
+            leafId : leafId,
+            isAdmin : isAdmin,
+            start : 0,
+            perPage : perPage
+        },
+        root : 'data',
+        id : 'invoiceTypeId',
+        fields : [{
+        key :'PRI',
+        foreignKey : 'no',
+        name : 'invoiceTypeId',
+        type : 'int'},{
+        key :'MUL',
+        foreignKey : 'yes',
+        name : 'invoiceCategoryId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceTypeSequence',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceTypeCode',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceTypeDesc',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceTypeCreditLimit',
+        type : 'float'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceTypeInterestRate',
+        type : 'float'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceTypeMinimumDeposit',
+        type : 'float'},{
+        key :'MUL',
+        foreignKey : 'no',
+        name : 'generalLedgerChartOfAccountDimensionId',
+        type : 'int'},{
+        key :'MUL',
+        foreignKey : 'yes',
+        name : 'lateInterestId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDefault',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isNew',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDraft',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isUpdate',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDelete',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isActive',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isApproved',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isReview',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isPost',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeBy',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeTime',
+        type : 'date',dateFormat : 'Y-m-d H:i:s'}
+        ]
+    });
+ 
+// end invoiceType request
 // start invoice request     
 var invoiceLedgerReader = new Ext.data.JsonReader({
         totalProperty : 'total',
@@ -1040,7 +1127,7 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
         type : 'int'},{
         key :'',
         foreignKey : 'no',
-        name : 'invoiceId',
+        name : 'invoiceLedger',
         type : 'int'},{
         key :'',
         foreignKey : 'no',
@@ -1089,6 +1176,113 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
         ]
     });
 	// end invoice request
+//start adjustmentType request
+
+var adjustmentTypeProxy = new Ext.data.HttpProxy({
+        url : '../controller/adjustmentTypeController.php',
+        method : 'POST',
+        success : function (response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) {
+             
+            // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+             
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure : function (response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+     
+var adjustmentTypeReader = new Ext.data.JsonReader({
+        totalProperty : 'total',
+        successProperty : 'success',
+        messageProperty : 'message',
+        idProperty : 'adjustmentTypeId'
+    });
+     
+var adjustmentTypeStore = new Ext.data.JsonStore({
+        proxy : adjustmentTypeProxy,
+        reader : adjustmentTypeReader,
+        autoLoad : true,
+        autoDestroy : true,
+        pruneModifiedRecords : true,
+        baseParams : {
+            method : 'read',
+            leafId : leafId,
+            isAdmin : isAdmin,
+            start : 0,
+            perPage : perPage
+        },
+        root : 'data',
+        id : 'adjustmentTypeId',
+        fields : [{
+        key :'PRI',
+        foreignKey : 'no',
+        name : 'adjustmentTypeId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'adjustmentTypeSequence',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'adjustmentTypeCode',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'adjustmentTypeDesc',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDefault',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isNew',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDraft',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isUpdate',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDelete',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isActive',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isApproved',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isReview',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isPost',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeBy',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeTime',
+        type : 'date',dateFormat : 'Y-m-d H:i:s'}
+        ]
+    });
+ 
+// end adjustmentType request
     // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
     var adjustmentLedgerProxy = new Ext.data.HttpProxy({
@@ -2105,7 +2299,7 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
         displayField: 'businessPartnerDesc',
         typeAhead: false,
         triggerAction: 'all',
-        store: depositTypeStore,
+        store: businessPartnerStore,
         anchor: '95%',
         selectOnFocus: true,
         mode: 'local',
@@ -2120,7 +2314,111 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
             return new RegExp('\b(' + value + ')', 'i');
         }
     });
-
+	var adjustmentTypeId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: adjustmentTypeForeignKeyLabel,
+        name: 'adjustmentTypeId',
+        hiddenName: 'adjustmentTypeId',
+        valueField: 'adjustmentTypeId',
+        hiddenId: 'adjustmentTypeId_fake',
+        id: 'adjustmentTypeId',
+        displayField: 'adjustmentTypeDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: adjustmentTypeStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
+        }
+    });
+	var invoiceCategoryId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: invoiceCategoryForeignKeyLabel,
+        name: 'invoiceCategoryId',
+        hiddenName: 'invoiceCategoryId',
+        valueField: 'invoiceCategoryId',
+        hiddenId: 'invoiceCategoryId_fake',
+        id: 'invoiceCategoryId',
+        displayField: 'invoiceCategoryDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: invoiceCategoryStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
+        }
+    });
+	var invoiceTypeId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: invoiceTypeForeignKeyLabel,
+        name: 'invoiceTypeId',
+        hiddenName: 'invoiceTypeId',
+        valueField: 'invoiceTypeId',
+        hiddenId: 'invoiceTypeId_fake',
+        id: 'invoiceTypeId',
+        displayField: 'invoiceTypeDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: invoiceTypeStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
+        }
+    });
+	
+	var invoiceLedgerId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: invoiceLedgerForeignKeyLabel,
+        name: 'invoiceLedgerId',
+        hiddenName: 'invoiceLedgerId',
+        valueField: 'invoiceLedgerId',
+        hiddenId: 'invoiceLedgerId_fake',
+        id: 'invoiceLedger',
+        displayField: 'invoiceLedgerDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: invoiceLedgerStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
+        }
+    });
     var documentNo = new Ext.form.TextField({
         labelAlign: 'left',
         fieldLabel: documentNoLabel + '*',
@@ -3243,7 +3541,9 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
                 bodyStyle: 'padding:5px',
                 border: true,
                 frame: true,
-                items: [adjustmentLedgerId, adjustmentTypeId,businessPartnerId,invoiceId,
+                items: [adjustmentLedgerId, adjustmentTypeId,businessPartnerId,   invoiceCategoryId,
+                        invoiceTypeId,
+                        invoiceLedgerId, 
                 {
                     layout: 'column',
                     border: false,
@@ -3431,7 +3731,7 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
                                                 start: 0,
                                                 limit: perPage
                                             }
-                                        })
+                                        });
                                     } else {
                                         Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }

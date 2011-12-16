@@ -3043,7 +3043,7 @@ Ext.onReady(function() {
                         defaults: {
                             flex: 1
                         },
-                        items: [generalLedgerJournalStartDate, generalLedgerJournalStartDate, generalLedgerJournalEndDate]
+                        items: [ generalLedgerJournalStartDate, generalLedgerJournalEndDate]
                     }]
                 },
                 {

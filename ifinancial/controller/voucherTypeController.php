@@ -385,8 +385,22 @@ class VoucherTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`voucherType`.`voucherTypeId`,`voucherType`.`voucherTypeSequence`,`voucherType`.`generalLedgerJournalCode`,`voucherType`.`voucherTypeDesc`,`voucherType`.`isDefault`,`voucherType`.`isNew`,`voucherType`.`isDraft`,`voucherType`.`isUpdate`,`voucherType`.`isDelete`,`voucherType`.`isActive`,`voucherType`.`isApproved`,`voucherType`.`isReview`,`voucherType`.`isPost`,`voucherType`.`executeBy`,`voucherType`.`executeTime`
-                    ,`staff`.`staffName`
+			SELECT	`voucherType`.`voucherTypeId`,
+					`voucherType`.`voucherTypeSequence`,
+					`voucherType`.`voucherTypeCode`,
+					`voucherType`.`voucherTypeDesc`,
+					`voucherType`.`isDefault`,
+					`voucherType`.`isNew`,
+					`voucherType`.`isDraft`,
+					`voucherType`.`isUpdate`,
+					`voucherType`.`isDelete`,
+					`voucherType`.`isActive`,
+					`voucherType`.`isApproved`,
+					`voucherType`.`isReview`,
+					`voucherType`.`isPost`,
+					`voucherType`.`executeBy`,
+					`voucherType`.`executeTime`,
+					`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`voucherType`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
             ON      `voucherType`.`executeBy` = `staff`.`staffId`
@@ -396,11 +410,24 @@ class VoucherTypeClass extends ConfigClass {
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT`voucherType`.`voucherTypeId`,`voucherType`.`voucherTypeSequence`,`voucherType`.`generalLedgerJournalCode`,`voucherType`.`voucherTypeDesc`,`voucherType`.`isDefault`,`voucherType`.`isNew`,`voucherType`.`isDraft`,`voucherType`.`isUpdate`,`voucherType`.`isDelete`,`voucherType`.`isActive`,`voucherType`.`isApproved`,`voucherType`.`isReview`,`voucherType`.`isPost`,`voucherType`.`executeBy`,`voucherType`.`executeTime`
-                    `staff`.`staffName`
-            FROM    `".$this->q->getFixAssetDatabase()."`.`voucherType`
-            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `voucherType`.`executeBy` = `staff`.`staffId`
+			SELECT	[voucherType].[voucherTypeId],
+					[voucherType].[voucherTypeSequence],
+					[voucherType].[voucherTypeCode],
+					[voucherType].[voucherTypeDesc],
+					[voucherType].[isDefault],
+					[voucherType].[isNew],
+					[voucherType].[isDraft],
+					[voucherType].[isUpdate],
+					[voucherType].[isDelete],
+					[voucherType].[isActive],
+					[voucherType].[isApproved],
+					[voucherType].[isReview],
+					[voucherType].[isPost],
+					[voucherType].[executeBy],
+					[voucherType].[executeTime],
+					[staff].[staffName]
+            FROM    [".$this->q->getFinancialDatabase()."].[voucherType]
+            JOIN    [".$this->q->getManagementDatabase()."].[staff]
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getVoucherTypeId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getVoucherTypeId(0, 'single') . "'";

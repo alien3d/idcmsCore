@@ -151,7 +151,7 @@ class RefundLedgerClass extends ConfigClass {
 						`businessPartnerId`,
 						`invoiceCategoryId`,
 						`invoiceTypeId`,
-						`invoiceId`,
+						`invoiceLedgerId`,
 						`documentNo`,
 						`referenceNo`,   
 						`refundLedgerTitle`,    
@@ -472,7 +472,7 @@ class RefundLedgerClass extends ConfigClass {
 					`refundLedger`.`businessPartnerId`,
 					`refundLedger`.`invoiceCategoryId`,
 					`refundLedger`.`invoiceTypeId`,
-					`refundLedger`.`invoiceId`,
+					`refundLedger`.`invoiceLedgerId`,
 					`refundLedger`.`documentNo`,
 					`refundLedger`.`referenceNo`,
 					`refundLedger`.`refundLedgerTitle`,
@@ -491,7 +491,7 @@ class RefundLedgerClass extends ConfigClass {
 					`refundLedger`.`isReconciled`,
 					`refundLedger`.`executeBy`,
 					`refundLedger`.`executeTime`,
-					`refundLedgerType`.`refundLedgerTypeDesc`,
+					`refundLedgerType`.`refundTypeDesc`,
                    	`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`refundLedger`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
@@ -501,9 +501,9 @@ class RefundLedgerClass extends ConfigClass {
 			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceCategory`
             USING	(`invoiceCategoryId`)
 			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceType`
-            USING	(`invoiceCategoryId`,`invoiceTypeId`)
-			JOIN	`".$this->q->getFinancialDatabase()."`.`invoice`
-            USING	(`invoiceCategoryId`,`invoiceType`,`invoiceId`)
+            USING	(`invoiceCategoryId`)
+			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceLedger`
+            USING	(`invoiceCategoryId`,`invoiceTypeId`,`invoiceLedgerId`)
             WHERE 	 " . $this->auditFilter;
 
 			if ($this->model->getRefundLedgerId(0, 'single')) {
@@ -517,14 +517,12 @@ class RefundLedgerClass extends ConfigClass {
 						[refundLedger].[businessPartnerId],
 						[refundLedger].[invoiceCategoryId],
 						[refundLedger].[invoiceTypeId],
-						[refundLedger].[invoiceId],
+						[refundLedger].[invoiceLedgerId],
 						[refundLedger].[documentNo],
 						[refundLedger].[referenceNo],
 						[refundLedger].[refundLedgerTitle],
 						[refundLedger].[refundLedgerDesc],
 						[refundLedger].[refundLedgerDate],
-						[refundLedger].[refundLedgerStartDate],
-						[refundLedger].[refundLedgerEndDate],
 						[refundLedger].[refundLedgerAmount],
 						[refundLedger].[isDefault],
 						[refundLedger].[isNew],
@@ -548,8 +546,8 @@ class RefundLedgerClass extends ConfigClass {
 			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceType]
             AND			[invoiceType].[invoiceTypeId] 			=	[refundLedger].[invoiceTypeId]
 			AND			[invoiceCategory].[invoiceCategoryId] 	=	[invoiceType].[invoiceCategoryId]	
-			JOIN		[".$this->q->getFinancialDatabase()."].[invoice]
-            ON			[invoice].[invoiceId] 					= 	[refundLedger].[invoiceId]
+			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceLedger]
+            ON			[invoiceLedger].[invoiceLedgerId] 					= 	[refundLedger].[invoiceLedgerId]
 			AND			[invoiceType].[invoiceTypeId] 			=	[refundLedger].[invoiceTypeId]
 			AND			[invoiceCategory].[invoiceTypeId] 		=	[refundLedger].[invoiceCategoryId]			
 			WHERE 		" . $this->auditFilter;
@@ -562,7 +560,7 @@ class RefundLedgerClass extends ConfigClass {
 											REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
 											REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
 											REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
-											REFUNDLEDGER.INVOICEID              AS 	\"invoiceId\",
+											REFUNDLEDGER.INVOICELEDGERID              AS 	\"invoiceLedgerId\",
 											REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
 											REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
 											REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
@@ -593,7 +591,7 @@ class RefundLedgerClass extends ConfigClass {
 								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
 								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
 								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICE
-								ON			INVOICE.INVOICEID 					= 	REFUNDLEDGER.INVOICEID
+								ON			INVOICE.INVOICELEDGERID 					= 	REFUNDLEDGER.INVOICELEDGERID
 								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
 								AND			INVOICECATEGORY.[INVOICETYPEID 		=	REFUNDLEDGER.INVOICECATEGORYID		
 			WHERE 	" . $this->auditFilter;
@@ -743,7 +741,7 @@ class RefundLedgerClass extends ConfigClass {
 											[refundLedger].[businessPartnerId],
 											[refundLedger].[invoiceCategoryId],
 											[refundLedger].[invoiceTypeId],
-											[refundLedger].[invoiceId],
+											[refundLedger].[invoiceLedgerId],
 											[refundLedger].[documentNo],
 											[refundLedger].[referenceNo],
 											[refundLedger].[refundLedgerTitle],
@@ -776,8 +774,8 @@ class RefundLedgerClass extends ConfigClass {
 								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICETYPE]
 								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
 								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICE
-								ON			INVOICE.INVOICEID 					= 	REFUNDLEDGER.INVOICEID
+								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICELEDGER
+								ON			INVOICELEDGER.INVOICELEDGERID 					= 	REFUNDLEDGER.INVOICELEDGERID
 								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
@@ -799,7 +797,7 @@ class RefundLedgerClass extends ConfigClass {
 											REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
 											REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
 											REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
-											REFUNDLEDGER.INVOICEID              AS 	\"invoiceId\",
+											REFUNDLEDGER.INVOICELEDGERID              AS 	\"invoiceLedgerId\",
 											REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
 											REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
 											REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
@@ -829,10 +827,10 @@ class RefundLedgerClass extends ConfigClass {
 								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICETYPE]
 								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
 								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICE
-								ON			INVOICE.INVOICEID 					= 	REFUNDLEDGER.INVOICEID
+								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICELEDGER
+								ON			INVOICELEDGER.INVOICELEDGERID 					= 	REFUNDLEDGER.INVOICELEDGERID
 								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
-								AND			INVOICECATEGORY.[INVOICETYPEID 		=	REFUNDLEDGER.INVOICECATEGORYID	
+								AND			INVOICECATEGORY.INVOICETYPEID 		=	REFUNDLEDGER.INVOICECATEGORYID	
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )

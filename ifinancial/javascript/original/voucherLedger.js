@@ -1927,7 +1927,7 @@ var voucherTypeStore = new Ext.data.JsonStore({
         displayField: 'businessPartnerDesc',
         typeAhead: false,
         triggerAction: 'all',
-        store: depositTypeStore,
+        store: businessPartnerStore,
         anchor: '95%',
         selectOnFocus: true,
         mode: 'local',
@@ -2034,32 +2034,7 @@ var voucherTypeStore = new Ext.data.JsonStore({
         },
         anchor: '90%'
     });
-    var voucherLedgerStartDate = new Ext.form.DateField({
-        labelAlign: 'left',
-        fieldLabel: voucherLedgerStartDateLabel + '*',
-        hiddenName: 'voucherLedgerStartDate',
-        name: 'voucherLedgerStartDate',
-        id: 'voucherLedgerStartDate',
-        disabled: true,
-        allowBlank: false,
-        blankText: blankTextLabel,
-        style: {
-            textTransform: 'uppercase'
-        }
-    });
-    var voucherLedgerEndDate = new Ext.form.DateField({
-        labelAlign: 'left',
-        fieldLabel: voucherLedgerEndDateLabel + '*',
-        hiddenName: 'voucherLedgerEndDate',
-        name: 'voucherLedgerEndDate',
-        id: 'voucherLedgerEndDate',
-        disabled: true,
-        allowBlank: false,
-        blankText: blankTextLabel,
-        style: {
-            textTransform: 'uppercase'
-        }
-    });
+   
     var voucherLedgerAmount = new Ext.form.TextField({
         labelAlign: 'left',
         fieldLabel: voucherLedgerAmountLabel + '*',
@@ -3115,20 +3090,7 @@ var voucherTypeStore = new Ext.data.JsonStore({
                 bodyStyle: 'padding:5px',
                 border: true,
                 frame: true,
-                items: [voucherLedgerId, voucherTypeId,businessPartnerId, {
-                    xtype: 'fieldset',
-                    title: 'Date Range',
-                    items: [{
-                        xtype: 'compositefield',
-                        fieldLabel: 'Date Range',
-                        msgTarget: 'side',
-                        anchor: '-20',
-                        defaults: {
-                            flex: 1
-                        },
-                        items: [voucherLedgerStartDate, voucherLedgerStartDate, voucherLedgerEndDate]
-                    }]
-                },
+                items: [voucherLedgerId, voucherTypeId,businessPartnerId, 
                 {
                     layout: 'column',
                     border: false,

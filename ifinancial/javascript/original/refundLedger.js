@@ -957,6 +957,235 @@ Ext.onReady(function() {
             type: 'string'
         }]
     }); // end currency code request
+    // start invoice category
+    var invoiceLedgerProxy = new Ext.data.HttpProxy({
+        url : '../controller/invoiceLedgerController.php',
+        method : 'POST',
+        success : function (response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) {
+             
+            // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+             
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure : function (response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var invoiceCategoryProxy = new Ext.data.HttpProxy({
+        url : '../controller/invoiceCategoryController.php',
+        method : 'POST',
+        success : function (response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) {
+             
+            // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+             
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure : function (response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+     
+var invoiceCategoryReader = new Ext.data.JsonReader({
+        totalProperty : 'total',
+        successProperty : 'success',
+        messageProperty : 'message',
+        idProperty : 'invoiceCategoryId'
+    });
+     
+var invoiceCategoryStore = new Ext.data.JsonStore({
+        proxy : invoiceCategoryProxy,
+        reader : invoiceCategoryReader,
+        autoLoad : true,
+        autoDestroy : true,
+        pruneModifiedRecords : true,
+        baseParams : {
+            method : 'read',
+            leafId : leafId,
+            isAdmin : isAdmin,
+            start : 0,
+            perPage : perPage
+        },
+        root : 'data',
+        id : 'invoiceCategoryId',
+        fields : [{
+        key :'PRI',
+        foreignKey : 'no',
+        name : 'invoiceCategoryId',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceCategorySequence',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceCategoryCode',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'invoiceCategoryDesc',
+        type : 'string'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDefault',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isNew',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDraft',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isUpdate',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isDelete',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isActive',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isApproved',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isReview',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'isPost',
+        type : 'boolean'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeBy',
+        type : 'int'},{
+        key :'',
+        foreignKey : 'no',
+        name : 'executeTime',
+        type : 'date',dateFormat : 'Y-m-d H:i:s'}
+        ]
+    });
+ 
+// end invoiceCategory request
+// start refund request
+var refundTypeProxy = new Ext.data.HttpProxy({
+    url : '../controller/refundTypeController.php',
+    method : 'POST',
+    success : function (response, options) {
+        jsonResponse = Ext.decode(response.responseText);
+        if (jsonResponse.success == true) {
+         
+        // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+         
+        } else {
+            Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+        }
+    },
+    failure : function (response, options) {
+        Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+    }
+});
+ 
+var refundTypeReader = new Ext.data.JsonReader({
+    totalProperty : 'total',
+    successProperty : 'success',
+    messageProperty : 'message',
+    idProperty : 'refundTypeId'
+});
+ 
+var refundTypeStore = new Ext.data.JsonStore({
+    proxy : refundTypeProxy,
+    reader : refundTypeReader,
+    autoLoad : true,
+    autoDestroy : true,
+    pruneModifiedRecords : true,
+    baseParams : {
+        method : 'read',
+        leafId : leafId,
+        isAdmin : isAdmin,
+        start : 0,
+        perPage : perPage
+    },
+    root : 'data',
+    id : 'refundTypeId',
+    fields : [{
+    key :'PRI',
+    foreignKey : 'no',
+    name : 'refundTypeId',
+    type : 'int'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'refundTypeSequence',
+    type : 'int'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'refundTypeCode',
+    type : 'string'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'refundTypeDesc',
+    type : 'string'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'isDefault',
+    type : 'boolean'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'isNew',
+    type : 'boolean'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'isDraft',
+    type : 'boolean'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'isUpdate',
+    type : 'boolean'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'isDelete',
+    type : 'boolean'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'isActive',
+    type : 'boolean'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'isApproved',
+    type : 'boolean'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'isReview',
+    type : 'boolean'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'isPost',
+    type : 'boolean'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'executeBy',
+    type : 'int'},{
+    key :'',
+    foreignKey : 'no',
+    name : 'executeTime',
+    type : 'date',dateFormat : 'Y-m-d H:i:s'}
+    ]
+});
+
+//end refundType request
     // start invoice request     
 var invoiceLedgerReader = new Ext.data.JsonReader({
         totalProperty : 'total',
@@ -1023,7 +1252,7 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
         type : 'int'},{
         key :'',
         foreignKey : 'no',
-        name : 'invoiceId',
+        name : 'invoiceLedger',
         type : 'int'},{
         key :'',
         foreignKey : 'no',
@@ -2116,7 +2345,7 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
         displayField: 'businessPartnerDesc',
         typeAhead: false,
         triggerAction: 'all',
-        store: depositTypeStore,
+        store: businessPartnerStore,
         anchor: '95%',
         selectOnFocus: true,
         mode: 'local',
@@ -2134,7 +2363,7 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
     var refundTypeId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
         fieldLabel: refundTypeForeignKeyLabel,
-        name: 'stateId',
+        name: 'refundTypeId',
         hiddenName: 'refundTypeId',
         valueField: 'refundTypeId',
         hiddenId: 'refundTypeId_fake',
@@ -2155,17 +2384,85 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
             }
             value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
             return new RegExp('\b(' + value + ')', 'i');
-        },
-        listeners: {
-            'select': function(index, scrollIntoView) {
-                if (this.value == 2) {
-                    Ext.getCmp('refundLedgerStartDate').enable();
-                    Ext.getCmp('refundLedgerEndDate').enable();
-                } else {
-                    Ext.getCmp('refundLedgerStartDate').disable();
-                    Ext.getCmp('refundLedgerEndDate').disable();
-                }
+        }
+    });
+    var invoiceCategoryId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: invoiceCategoryForeignKeyLabel,
+        name: 'invoiceCategoryId',
+        hiddenName: 'invoiceCategoryId',
+        valueField: 'invoiceCategoryId',
+        hiddenId: 'invoiceCategoryId_fake',
+        id: 'invoiceCategoryId',
+        displayField: 'invoiceCategoryDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: invoiceCategoryStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
             }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
+        }
+    });
+	var invoiceTypeId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: invoiceTypeForeignKeyLabel,
+        name: 'invoiceTypeId',
+        hiddenName: 'invoiceTypeId',
+        valueField: 'invoiceTypeId',
+        hiddenId: 'invoiceTypeId_fake',
+        id: 'invoiceTypeId',
+        displayField: 'invoiceTypeDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: invoiceTypeStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
+        }
+    });
+	
+	var invoiceLedgerId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: invoiceLedgerForeignKeyLabel,
+        name: 'invoiceLedgerId',
+        hiddenName: 'invoiceLedgerId',
+        valueField: 'invoiceLedgerId',
+        hiddenId: 'invoiceLedgerId_fake',
+        id: 'invoiceLedger',
+        displayField: 'invoiceLedgerDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: invoiceStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
         }
     });
     var documentNo = new Ext.form.TextField({
@@ -3315,20 +3612,10 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
                 bodyStyle: 'padding:5px',
                 border: true,
                 frame: true,
-                items: [refundLedgerId, refundTypeId,businessPartnerId,invoiceId, {
-                    xtype: 'fieldset',
-                    title: 'Date Range',
-                    items: [{
-                        xtype: 'compositefield',
-                        fieldLabel: 'Date Range',
-                        msgTarget: 'side',
-                        anchor: '-20',
-                        defaults: {
-                            flex: 1
-                        },
-                        items: [refundLedgerStartDate, refundLedgerStartDate, refundLedgerEndDate]
-                    }]
-                },
+                items: [refundLedgerId, refundTypeId,businessPartnerId,
+                        invoiceCategoryId,
+                        invoiceTypeId,
+                        invoiceLedgerId, 
                 {
                     layout: 'column',
                     border: false,
@@ -3516,7 +3803,7 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
                                                 start: 0,
                                                 limit: perPage
                                             }
-                                        })
+                                        });
                                     } else {
                                         Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }

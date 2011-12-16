@@ -148,14 +148,12 @@ class AdjustmentLedgerClass extends ConfigClass {
 			INSERT INTO `".$this->q->getFinancialDatabase()."`.`adjustmentLedger` 
 				(    
 						`adjustmentLedgerId`,
-						`adjustmentLedgerTypeId`,
+						`adjustmentTypeId`,
 						`documentNo`,
 						`referenceNo`,
 						`adjustmentLedgerTitle`,
 						`adjustmentLedgerDesc`,
 						`adjustmentLedgerDate`, 
-						`adjustmentLedgerStartDate`,   
-						`adjustmentLedgerEndDate`,  
 						`adjustmentLedgerAmount`,   
 						`isDefault`,    
 						`isNew`,    
@@ -409,13 +407,11 @@ class AdjustmentLedgerClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`adjustmentLedger`.`adjustmentLedgerId`,
-					`adjustmentLedger`.`adjustmentLedgerTypeId`,
+					`adjustmentLedger`.`adjustmentTypeId`,
 					`adjustmentLedger`.`documentNo`,
 					`adjustmentLedger`.`adjustmentLedgerTitle`,
 					`adjustmentLedger`.`adjustmentLedgerDesc`,
 					`adjustmentLedger`.`adjustmentLedgerDate`,
-					`adjustmentLedger`.`adjustmentLedgerStartDate`,
-					`adjustmentLedger`.`adjustmentLedgerEndDate`,
 					`adjustmentLedger`.`adjustmentLedgerAmount`,
 					`adjustmentLedger`.`isDefault`,
 					`adjustmentLedger`.`isNew`,
@@ -428,13 +424,13 @@ class AdjustmentLedgerClass extends ConfigClass {
 					`adjustmentLedger`.`isPost`,
 					`adjustmentLedger`.`executeBy`,
 					`adjustmentLedger`.`executeTime`,
-					`adjustmentLedgerType`.`adjustmentLedgerTypeDesc`,
+					`adjustmentType`.`adjustmentTypeDesc`,
                    	`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`adjustmentLedger`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
             ON      `adjustmentLedger`.`executeBy` = `staff`.`staffId`
-            JOIN	`".$this->q->getFinancialDatabase()."`.`adjustmentLedgerType`
-            USING	(`adjustmentLedgerTypeId`)
+            JOIN	`".$this->q->getFinancialDatabase()."`.`adjustmentType`
+            USING	(`adjustmentTypeId`)
             WHERE 	 " . $this->auditFilter;
 
 			if ($this->model->getAdjustmentLedgerId(0, 'single')) {
@@ -445,13 +441,11 @@ class AdjustmentLedgerClass extends ConfigClass {
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT		[adjustmentLedger].[adjustmentLedgerId],
-						[adjustmentLedger].[adjustmentLedgerTypeId],
+						[adjustmentLedger].[adjustmentTypeId],
 						[adjustmentLedger].[documentNo],
 						[adjustmentLedger].[adjustmentLedgerTitle],
 						[adjustmentLedger].[adjustmentLedgerDesc],
 						[adjustmentLedger].[adjustmentLedgerDate],
-						[adjustmentLedger].[adjustmentLedgerStartDate],
-						[adjustmentLedger].[adjustmentLedgerEndDate],
 						[adjustmentLedger].[adjustmentLedgerAmount],
 						[adjustmentLedger].[isDefault],
 						[adjustmentLedger].[isNew],
@@ -830,7 +824,7 @@ class AdjustmentLedgerClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`adjustmentLedger`
-				SET 		`adjustmentLedgerTypeId` = '".$this->model->getAdjustmentLedgerTypeId()."',
+				SET 		`adjustmentTypeId` = '".$this->model->getAdjustmentLedgerTypeId()."',
 							 `adjustmentLedgerTitle` = '".$this->model->getAdjustmentLedgerTitle()."',
 							 `adjustmentLedgerDesc` = '".$this->model->getAdjustmentLedgerDesc()."',
 							 `adjustmentLedgerDate` = '".$this->model->getAdjustmentLedgerDate()."',
@@ -852,7 +846,7 @@ class AdjustmentLedgerClass extends ConfigClass {
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[".$this->q->getFinancialDatabase()."].[adjustmentLedger]
-				SET 		[adjustmentLedgerTypeId] = '".$this->model->getAdjustmentLedgerTypeId()."',
+				SET 		[adjustmentTypeId] = '".$this->model->getAdjustmentLedgerTypeId()."',
 							[adjustmentLedgerTitle] = '".$this->model->getAdjustmentLedgerTitle()."',
 							[adjustmentLedgerDesc] = '".$this->model->getAdjustmentLedgerDesc()."',
 							[adjustmentLedgerDate] = '".$this->model->getAdjustmentLedgerDate()."',
