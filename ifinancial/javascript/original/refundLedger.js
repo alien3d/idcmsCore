@@ -1110,7 +1110,7 @@ var invoiceTypeReader = new Ext.data.JsonReader({
 var invoiceTypeStore = new Ext.data.JsonStore({
         proxy : invoiceTypeProxy,
         reader : invoiceTypeReader,
-        autoLoad : true,
+        autoLoad : false,
         autoDestroy : true,
         pruneModifiedRecords : true,
         baseParams : {
@@ -1222,7 +1222,7 @@ var invoiceLedgerReader = new Ext.data.JsonReader({
 var invoiceLedgerStore = new Ext.data.JsonStore({
         proxy : invoiceLedgerProxy,
         reader : invoiceLedgerReader,
-        autoLoad : true,
+        autoLoad : false,
         autoDestroy : true,
         pruneModifiedRecords : true,
         baseParams : {
@@ -2628,7 +2628,32 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
             }
             value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
             return new RegExp('\b(' + value + ')', 'i');
-        }
+        },
+		listeners : {
+				'select': function(combo, record, index) {
+					Ext.Ajax.request({
+						url: '../controller/invoiceCategoryController.php',
+						method: 'GET',
+						params: {
+							method: 'read',
+							invoiceCategoryId: combo.value,
+							leafId leafId,
+							isadmin :isAdmin
+						},
+						success: function(response, options) {
+							jsonResponse = Ext.decode(response.responseText);
+							if (jsonResponse.success == false) {
+								Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+							} else {
+								//Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+							}
+						},
+						failure: function(response, options) {
+							Ext.MessageBox.alert(systemLabel, escape(response.status) + ':' + escape(response.statusText));
+						}
+					});
+				}
+			}
     });
 	var invoiceTypeId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
@@ -2654,7 +2679,33 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
             }
             value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
             return new RegExp('\b(' + value + ')', 'i');
-        }
+        },
+		listeners : {
+				'select': function(combo, record, index) {
+					Ext.Ajax.request({
+						url: '../controller/invoiceTypeController.php',
+						method: 'GET',
+						params: {
+							method: 'read',
+							field: 'sequence',
+							table: 'folder',
+							moduleId: combo.value,
+							leafIdTemp: leafIdTemp
+						},
+						success: function(response, options) {
+							jsonResponse = Ext.decode(response.responseText);
+							if (jsonResponse.success == false) {
+								Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+							} else {
+								//Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+							}
+						},
+						failure: function(response, options) {
+							Ext.MessageBox.alert(systemLabel, escape(response.status) + ':' + escape(response.statusText));
+						}
+					});
+				}
+			}
     });
 	
 	var invoiceLedgerId = new Ext.ux.form.ComboBoxMatch({

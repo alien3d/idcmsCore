@@ -386,82 +386,183 @@ class InvoiceTypeClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`invoiceType`.`invoiceTypeId`,
-					`invoiceType`.`invoiceTypeSequence`,
-					`invoiceType`.`invoiceTypeCode`,
-					`invoiceType`.`invoiceTypeDesc`,
-					`invoiceType`.`isDefault`,
-					`invoiceType`.`isNew`,
-					`invoiceType`.`isDraft`,
-					`invoiceType`.`isUpdate`,
-					`invoiceType`.`isDelete`,
-					`invoiceType`.`isActive`,
-					`invoiceType`.`isApproved`,
-					`invoiceType`.`isReview`,
-					`invoiceType`.`isPost`,
-					`invoiceType`.`executeBy`,
-					`invoiceType`.`executeTime`,
-					`staff`.`staffName`
+						`invoiceType`.`invoiceCategoryId`,
+						`invoiceType`.`invoiceTypeSequence`,
+						`invoiceType`.`invoiceTypeCode`,
+						`invoiceType`.`invoiceTypeDesc`,
+						`invoiceType`.`invoiceCreditLimit`,
+						`invoiceType`.`invoiceTypeInterestRate`,
+						`invoiceType`.`invoiceTypeMinimumDeposit`,
+						`invoiceType`.`isDefault`,
+						`invoiceType`.`isNew`,
+						`invoiceType`.`isDraft`,
+						`invoiceType`.`isUpdate`,
+						`invoiceType`.`isDelete`,
+						`invoiceType`.`isActive`,
+						`invoiceType`.`isApproved`,
+						`invoiceType`.`isReview`,
+						`invoiceType`.`isPost`,
+						`invoiceType`.`executeBy`,
+						`invoiceType`.`executeTime`,
+						`invoiceCategory`.`invoiceCategoryCode`,
+						`invoiceCategory`.`invoiceCategoryDesc`,
+						`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`invoiceType`
-            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `invoiceType`.`executeBy` = `staff`.`staffId`
+            JOIN   	 `".$this->q->getManagementDatabase()."`.`invoiceCategory`
+			USING	(`invoiceCategoryId`)
+			JOIN    	`".$this->q->getManagementDatabase()."`.`staff`
+            ON      	`invoiceType`.`executeBy` = `staff`.`staffId`
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getInvoiceTypeId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
+				$sql .= " AND  `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
+			}
+			if ($this->model->getInvoiceCategoryId()) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`invoiceCategoryId`='" . $this->model->getInvoiceTypeId() . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[invoiceType].[invoiceTypeId],
-					[invoiceType].[invoiceTypeSequence],
-					[invoiceType].[invoiceTypeCode],
-					[invoiceType].[invoiceTypeDesc],
-					[invoiceType].[isDefault],
-					[invoiceType].[isNew],
-					[invoiceType].[isDraft],
-					[invoiceType].[isUpdate],
-					[invoiceType].[isDelete],
-					[invoiceType].[isActive],
-					[invoiceType].[isApproved],
-					[invoiceType].[isReview],
-					[invoiceType].[isPost],
-					[invoiceType].[executeBy],
-					[invoiceType].[executeTime],
-					[staff].[staffName]
+						[invoiceType].[invoiceCategoryId],
+						[invoiceType].[invoiceTypeSequence],
+						[invoiceType].[invoiceTypeCode],
+						[invoiceType].[invoiceTypeDesc],
+						[invoiceType].[invoiceCreditLimit],
+						[invoiceType].[invoiceTypeInterestRate],
+						[invoiceType].[invoiceTypeMinimumDeposit],
+						[invoiceType].[isDefault],
+						[invoiceType].[isNew],
+						[invoiceType].[isDraft],
+						[invoiceType].[isUpdate],
+						[invoiceType].[isDelete],
+						[invoiceType].[isActive],
+						[invoiceType].[isApproved],
+						[invoiceType].[isReview],
+						[invoiceType].[isPost],
+						[invoiceType].[executeBy],
+						[invoiceType].[executeTime],
+						[invoiceCategory].[invoiceCategoryCode],
+						[invoiceCategory].[invoiceCategoryDesc],
+						[staff].[staffName]
             FROM    [".$this->q->getFinancialDatabase()."].[invoiceType]
+			JOIN   	 [".$this->q->getManagementDatabase()."].[invoiceCategory]
+			ON		[invoiceType].[invoiceCategoryId] = [invoiceCategory].[invoiceCategoryId] 
             JOIN    [".$this->q->getManagementDatabase()."].[staff]
             ON      [invoiceType].[executeBy] = [staff].[staffId]
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getInvoiceTypeId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			}
+			if ($this->model->getInvoiceCategoryId() {
+				$sql .= " AND [" . $this->model->getTableName() . "].[invoiceCategoryId] ='" . $this->model->getInvoiceTypeId() . "'";
+			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		INVOICETYPE.INVOICETYPEID   		 	AS 	\"invoiceTypeId\",
-						INVOICETYPE.INVOICETYPESEQUENCE 				AS 	\"invoiceTypeSequence\",
-						INVOICETYPE.INVOICETYPECODE 			AS 	\"invoiceTypeCode\",
-						INVOICETYPE.INVOICETYPEDESC 			AS 	\"invoiceTypeDesc\",
-						INVOICETYPE.ISDEFAULT    			AS	\"isDefault\",
-						INVOICETYPE.ISNEW		  			AS	\"isNew\",
-						INVOICETYPE.ISDRAFT	  				AS	\"isDraft\",
-						INVOICETYPE.ISUPDATE     			AS	\"isUpdate\",
-						INVOICETYPE.ISDELETE	  			AS	\"isDelete\",
-						INVOICETYPE.ISACTIVE	  			AS	\"isActive\",
-						INVOICETYPE.ISAPPROVED   			AS	\"isApproved\",
-						INVOICETYPE.ISREVIEW	  			AS	\"isReview\",
-						INVOICETYPE.ISPOST  	  			AS	\"isPost\",
-						INVOICETYPE.EXECUTEBY    			AS	\"executeBy\",
-						INVOICETYPE.EXECUTETIME  			AS	\"executeTime\",
-						STAFF.STAFFNAME		  			AS	\"staffName\"	
+			SELECT		INVOICETYPE.INVOICETYPEID   		 				AS 	\"invoiceTypeId\",
+							INVOICETYPE.INVOICECATEGORYID   			AS 	\"invoiceCategoryId\",
+							INVOICETYPE.INVOICETYPESEQUENCE 			AS 	\"invoiceTypeSequence\",
+							INVOICETYPE.INVOICETYPECODE 					AS 	\"invoiceTypeCode\",
+							INVOICETYPE.INVOICETYPEDESC 					AS 	\"invoiceTypeDesc\",
+							INVOICETYPE.INVOICECREDITLIMIT				AS 	\"invoiceCreditLimit\",
+							INVOICETYPE.INVOICETYPEINTERESTRATE		AS 	\"invoiceTypeInterestRate\",
+							INVOICETYPE.INVOICETYPEMINIMUMDEPOSIT	AS 	\"invoiceTypeMinimumDeposit\",
+							INVOICETYPE.ISDEFAULT    							AS	\"isDefault\",
+							INVOICETYPE.ISNEW		  								AS	\"isNew\",
+							INVOICETYPE.ISDRAFT	  								AS	\"isDraft\",
+							INVOICETYPE.ISUPDATE     							AS	\"isUpdate\",
+							INVOICETYPE.ISDELETE	  								AS	\"isDelete\",
+							INVOICETYPE.ISACTIVE	  								AS	\"isActive\",
+							INVOICETYPE.ISAPPROVED   							AS	\"isApproved\",
+							INVOICETYPE.ISREVIEW	  							AS	\"isReview\",
+							INVOICETYPE.ISPOST  	  								AS	\"isPost\",
+							INVOICETYPE.EXECUTEBY    							AS	\"executeBy\",
+							INVOICETYPE.EXECUTETIME  							AS	\"executeTime\",
+							INVOICETYPE.INVOICECATEGORYCODE 			AS 	\"invoiceCategoryCode\",
+							INVOICETYPE.INVOICECATEGORYDESC 			AS 	\"invoiceCategoryDesc\",
+							STAFF.STAFFNAME		  									AS	\"staffName\"	
 			FROM 		INVOICETYPE
-			JOIN		STAFF
+			JOIN			STAFF
 			ON			INVOICETYPE.EXECUTEBY 	  	=	STAFF.STAFFID
-			WHERE 	" . $this->auditFilter;
+			JOIN   		INVOICECATEGORY
+			ON			INVOICETYPE.INVOICECATEGORYID = INVOICECATEGORY.INVOICECATEGORYID 
+			WHERE 		" . $this->auditFilter;
 			if ($this->model->getInvoiceTypeId(0, 'single')) {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			}
+			if ($this->model->getInvoiceCategoryId()) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . ".INVOICECATEGORY='" . $this->model->getInvoiceTypeId() . "'";
+			}
 		} else if ($this->q->vendor == self::DB2) {
-
+				$sql = "
+				SELECT		INVOICETYPE.INVOICETYPEID   		 				AS 	\"invoiceTypeId\",
+								INVOICETYPE.INVOICECATEGORYID   			AS 	\"invoiceCategoryId\",
+								INVOICETYPE.INVOICETYPESEQUENCE 			AS 	\"invoiceTypeSequence\",
+								INVOICETYPE.INVOICETYPECODE 					AS 	\"invoiceTypeCode\",
+								INVOICETYPE.INVOICETYPEDESC 					AS 	\"invoiceTypeDesc\",
+								INVOICETYPE.INVOICECREDITLIMIT				AS 	\"invoiceCreditLimit\",
+								INVOICETYPE.INVOICETYPEINTERESTRATE		AS 	\"invoiceTypeInterestRate\",
+								INVOICETYPE.INVOICETYPEMINIMUMDEPOSIT	AS 	\"invoiceTypeMinimumDeposit\",
+								INVOICETYPE.ISDEFAULT    							AS	\"isDefault\",
+								INVOICETYPE.ISNEW		  								AS	\"isNew\",
+								INVOICETYPE.ISDRAFT	  								AS	\"isDraft\",
+								INVOICETYPE.ISUPDATE     							AS	\"isUpdate\",
+								INVOICETYPE.ISDELETE	  								AS	\"isDelete\",
+								INVOICETYPE.ISACTIVE	  								AS	\"isActive\",
+								INVOICETYPE.ISAPPROVED   							AS	\"isApproved\",
+								INVOICETYPE.ISREVIEW	  							AS	\"isReview\",
+								INVOICETYPE.ISPOST  	  								AS	\"isPost\",
+								INVOICETYPE.EXECUTEBY    							AS	\"executeBy\",
+								INVOICETYPE.EXECUTETIME  							AS	\"executeTime\",
+								INVOICETYPE.INVOICECATEGORYCODE 			AS 	\"invoiceCategoryCode\",
+								INVOICETYPE.INVOICECATEGORYDESC 			AS 	\"invoiceCategoryDesc\",
+								STAFF.STAFFNAME		  									AS	\"staffName\"	
+				FROM 		INVOICETYPE
+				JOIN			STAFF
+				ON			INVOICETYPE.EXECUTEBY 	  	=	STAFF.STAFFID
+				JOIN   		INVOICECATEGORY
+				ON			INVOICETYPE.INVOICECATEGORYID = INVOICECATEGORY.INVOICECATEGORYID 
+				WHERE 		" . $this->auditFilter;
+				if ($this->model->getInvoiceTypeId(0, 'single')) {
+					$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
+				}
+				if ($this->model->getInvoiceCategoryId()) {
+					$sql .= " AND " . strtoupper($this->model->getTableName()) . ".INVOICECATEGORY='" . $this->model->getInvoiceTypeId() . "'";
+				}
 		} else if ($this->q->vendor == self::POSTGRESS) {
-
+			$sql = "
+			SELECT		INVOICETYPE.INVOICETYPEID   		 				AS 	\"invoiceTypeId\",
+							INVOICETYPE.INVOICECATEGORYID   			AS 	\"invoiceCategoryId\",
+							INVOICETYPE.INVOICETYPESEQUENCE 			AS 	\"invoiceTypeSequence\",
+							INVOICETYPE.INVOICETYPECODE 					AS 	\"invoiceTypeCode\",
+							INVOICETYPE.INVOICETYPEDESC 					AS 	\"invoiceTypeDesc\",
+							INVOICETYPE.INVOICECREDITLIMIT				AS 	\"invoiceCreditLimit\",
+							INVOICETYPE.INVOICETYPEINTERESTRATE		AS 	\"invoiceTypeInterestRate\",
+							INVOICETYPE.INVOICETYPEMINIMUMDEPOSIT	AS 	\"invoiceTypeMinimumDeposit\",
+							INVOICETYPE.ISDEFAULT    							AS	\"isDefault\",
+							INVOICETYPE.ISNEW		  								AS	\"isNew\",
+							INVOICETYPE.ISDRAFT	  								AS	\"isDraft\",
+							INVOICETYPE.ISUPDATE     							AS	\"isUpdate\",
+							INVOICETYPE.ISDELETE	  								AS	\"isDelete\",
+							INVOICETYPE.ISACTIVE	  								AS	\"isActive\",
+							INVOICETYPE.ISAPPROVED   							AS	\"isApproved\",
+							INVOICETYPE.ISREVIEW	  							AS	\"isReview\",
+							INVOICETYPE.ISPOST  	  								AS	\"isPost\",
+							INVOICETYPE.EXECUTEBY    							AS	\"executeBy\",
+							INVOICETYPE.EXECUTETIME  							AS	\"executeTime\",
+							INVOICETYPE.INVOICECATEGORYCODE 			AS 	\"invoiceCategoryCode\",
+							INVOICETYPE.INVOICECATEGORYDESC 			AS 	\"invoiceCategoryDesc\",
+							STAFF.STAFFNAME		  									AS	\"staffName\"	
+			FROM 		INVOICETYPE
+			JOIN			STAFF
+			ON			INVOICETYPE.EXECUTEBY 	  	=	STAFF.STAFFID
+			JOIN   		INVOICECATEGORY
+			ON			INVOICETYPE.INVOICECATEGORYID = INVOICECATEGORY.INVOICECATEGORYID 
+			WHERE 		" . $this->auditFilter;
+			if ($this->model->getInvoiceTypeId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
+			}
+			if ($this->model->getInvoiceCategoryId()) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . ".INVOICECATEGORY='" . $this->model->getInvoiceTypeId() . "'";
+			}
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -594,21 +695,28 @@ class InvoiceTypeClass extends ConfigClass {
 				$sql = "
 							WITH [invoiceTypeDerived] AS
 							(
-								SELECT 		[invoiceType].[invoiceTypeId],
-											[invoiceType].[invoiceTypeSequence],
-											[invoiceType].[invoiceTypeCode],
-											[invoiceType].[invoiceTypeDesc],
-											[invoiceType].[isDefault],
-											[invoiceType].[isNew],
-											[invoiceType].[isDraft],
-											[invoiceType].[isUpdate],
-											[invoiceType].[isDelete],
-											[invoiceType].[isApproved],
-											[invoiceType].[isReview],
-											[invoiceType].[isPost],
-											[invoiceType].[executeBy],
-											[invoiceType].[executeTime],
-											[staff].[staffName],
+								SELECT 			[invoiceType].[invoiceTypeId],
+														[invoiceType].[invoiceCategoryId],
+														[invoiceType].[invoiceTypeSequence],
+														[invoiceType].[invoiceTypeCode],
+														[invoiceType].[invoiceTypeDesc],
+														[invoiceType].[invoiceCreditLimit],
+														[invoiceType].[invoiceTypeInterestRate],
+														[invoiceType].[invoiceTypeMinimumDeposit],
+														[invoiceType].[isDefault],
+														[invoiceType].[isNew],
+														[invoiceType].[isDraft],
+														[invoiceType].[isUpdate],
+														[invoiceType].[isDelete],
+														[invoiceType].[isActive],
+														[invoiceType].[isApproved],
+														[invoiceType].[isReview],
+														[invoiceType].[isPost],
+														[invoiceType].[executeBy],
+														[invoiceType].[executeTime],
+														[invoiceCategory].[invoiceCategoryCode],
+														[invoiceCategory].[invoiceCategoryDesc],
+														[staff].[staffName]
 								ROW_NUMBER() OVER (ORDER BY [invoiceType].[invoiceTypeId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[invoiceType]
 								JOIN	[".$this->q->getManagementDatabase()."].[staff]
