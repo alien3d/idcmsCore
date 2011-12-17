@@ -628,21 +628,6 @@ Ext.onReady(function () {
 			hidden : false,
 			width : 50
 		}, {
-			dataIndex : 'generalLedgerChartOfAccountTypeDesc',
-			header : generalLedgerChartOfAccountTypeDescLabel,
-			sortable : true,
-			hidden : false,
-			width : 50
-		}, {
-			dataIndex : 'generalLedgerChartOfAccountStart',
-			header : generalLedgerChartOfAccountIdLabel,
-			sortable : true,
-			hidden : false,
-			width : 50,
-			renderer : function (value, metaData, record, rowIndex, colIndex, store) {
-				return record.data.generalLedgerChartOfAccountStartDesc;
-			}
-		}, {
 			dataIndex : 'generalLedgerChartOfAccountEnd',
 			header : generalLedgerChartOfAccountIdLabel,
 			sortable : true,

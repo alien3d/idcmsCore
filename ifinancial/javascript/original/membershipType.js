@@ -633,25 +633,7 @@ Ext.onReady(function () {
 			sortable : true,
 			hidden : false,
 			width : 50
-		}, {
-			dataIndex : 'generalLedgerChartOfAccountStart',
-			header : generalLedgerChartOfAccountIdLabel,
-			sortable : true,
-			hidden : false,
-			width : 50,
-			renderer : function (value, metaData, record, rowIndex, colIndex, store) {
-				return record.data.generalLedgerChartOfAccountStartDesc;
-			}
-		}, {
-			dataIndex : 'generalLedgerChartOfAccountEnd',
-			header : generalLedgerChartOfAccountIdLabel,
-			sortable : true,
-			hidden : false,
-			width : 50,
-			renderer : function (value, metaData, record, rowIndex, colIndex, store) {
-				return record.data.generalLedgerChartOfAccountDescEnd;
-			}
-		},
+		}, 
 		isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid, {
 			dataIndex : 'executeBy',
 			header : executeByLabel,

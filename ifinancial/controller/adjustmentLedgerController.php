@@ -166,31 +166,43 @@ class AdjustmentLedgerClass extends ConfigClass {
 						`isPost`,  
 						`executeBy`,    
 						`executeTime`
-				) VALUES ( null, '".$this->model->getAdjustmentLedgerTypeId()."',
-'".$this->model->getDocumentNo()."',
-'".$this->model->getReferenceNo()."',
-'".$this->model->getAdjustmentLedgerTitle()."',
-'".$this->model->getAdjustmentLedgerDesc()."',
-'".$this->model->getAdjustmentLedgerDate()."',
-'".$this->model->getAdjustmentLedgerStartDate()."',
-'".$this->model->getAdjustmentLedgerEndDate()."',
-'".$this->model->getAdjustmentLedgerAmount()."',
-'".$this->model->getIsDefault(0, 'single')."',
-'".$this->model->getIsNew(0, 'single')."',
-'".$this->model->getIsDraft(0, 'single')."',
-'".$this->model->getIsUpdate(0, 'single')."',
-'".$this->model->getIsDelete(0, 'single')."',
-'".$this->model->getIsActive(0, 'single')."',
-'".$this->model->getIsApproved(0, 'single')."',
-'".$this->model->getIsReview(0, 'single')."',
-'".$this->model->getIsPost(0, 'single')."',
-'".$this->model->getExecuteBy()."',
-".$this->model->getExecuteTime().");";
+				) VALUES ( 
+					null, 
+					'".$this->model->getAdjustmentLedgerTypeId()."',
+					'".$this->model->getBusinessPartnerId()."',
+					'".$this->model->getInvoiceCategoryId()."',
+					'".$this->model->getInvoiceTypeId()."',
+					'".$this->model->getInvoiceLedgerId()."',
+					'".$this->model->getDocumentNo()."',
+					'".$this->model->getReferenceNo()."',
+					'".$this->model->getAdjustmentLedgerTitle()."',
+					'".$this->model->getAdjustmentLedgerDesc()."',
+					'".$this->model->getAdjustmentLedgerDate()."',
+					'".$this->model->getAdjustmentLedgerStartDate()."',
+					'".$this->model->getAdjustmentLedgerEndDate()."',
+					'".$this->model->getAdjustmentLedgerAmount()."',
+					'".$this->model->getIsDefault(0, 'single')."',
+					'".$this->model->getIsNew(0, 'single')."',
+					'".$this->model->getIsDraft(0, 'single')."',
+					'".$this->model->getIsUpdate(0, 'single')."',
+					'".$this->model->getIsDelete(0, 'single')."',
+					'".$this->model->getIsActive(0, 'single')."',
+					'".$this->model->getIsApproved(0, 'single')."',
+					'".$this->model->getIsReview(0, 'single')."',
+					'".$this->model->getIsPost(0, 'single')."',
+					'".$this->model->getExecuteBy()."',
+					".$this->model->getExecuteTime()."
+				);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			INSERT INTO [".$this->q->getFinancialDatabase()."].[adjustmentLedger]
-					(
-						[documentNo],												
+					(	
+						[adjustmentLedgerId],
+						[businessPartnerId],
+						[invoiceCategoryId],
+						[invoiceTypeId],
+						[invoiceLedgerId],
+						[documentNo],[documentNo],												
 						[adjustmentLedgerTitle],
 						[adjustmentLedgerDesc],
 						[adjustmentLedgerDate],
@@ -209,29 +221,42 @@ class AdjustmentLedgerClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getAdjustmentLedgerTitle() . "',
-						'" . $this->model->getAdjustmentLedgerDesc() . "',
-						'" . $this->model->getAdjustmentLedgerDate() . "',
-						'" . $this->model->getAdjustmentLedgerAmount() . "',					
-						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',				
-						'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',			
-						'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',			
-						'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',			
-						'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',						
-						" . $this->model->getExecuteTime() . "
+						null, 
+						'".$this->model->getAdjustmentLedgerTypeId()."',
+						'".$this->model->getBusinessPartnerId()."',
+						'".$this->model->getInvoiceCategoryId()."',
+						'".$this->model->getInvoiceTypeId()."',
+						'".$this->model->getInvoiceLedgerId()."',
+						'".$this->model->getDocumentNo()."',
+						'".$this->model->getReferenceNo()."',
+						'".$this->model->getAdjustmentLedgerTitle()."',
+						'".$this->model->getAdjustmentLedgerDesc()."',
+						'".$this->model->getAdjustmentLedgerDate()."',
+						'".$this->model->getAdjustmentLedgerStartDate()."',
+						'".$this->model->getAdjustmentLedgerEndDate()."',
+						'".$this->model->getAdjustmentLedgerAmount()."',
+						'".$this->model->getIsDefault(0, 'single')."',
+						'".$this->model->getIsNew(0, 'single')."',
+						'".$this->model->getIsDraft(0, 'single')."',
+						'".$this->model->getIsUpdate(0, 'single')."',
+						'".$this->model->getIsDelete(0, 'single')."',
+						'".$this->model->getIsActive(0, 'single')."',
+						'".$this->model->getIsApproved(0, 'single')."',
+						'".$this->model->getIsReview(0, 'single')."',
+						'".$this->model->getIsPost(0, 'single')."',
+						'".$this->model->getExecuteBy()."',
+						".$this->model->getExecuteTime()."
 					);";
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
 			INSERT INTO	ADJUSTMENTLEDGER
 					(
-						DOCUMENTNO,												
+						ADJUSTMENTLEDGERID,
+						BUSINESSPARTNERID,
+						INVOICECATEGORYID,
+						INVOICETYPEID,
+						INVOICELEDGERID,											
 						ADJUSTMENTLEDGERTITLE,
 						ADJUSTMENTLEDGERDESC,
 						ADJUSTMENTLEDGERDATE,
@@ -250,23 +275,41 @@ class AdjustmentLedgerClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getAdjustmentLedgerTitle() . "',
-						'" . $this->model->getAdjustmentLedgerDesc() . "',
-						'" . $this->model->getAdjustmentLedgerDate() . "',
-						'" . $this->model->getAdjustmentLedgerAmount() . "',					
-						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						null, 
+						'".$this->model->getAdjustmentLedgerTypeId()."',
+						'".$this->model->getBusinessPartnerId()."',
+						'".$this->model->getInvoiceCategoryId()."',
+						'".$this->model->getInvoiceTypeId()."',
+						'".$this->model->getInvoiceLedgerId()."',
+						'".$this->model->getDocumentNo()."',
+						'".$this->model->getReferenceNo()."',
+						'".$this->model->getAdjustmentLedgerTitle()."',
+						'".$this->model->getAdjustmentLedgerDesc()."',
+						'".$this->model->getAdjustmentLedgerDate()."',
+						'".$this->model->getAdjustmentLedgerStartDate()."',
+						'".$this->model->getAdjustmentLedgerEndDate()."',
+						'".$this->model->getAdjustmentLedgerAmount()."',
+						'".$this->model->getIsDefault(0, 'single')."',
+						'".$this->model->getIsNew(0, 'single')."',
+						'".$this->model->getIsDraft(0, 'single')."',
+						'".$this->model->getIsUpdate(0, 'single')."',
+						'".$this->model->getIsDelete(0, 'single')."',
+						'".$this->model->getIsActive(0, 'single')."',
+						'".$this->model->getIsApproved(0, 'single')."',
+						'".$this->model->getIsReview(0, 'single')."',
+						'".$this->model->getIsPost(0, 'single')."',
+						'".$this->model->getExecuteBy()."',
+						".$this->model->getExecuteTime()."
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			INSERT INTO	ADJUSTMENTLEDGER
 					(
-						DOCUMENTNO,												
+						ADJUSTMENTLEDGERID,
+						BUSINESSPARTNERID,
+						INVOICECATEGORYID,
+						INVOICETYPEID,
+						INVOICELEDGERID,											
 						ADJUSTMENTLEDGERTITLE,
 						ADJUSTMENTLEDGERDESC,
 						ADJUSTMENTLEDGERDATE,
@@ -285,23 +328,41 @@ class AdjustmentLedgerClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getAdjustmentLedgerTitle() . "',
-						'" . $this->model->getAdjustmentLedgerDesc() . "',
-						'" . $this->model->getAdjustmentLedgerDate() . "',
-						'" . $this->model->getAdjustmentLedgerAmount() . "',					
-						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						null, 
+						'".$this->model->getAdjustmentLedgerTypeId()."',
+						'".$this->model->getBusinessPartnerId()."',
+						'".$this->model->getInvoiceCategoryId()."',
+						'".$this->model->getInvoiceTypeId()."',
+						'".$this->model->getInvoiceLedgerId()."',
+						'".$this->model->getDocumentNo()."',
+						'".$this->model->getReferenceNo()."',
+						'".$this->model->getAdjustmentLedgerTitle()."',
+						'".$this->model->getAdjustmentLedgerDesc()."',
+						'".$this->model->getAdjustmentLedgerDate()."',
+						'".$this->model->getAdjustmentLedgerStartDate()."',
+						'".$this->model->getAdjustmentLedgerEndDate()."',
+						'".$this->model->getAdjustmentLedgerAmount()."',
+						'".$this->model->getIsDefault(0, 'single')."',
+						'".$this->model->getIsNew(0, 'single')."',
+						'".$this->model->getIsDraft(0, 'single')."',
+						'".$this->model->getIsUpdate(0, 'single')."',
+						'".$this->model->getIsDelete(0, 'single')."',
+						'".$this->model->getIsActive(0, 'single')."',
+						'".$this->model->getIsApproved(0, 'single')."',
+						'".$this->model->getIsReview(0, 'single')."',
+						'".$this->model->getIsPost(0, 'single')."',
+						'".$this->model->getExecuteBy()."',
+						".$this->model->getExecuteTime()."
 					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			INSERT INTO	ADJUSTMENTLEDGER
 					(
-						DOCUMENTNO,												
+						ADJUSTMENTLEDGERID,
+						BUSINESSPARTNERID,
+						INVOICECATEGORYID,
+						INVOICETYPEID,
+						INVOICELEDGERID,											
 						ADJUSTMENTLEDGERTITLE,
 						ADJUSTMENTLEDGERDESC,
 						ADJUSTMENTLEDGERDATE,
@@ -320,17 +381,31 @@ class AdjustmentLedgerClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getAdjustmentLedgerTitle() . "',
-						'" . $this->model->getAdjustmentLedgerDesc() . "',
-						'" . $this->model->getAdjustmentLedgerDate() . "',
-						'" . $this->model->getAdjustmentLedgerAmount() . "',					
-						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						null, 
+						'".$this->model->getAdjustmentLedgerTypeId()."',
+						'".$this->model->getBusinessPartnerId()."',
+						'".$this->model->getInvoiceCategoryId()."',
+						'".$this->model->getInvoiceTypeId()."',
+						'".$this->model->getInvoiceLedgerId()."',
+						'".$this->model->getDocumentNo()."',
+						'".$this->model->getReferenceNo()."',
+						'".$this->model->getAdjustmentLedgerTitle()."',
+						'".$this->model->getAdjustmentLedgerDesc()."',
+						'".$this->model->getAdjustmentLedgerDate()."',
+						'".$this->model->getAdjustmentLedgerStartDate()."',
+						'".$this->model->getAdjustmentLedgerEndDate()."',
+						'".$this->model->getAdjustmentLedgerAmount()."',
+						'".$this->model->getIsDefault(0, 'single')."',
+						'".$this->model->getIsNew(0, 'single')."',
+						'".$this->model->getIsDraft(0, 'single')."',
+						'".$this->model->getIsUpdate(0, 'single')."',
+						'".$this->model->getIsDelete(0, 'single')."',
+						'".$this->model->getIsActive(0, 'single')."',
+						'".$this->model->getIsApproved(0, 'single')."',
+						'".$this->model->getIsReview(0, 'single')."',
+						'".$this->model->getIsPost(0, 'single')."',
+						'".$this->model->getExecuteBy()."',
+						".$this->model->getExecuteTime()."
 					)";
 		} else {
 			echo json_encode(array("success" => false,"sql"=>$sql, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -408,7 +483,12 @@ class AdjustmentLedgerClass extends ConfigClass {
 			$sql = "
 			SELECT	`adjustmentLedger`.`adjustmentLedgerId`,
 					`adjustmentLedger`.`adjustmentTypeId`,
+					`adjustmentLedger`.`businessPartnerId`,
+					`adjustmentLedger`.`invoiceCategoryId`,
+					`adjustmentLedger`.`invoiceTypeId`,
+					`adjustmentLedger`.`invoiceLedgerId`,
 					`adjustmentLedger`.`documentNo`,
+					`adjustmentLedger`.`referenceNo`,
 					`adjustmentLedger`.`adjustmentLedgerTitle`,
 					`adjustmentLedger`.`adjustmentLedgerDesc`,
 					`adjustmentLedger`.`adjustmentLedgerDate`,
@@ -422,6 +502,7 @@ class AdjustmentLedgerClass extends ConfigClass {
 					`adjustmentLedger`.`isApproved`,
 					`adjustmentLedger`.`isReview`,
 					`adjustmentLedger`.`isPost`,
+					`adjustmentLedger`.`isReconciled`,
 					`adjustmentLedger`.`executeBy`,
 					`adjustmentLedger`.`executeTime`,
 					`adjustmentType`.`adjustmentTypeDesc`,
@@ -431,6 +512,17 @@ class AdjustmentLedgerClass extends ConfigClass {
             ON      `adjustmentLedger`.`executeBy` = `staff`.`staffId`
             JOIN	`".$this->q->getFinancialDatabase()."`.`adjustmentType`
             USING	(`adjustmentTypeId`)
+			JOIN	`".$this->q->getFinancialDatabase()."`.`businessPartner`
+            ON		`businessPartner`.`businessPartnerId` 	=	`adjustmentLedger`.`businessPartnerId`
+			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceCategory`
+            AND		`invoiceCategory`.`invoiceCategoryId` 	=	`adjustmentLedger`.`invoiceCategoryId`	
+			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceType`
+            AND		`invoiceType`.`invoiceTypeId` 			=	`adjustmentLedger`.`invoiceTypeId`
+			AND		`invoiceCategory`.`invoiceCategoryId` 	=	`adjustmenType`.`invoiceCategoryId`	
+			JOIN	`".$this->q->getFinancialDatabase()."`.[invoiceLedger`
+            ON		`invoiceLedger`.`invoiceLedgerId` 		= 	`adjustmentLedger`.`invoiceLedgerId`
+			AND		`invoiceType`.`invoiceTypeId` 			=	`adjustmentLedger`.`invoiceTypeId`
+			AND		`invoiceCategory`.`invoiceCategoryId` 	=	`adjustmentLedger`.`invoiceCategoryId`	
             WHERE 	 " . $this->auditFilter;
 
 			if ($this->model->getAdjustmentLedgerId(0, 'single')) {
@@ -442,7 +534,12 @@ class AdjustmentLedgerClass extends ConfigClass {
 			$sql = "
 			SELECT		[adjustmentLedger].[adjustmentLedgerId],
 						[adjustmentLedger].[adjustmentTypeId],
+						[adjustmentLedger].[businessPartnerId],
+						[adjustmentLedger].[invoiceCategoryId],
+						[adjustmentLedger].[invoiceTypeId],
+						[adjustmentLedger].[invoiceLedgerId],
 						[adjustmentLedger].[documentNo],
+						[adjustmentLedger].[referenceNo],
 						[adjustmentLedger].[adjustmentLedgerTitle],
 						[adjustmentLedger].[adjustmentLedgerDesc],
 						[adjustmentLedger].[adjustmentLedgerDate],
@@ -456,47 +553,154 @@ class AdjustmentLedgerClass extends ConfigClass {
 						[adjustmentLedger].[isApproved],
 						[adjustmentLedger].[isReview],
 						[adjustmentLedger].[isPost],
+						[adjustmentLedger].[isReconciled],
 						[adjustmentLedger].[executeBy],
 						[adjustmentLedger].[executeTime],
 						[staff].[staffName]
-			FROM 	[".$this->q->getFinancialDatabase()."].[adjustmentLedger]
-			JOIN	[".$this->q->getManagementDatabase()."].[staff]
-			ON		[adjustmentLedger].[executeBy] = [staff].[staffId]
+			FROM 		[".$this->q->getFinancialDatabase()."].[adjustmentLedger]
+			JOIN		[".$this->q->getManagementDatabase()."].[staff]
+			ON			[adjustmentLedger].[executeBy] = [staff].[staffId]
+			JOIN		[".$this->q->getFinancialDatabase()."].[businessPartner]
+            ON			[businessPartner].[businessPartnerId] 	=	[adjustmentLedger].[businessPartnerId]
+			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceCategory]
+            AND			[invoiceCategory].[invoiceCategoryId] 	=	[adjustmentLedger].[invoiceCategoryId]	
+			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceType]
+            AND			[invoiceType].[invoiceTypeId] 			=	[adjustmentLedger].[invoiceTypeId]
+			AND			[invoiceCategory].[invoiceCategoryId] 	=	[invoiceType].[invoiceCategoryId]	
+			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceLedger]
+            ON			[invoiceLedger].[invoiceLedgerId] 		= 	[adjustmentLedger].[invoiceLedgerId]
+			AND			[invoiceType].[invoiceTypeId] 			=	[adjustmentLedger].[invoiceTypeId]
+			AND			[invoiceCategory].[invoiceCategoryId] 	=	[adjustmentLedger].[invoiceCategoryId]	
 			WHERE 	" . $this->auditFilter;
-			//	if ($this->model->getAdjustmentLedgerId(0, 'single')) {
-			//	$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
-			//}
+			if ($this->model->getAdjustmentLedgerId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
+			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		ADJUSTMENTLEDGER.ADJUSTMENTLEDGERID   		 	AS 	\"adjustmentLedgerId\",
-						ADJUSTMENTLEDGER.DOCUMENTNO 				AS 	\"documentNo\",
-						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERTITLE 			AS 	\"adjustmentLedgerTitle\",
-						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDESC 			AS 	\"adjustmentLedgerDesc\",
-						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDATE 			AS 	\"adjustmentLedgerDate\",
-						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERAMOUNT 			AS 	\"adjustmentLedgerAmount\",
-						ADJUSTMENTLEDGER.ISDEFAULT    			AS	\"isDefault\",
-						ADJUSTMENTLEDGER.ISNEW		  			AS	\"isNew\",
+			SELECT		ADJUSTMENTLEDGER.ADJUSTMENTLEDGERID	 		AS \"documetnLedgerId\",
+						ADJUSTMENTLEDGER.ADJUSTMENTTYPEID 			AS \"adjustmentTypeId\",
+						ADJUSTMENTLEDGER.BUSINESSPARTNERID 			AS \"businessPartnerId\",
+						ADJUSTMENTLEDGER.INVOICECATEGORYID 			AS \"invoiceCategoryId\",
+						ADJUSTMENTLEDGER.INVOICETYPEID 				AS \"invoiceTypeId\",
+						ADJUSTMENTLEDGER.INVOICELEDGERID 			AS \"invoiceLedgerId\",
+						ADJUSTMENTLEDGER.DOCUMENTNO 				AS \"documentNo\",
+						ADJUSTMENTLEDGER.REFERENCENO 				AS \"referenceNo\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERTITLE 		AS 	\"adjustmentLedgerTitle\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDESC 		AS 	\"adjustmentLedgerDesc\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDATE 		AS 	\"adjustmentLedgerDate\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERAMOUNT 	AS 	\"adjustmentLedgerAmount\",
+						ADJUSTMENTLEDGER.ISDEFAULT    				AS	\"isDefault\",
+						ADJUSTMENTLEDGER.ISNEW		  				AS	\"isNew\",
 						ADJUSTMENTLEDGER.ISDRAFT	  				AS	\"isDraft\",
-						ADJUSTMENTLEDGER.ISUPDATE     			AS	\"isUpdate\",
-						ADJUSTMENTLEDGER.ISDELETE	  			AS	\"isDelete\",
-						ADJUSTMENTLEDGER.ISACTIVE	  			AS	\"isActive\",
-						ADJUSTMENTLEDGER.ISAPPROVED   			AS	\"isApproved\",
-						ADJUSTMENTLEDGER.ISREVIEW	  			AS	\"isReview\",
-						ADJUSTMENTLEDGER.ISPOST  	  			AS	\"isPost\",
-						ADJUSTMENTLEDGER.EXECUTEBY    			AS	\"executeBy\",
-						ADJUSTMENTLEDGER.EXECUTETIME  			AS	\"executeTime\",
-						STAFF.STAFFNAME		  			AS	\"staffName\"	
+						ADJUSTMENTLEDGER.ISUPDATE     				AS	\"isUpdate\",
+						ADJUSTMENTLEDGER.ISDELETE	  				AS	\"isDelete\",
+						ADJUSTMENTLEDGER.ISACTIVE	  				AS	\"isActive\",
+						ADJUSTMENTLEDGER.ISAPPROVED   				AS	\"isApproved\",
+						ADJUSTMENTLEDGER.ISREVIEW	  				AS	\"isReview\",
+						ADJUSTMENTLEDGER.ISPOST  	  				AS	\"isPost\",
+						ADJUSTMENTLEDGER.EXECUTEBY    				AS	\"executeBy\",
+						ADJUSTMENTLEDGER.EXECUTETIME  				AS	\"executeTime\",
+						STAFF.STAFFNAME		  						AS	\"staffName\"	
 			FROM 		ADJUSTMENTLEDGER
 			JOIN		STAFF
 			ON			ADJUSTMENTLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
+			JOIN		BUSINESSPARTNER
+            ON			BUSINESSPARTNER.BUSINESSPARTNERID 	=	ADJUSTMENTLEDGER.BUSINESSPARTNERID
+			JOIN		INVOICECATEGORY
+            AND			INVOICECATEGORY.INVOICECATEGORYID 	=	ADJUSTMENTLEDGER.INVOICECATEGORYID
+			JOIN		INVOICETYPE
+            AND			INVOICETYPE.INVOICETYPEID 			=	ADJUSTMENTLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID]	=	INVOICETYPE.INVOICECATEGORYID
+			JOIN		INVOICELEDGER
+            ON			INVOICELEDGER.INVOICELEDGERID 		= 	ADJUSTMENTLEDGER.INVOICELEDGERID
+			AND			INVOICETYPE.INVOICETYPEID			=	ADJUSTMENTLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	ADJUSTMENTLEDGER.INVOICECATEGORYID
 			WHERE 	" . $this->auditFilter;
-			//	if ($this->model->getAdjustmentLedgerId(0, 'single')) {
-			//		$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
-			//	}
+				if ($this->model->getAdjustmentLedgerId(0, 'single')) {
+					$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
+				}
 		} else if ($this->q->vendor == self::DB2) {
-
+			$sql = "
+			SELECT		ADJUSTMENTLEDGER.ADJUSTMENTLEDGERID	 		AS \"documetnLedgerId\",
+						ADJUSTMENTLEDGER.ADJUSTMENTTYPEID 			AS \"adjustmentTypeId\",
+						ADJUSTMENTLEDGER.BUSINESSPARTNERID 			AS \"businessPartnerId\",
+						ADJUSTMENTLEDGER.INVOICECATEGORYID 			AS \"invoiceCategoryId\",
+						ADJUSTMENTLEDGER.INVOICETYPEID 				AS \"invoiceTypeId\",
+						ADJUSTMENTLEDGER.INVOICELEDGERID 			AS \"invoiceLedgerId\",
+						ADJUSTMENTLEDGER.DOCUMENTNO 				AS \"documentNo\",
+						ADJUSTMENTLEDGER.REFERENCENO 				AS \"referenceNo\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERTITLE 		AS 	\"adjustmentLedgerTitle\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDESC 		AS 	\"adjustmentLedgerDesc\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDATE 		AS 	\"adjustmentLedgerDate\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERAMOUNT 	AS 	\"adjustmentLedgerAmount\",
+						ADJUSTMENTLEDGER.ISDEFAULT    				AS	\"isDefault\",
+						ADJUSTMENTLEDGER.ISNEW		  				AS	\"isNew\",
+						ADJUSTMENTLEDGER.ISDRAFT	  				AS	\"isDraft\",
+						ADJUSTMENTLEDGER.ISUPDATE     				AS	\"isUpdate\",
+						ADJUSTMENTLEDGER.ISDELETE	  				AS	\"isDelete\",
+						ADJUSTMENTLEDGER.ISACTIVE	  				AS	\"isActive\",
+						ADJUSTMENTLEDGER.ISAPPROVED   				AS	\"isApproved\",
+						ADJUSTMENTLEDGER.ISREVIEW	  				AS	\"isReview\",
+						ADJUSTMENTLEDGER.ISPOST  	  				AS	\"isPost\",
+						ADJUSTMENTLEDGER.EXECUTEBY    				AS	\"executeBy\",
+						ADJUSTMENTLEDGER.EXECUTETIME  				AS	\"executeTime\",
+						STAFF.STAFFNAME		  						AS	\"staffName\"	
+			FROM 		ADJUSTMENTLEDGER
+			JOIN		STAFF
+			ON			ADJUSTMENTLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
+			JOIN		BUSINESSPARTNER
+            ON			BUSINESSPARTNER.BUSINESSPARTNERID 	=	ADJUSTMENTLEDGER.BUSINESSPARTNERID
+			JOIN		INVOICECATEGORY
+            AND			INVOICECATEGORY.INVOICECATEGORYID 	=	ADJUSTMENTLEDGER.INVOICECATEGORYID
+			JOIN		INVOICETYPE
+            AND			INVOICETYPE.INVOICETYPEID 			=	ADJUSTMENTLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID]	=	INVOICETYPE.INVOICECATEGORYID
+			JOIN		INVOICELEDGER
+            ON			INVOICELEDGER.INVOICELEDGERID 		= 	ADJUSTMENTLEDGER.INVOICELEDGERID
+			AND			INVOICETYPE.INVOICETYPEID			=	ADJUSTMENTLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	ADJUSTMENTLEDGER.INVOICECATEGORYID
+			WHERE 	" . $this->auditFilter;
 		} else if ($this->q->vendor == self::POSTGRESS) {
-
+			$sql = "
+			SELECT		ADJUSTMENTLEDGER.ADJUSTMENTLEDGERID	 		AS \"documetnLedgerId\",
+						ADJUSTMENTLEDGER.ADJUSTMENTTYPEID 			AS \"adjustmentTypeId\",
+						ADJUSTMENTLEDGER.BUSINESSPARTNERID 			AS \"businessPartnerId\",
+						ADJUSTMENTLEDGER.INVOICECATEGORYID 			AS \"invoiceCategoryId\",
+						ADJUSTMENTLEDGER.INVOICETYPEID 				AS \"invoiceTypeId\",
+						ADJUSTMENTLEDGER.INVOICELEDGERID 			AS \"invoiceLedgerId\",
+						ADJUSTMENTLEDGER.DOCUMENTNO 				AS \"documentNo\",
+						ADJUSTMENTLEDGER.REFERENCENO 				AS \"referenceNo\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERTITLE 		AS 	\"adjustmentLedgerTitle\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDESC 		AS 	\"adjustmentLedgerDesc\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDATE 		AS 	\"adjustmentLedgerDate\",
+						ADJUSTMENTLEDGER.ADJUSTMENTLEDGERAMOUNT 	AS 	\"adjustmentLedgerAmount\",
+						ADJUSTMENTLEDGER.ISDEFAULT    				AS	\"isDefault\",
+						ADJUSTMENTLEDGER.ISNEW		  				AS	\"isNew\",
+						ADJUSTMENTLEDGER.ISDRAFT	  				AS	\"isDraft\",
+						ADJUSTMENTLEDGER.ISUPDATE     				AS	\"isUpdate\",
+						ADJUSTMENTLEDGER.ISDELETE	  				AS	\"isDelete\",
+						ADJUSTMENTLEDGER.ISACTIVE	  				AS	\"isActive\",
+						ADJUSTMENTLEDGER.ISAPPROVED   				AS	\"isApproved\",
+						ADJUSTMENTLEDGER.ISREVIEW	  				AS	\"isReview\",
+						ADJUSTMENTLEDGER.ISPOST  	  				AS	\"isPost\",
+						ADJUSTMENTLEDGER.EXECUTEBY    				AS	\"executeBy\",
+						ADJUSTMENTLEDGER.EXECUTETIME  				AS	\"executeTime\",
+						STAFF.STAFFNAME		  						AS	\"staffName\"	
+			FROM 		ADJUSTMENTLEDGER
+			JOIN		STAFF
+			ON			ADJUSTMENTLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
+			JOIN		BUSINESSPARTNER
+            ON			BUSINESSPARTNER.BUSINESSPARTNERID 	=	ADJUSTMENTLEDGER.BUSINESSPARTNERID
+			JOIN		INVOICECATEGORY
+            AND			INVOICECATEGORY.INVOICECATEGORYID 	=	ADJUSTMENTLEDGER.INVOICECATEGORYID
+			JOIN		INVOICETYPE
+            AND			INVOICETYPE.INVOICETYPEID 			=	ADJUSTMENTLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID]	=	INVOICETYPE.INVOICECATEGORYID
+			JOIN		INVOICELEDGER
+            ON			INVOICELEDGER.INVOICELEDGERID 		= 	ADJUSTMENTLEDGER.INVOICELEDGERID
+			AND			INVOICETYPE.INVOICETYPEID			=	ADJUSTMENTLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	ADJUSTMENTLEDGER.INVOICECATEGORYID
+			WHERE 	" . $this->auditFilter;
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -633,7 +837,13 @@ class AdjustmentLedgerClass extends ConfigClass {
 							WITH [adjustmentLedgerDerived] AS
 							(
 								SELECT 		[adjustmentLedger].[adjustmentLedgerId],
+											[adjustmentLedger].[adjustmentTypeId],
+											[adjustmentLedger].[businessPartnerId],
+											[adjustmentLedger].[invoiceCategoryId],
+											[adjustmentLedger].[invoiceTypeId],
+											[adjustmentLedger].[invoiceLedgerId],
 											[adjustmentLedger].[documentNo],
+											[adjustmentLedger].[referenceNo],
 											[adjustmentLedger].[adjustmentLedgerTitle],
 											[adjustmentLedger].[adjustmentLedgerDesc],
 											[adjustmentLedger].[adjustmentLedgerDate],
@@ -643,16 +853,27 @@ class AdjustmentLedgerClass extends ConfigClass {
 											[adjustmentLedger].[isDraft],
 											[adjustmentLedger].[isUpdate],
 											[adjustmentLedger].[isDelete],
+											[adjustmentLedger].[isActive],
 											[adjustmentLedger].[isApproved],
 											[adjustmentLedger].[isReview],
 											[adjustmentLedger].[isPost],
-											[adjustmentLedger].[executeBy],
-											[adjustmentLedger].[executeTime],
+											[adjustmentLedger].[isReconciled],
 											[staff].[staffName],
 								ROW_NUMBER() OVER (ORDER BY [adjustmentLedger].[adjustmentLedgerId]) AS 'RowNumber'
-								FROM 	[".$this->q->getFinancialDatabase()."].[adjustmentLedger]
+								FROM 		[".$this->q->getFinancialDatabase()."].[adjustmentLedger]
 								JOIN		[".$this->q->getManagementDatabase()."].[staff]
-								ON		[adjustmentLedger].[executeBy] = [staff].[staffId]
+								ON			[adjustmentLedger].[executeBy] = [staff].[staffId]
+								JOIN		[".$this->q->getFinancialDatabase()."].[businessPartner]
+								ON			[businessPartner].[businessPartnerId] 	=	[adjustmentLedger].[businessPartnerId]
+								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceCategory]
+								AND			[invoiceCategory].[invoiceCategoryId] 	=	[adjustmentLedger].[invoiceCategoryId]	
+								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceType]
+								AND			[invoiceType].[invoiceTypeId] 			=	[adjustmentLedger].[invoiceTypeId]
+								AND			[invoiceCategory].[invoiceCategoryId] 	=	[invoiceType].[invoiceCategoryId]	
+								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceLedger]
+								ON			[invoiceLedger].[invoiceLedgerId] 		= 	[adjustmentLedger].[invoiceLedgerId]
+								AND			[invoiceType].[invoiceTypeId] 			=	[adjustmentLedger].[invoiceTypeId]
+								AND			[invoiceCategory].[invoiceCategoryId] 	=	[adjustmentLedger].[invoiceCategoryId]	
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -669,27 +890,44 @@ class AdjustmentLedgerClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	ADJUSTMENTLEDGER.ADJUSTMENTLEDGERID   		AS 	\"adjustmentLedgerId\",
-										ADJUSTMENTLEDGER.DOCUMENTNO 			AS 	\"documentNo\",
-										ADJUSTMENTLEDGER.ADJUSTMENTLEDGERTITLE 		AS 	\"adjustmentLedgerTitle\",
-										ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDESC 		AS 	\"adjustmentLedgerDesc\",
-										ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDATE 		AS 	\"adjustmentLedgerDate\",
-										ADJUSTMENTLEDGER.ADJUSTMENTLEDGERAMOUNT 		AS 	\"adjustmentLedgerAmount\",
-										ADJUSTMENTLEDGER.ISDEFAULT    		AS	\"isDefault\",
-										ADJUSTMENTLEDGER.ISNEW		  		AS	\"isNew\",
-										ADJUSTMENTLEDGER.ISDRAFT	 			AS	\"isDraft\",
-										ADJUSTMENTLEDGER.ISUPDATE     		AS	\"isUpdate\",
-										ADJUSTMENTLEDGER.ISDELETE	  		AS	\"isDelete\",
-										ADJUSTMENTLEDGER.ISACTIVE	  		AS	\"isActive\",
-										ADJUSTMENTLEDGER.ISAPPROVED   		AS	\"isApproved\",
-										ADJUSTMENTLEDGER.ISREVIEW	  		AS 	\"isReview\",
-										ADJUSTMENTLEDGER.ISPOST		  		AS	\"isPost\",
-										ADJUSTMENTLEDGER.EXECUTEBY    		AS	\"executeBy\",
-										ADJUSTMENTLEDGER.EXECUTETIME  		AS	\"executeTime\",
-										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	ADJUSTMENTLEDGER
-								JOIN	STAFF
-								ON		ADJUSTMENTLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
+								SELECT		ADJUSTMENTLEDGER.ADJUSTMENTLEDGERID	 		AS \"documetnLedgerId\",
+											ADJUSTMENTLEDGER.ADJUSTMENTTYPEID 			AS \"adjustmentTypeId\",
+											ADJUSTMENTLEDGER.BUSINESSPARTNERID 			AS \"businessPartnerId\",
+											ADJUSTMENTLEDGER.INVOICECATEGORYID 			AS \"invoiceCategoryId\",
+											ADJUSTMENTLEDGER.INVOICETYPEID 				AS \"invoiceTypeId\",
+											ADJUSTMENTLEDGER.INVOICELEDGERID 			AS \"invoiceLedgerId\",
+											ADJUSTMENTLEDGER.DOCUMENTNO 				AS \"documentNo\",
+											ADJUSTMENTLEDGER.REFERENCENO 				AS \"referenceNo\",
+											ADJUSTMENTLEDGER.ADJUSTMENTLEDGERTITLE 		AS 	\"adjustmentLedgerTitle\",
+											ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDESC 		AS 	\"adjustmentLedgerDesc\",
+											ADJUSTMENTLEDGER.ADJUSTMENTLEDGERDATE 		AS 	\"adjustmentLedgerDate\",
+											ADJUSTMENTLEDGER.ADJUSTMENTLEDGERAMOUNT 	AS 	\"adjustmentLedgerAmount\",
+											ADJUSTMENTLEDGER.ISDEFAULT    				AS	\"isDefault\",
+											ADJUSTMENTLEDGER.ISNEW		  				AS	\"isNew\",
+											ADJUSTMENTLEDGER.ISDRAFT	  				AS	\"isDraft\",
+											ADJUSTMENTLEDGER.ISUPDATE     				AS	\"isUpdate\",
+											ADJUSTMENTLEDGER.ISDELETE	  				AS	\"isDelete\",
+											ADJUSTMENTLEDGER.ISACTIVE	  				AS	\"isActive\",
+											ADJUSTMENTLEDGER.ISAPPROVED   				AS	\"isApproved\",
+											ADJUSTMENTLEDGER.ISREVIEW	  				AS	\"isReview\",
+											ADJUSTMENTLEDGER.ISPOST  	  				AS	\"isPost\",
+											ADJUSTMENTLEDGER.EXECUTEBY    				AS	\"executeBy\",
+											ADJUSTMENTLEDGER.EXECUTETIME  				AS	\"executeTime\",
+											STAFF.STAFFNAME		  						AS	\"staffName\"	
+								FROM 		ADJUSTMENTLEDGER
+								JOIN		STAFF
+								ON			ADJUSTMENTLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
+								JOIN		BUSINESSPARTNER
+								ON			BUSINESSPARTNER.BUSINESSPARTNERID 	=	ADJUSTMENTLEDGER.BUSINESSPARTNERID
+								JOIN		INVOICECATEGORY
+								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	ADJUSTMENTLEDGER.INVOICECATEGORYID
+								JOIN		INVOICETYPE
+								AND			INVOICETYPE.INVOICETYPEID 			=	ADJUSTMENTLEDGER.INVOICETYPEID
+								AND			INVOICECATEGORY.INVOICECATEGORYID]	=	INVOICETYPE.INVOICECATEGORYID
+								JOIN		INVOICELEDGER
+								ON			INVOICELEDGER.INVOICELEDGERID 		= 	ADJUSTMENTLEDGER.INVOICELEDGERID
+								AND			INVOICETYPE.INVOICETYPEID			=	ADJUSTMENTLEDGER.INVOICETYPEID
+								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	ADJUSTMENTLEDGER.INVOICECATEGORYID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -824,106 +1062,132 @@ class AdjustmentLedgerClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`adjustmentLedger`
-				SET 		`adjustmentTypeId` = '".$this->model->getAdjustmentLedgerTypeId()."',
-							 `adjustmentLedgerTitle` = '".$this->model->getAdjustmentLedgerTitle()."',
-							 `adjustmentLedgerDesc` = '".$this->model->getAdjustmentLedgerDesc()."',
-							 `adjustmentLedgerDate` = '".$this->model->getAdjustmentLedgerDate()."',
-							 `adjustmentLedgerStartDate` = '".$this->model->getAdjustmentLedgerStartDate()."',
-							 `adjustmentLedgerEndDate` = '".$this->model->getAdjustmentLedgerEndDate()."',
-							 `adjustmentLedgerAmount` = '".$this->model->getAdjustmentLedgerAmount()."',
- 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`executeTime`		=	" . $this->model->getExecuteTime() . "
+				SET 		`adjustmentTypeId` 			= 	'".$this->model->getAdjustmentLedgerTypeId()."',
+							`businessPartnerId`			= 	'".$this->model->getBusinessPartnerId()."',
+							`invoiceCategoryId`			=	'".$this->model->getInvoiceCategoryId()."',
+							`invoiceTypeId`				=	'".$this->model->getInvoiceTypeId()."',
+							`invoiceLedgerId`			=	'".$this->model->getInvoiceLedgerId()."',
+							`referenceNo`				=	'".$this->model->getReferenceNo()."',
+							`adjustmentLedgerTitle` 	= 	'".$this->model->getAdjustmentLedgerTitle()."',
+							`adjustmentLedgerDesc` 		= 	'".$this->model->getAdjustmentLedgerDesc()."',
+							`adjustmentLedgerDate` 		= 	'".$this->model->getAdjustmentLedgerDate()."',
+							`adjustmentLedgerAmount`	= 	'".$this->model->getAdjustmentLedgerAmount()."',
+ 							`isDefault`					=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`isNew`						=	'" . $this->model->getIsNew(0, 'single') . "',
+							`isDraft`					=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`isUpdate`					=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`isDelete`					=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`isActive`					=	'" . $this->model->getIsActive(0, 'single') . "',
+							`isApproved`				=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`isReview`					=	'" . $this->model->getIsReview(0, 'single') . "',
+							`isPost`					=	'" . $this->model->getIsPost(0, 'single') . "',
+							`isReconciled`				=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							`executeBy`					=	'" . $this->model->getExecuteBy() . "',
+							`executeTime`				=	" . $this->model->getExecuteTime() . "
 				WHERE 		`adjustmentLedgerId`		=	'" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[".$this->q->getFinancialDatabase()."].[adjustmentLedger]
-				SET 		[adjustmentTypeId] = '".$this->model->getAdjustmentLedgerTypeId()."',
-							[adjustmentLedgerTitle] = '".$this->model->getAdjustmentLedgerTitle()."',
-							[adjustmentLedgerDesc] = '".$this->model->getAdjustmentLedgerDesc()."',
-							[adjustmentLedgerDate] = '".$this->model->getAdjustmentLedgerDate()."',
-							[adjustmentLedgerStartDate] = '".$this->model->getAdjustmentLedgerStartDate()."',
-							[adjustmentLedgerEndDate] = '".$this->model->getAdjustmentLedgerEndDate()."',
-							[adjustmentLedgerAmount] = '".$this->model->getAdjustmentLedgerAmount()."',	
-							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							[executeTime]		=	" . $this->model->getExecuteTime() . "
+				SET 		[adjustmentTypeId] 			= 	'".$this->model->getAdjustmentLedgerTypeId()."',
+							[businessPartnerId]			= 	'".$this->model->getBusinessPartnerId()."',
+							[invoiceCategoryId]			=	'".$this->model->getInvoiceCategoryId()."',
+							[invoiceTypeId]				=	'".$this->model->getInvoiceTypeId()."',
+							[invoiceLedgerId]			=	'".$this->model->getInvoiceLedgerId()."',
+							[referenceNo]				=	'".$this->model->getReferenceNo()."',
+							[adjustmentLedgerTitle] 	= 	'".$this->model->getAdjustmentLedgerTitle()."',
+							[adjustmentLedgerDesc] 		= 	'".$this->model->getAdjustmentLedgerDesc()."',
+							[adjustmentLedgerDate] 		= 	'".$this->model->getAdjustmentLedgerDate()."',
+							[adjustmentLedgerAmount] 	= 	'".$this->model->getAdjustmentLedgerAmount()."',	
+							[isDefault]					=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[isNew]						=	'" . $this->model->getIsNew(0, 'single') . "',
+							[isDraft]					=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[isUpdate]					=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[isDelete]					=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[isActive]					=	'" . $this->model->getIsActive(0, 'single') . "',
+							[isApproved]				=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[isReview]					=	'" . $this->model->getIsReview(0, 'single') . "',
+							[isPost]					=	'" . $this->model->getIsPost(0, 'single') . "',
+							[isReconciled]				=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							[executeBy]					=	'" . $this->model->getExecuteBy() . "',
+							[executeTime]				=	" . $this->model->getExecuteTime() . "
 			WHERE 		[adjustmentLedgerId]			=	'" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		ADJUSTMENTLEDGER
-				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
+				SET 		ADJUSTMENTTYPEID 			= 	'".$this->model->getAdjustmentLedgerTypeId()."',	
+							BUSINESSPARTNERID			= 	'".$this->model->getBusinessPartnerId()."',
+							INVOICECATEGORYID			=	'".$this->model->getInvoiceCategoryId()."',
+							INVOICETYPEID				=	'".$this->model->getInvoiceTypeId()."',
+							INVOICELEDGERID				=	'".$this->model->getInvoiceLedgerId()."',
+							REFERENCENO					=	'".$this->model->getReferenceNo()."',
 							ADJUSTMENTLEDGERTITLE		=	'" . $this->model->getAdjustmentLedgerTitle() . "',
 							ADJUSTMENTLEDGERDESC		=	'" . $this->model->getAdjustmentLedgerDesc() . "',
 							ADJUSTMENTLEDGERDATE		=	'" . $this->model->getAdjustmentLedgerDate() . "',
 							ADJUSTMENTLEDGERAMOUNT		=	'" . $this->model->getAdjustmentLedgerAmount() . "',									
-							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		ADJUSTMENTLEDGERID		=	'" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
+							ISDEFAULT					=	'" . $this->model->getIsDefault(0, 'single') . "',
+							ISNEW						=	'" . $this->model->getIsNew(0, 'single') . "',
+							ISDRAFT						=	'" . $this->model->getIsDraft(0, 'single') . "',
+							ISUPDATE					=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							ISDELETE					=	'" . $this->model->getIsDelete(0, 'single') . "',
+							ISACTIVE					=	'" . $this->model->getIsActive(0, 'single') . "',
+							ISAPPROVED					=	'" . $this->model->getIsApproved(0, 'single') . "',
+							ISREVIEW					=	'" . $this->model->getIsReview(0, 'single') . "',
+							ISPOST						=	'" . $this->model->getIsPost(0, 'single') . "',
+							ISRECONCILED				=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							EXECUTEBY					=	'" . $this->model->getExecuteBy() . "',
+							EXECUTETIME					=	" . $this->model->getExecuteTime() . "
+				WHERE 		ADJUSTMENTLEDGERID			=	'" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE	ADJUSTMENTLEDGER
-			SET 			DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
+				UPDATE		ADJUSTMENTLEDGER
+				SET 		ADJUSTMENTTYPEID 			= 	'".$this->model->getAdjustmentLedgerTypeId()."',	
+							BUSINESSPARTNERID			= 	'".$this->model->getBusinessPartnerId()."',
+							INVOICECATEGORYID			=	'".$this->model->getInvoiceCategoryId()."',
+							INVOICETYPEID				=	'".$this->model->getInvoiceTypeId()."',
+							INVOICELEDGERID				=	'".$this->model->getInvoiceLedgerId()."',
+							REFERENCENO					=	'".$this->model->getReferenceNo()."',
 							ADJUSTMENTLEDGERTITLE		=	'" . $this->model->getAdjustmentLedgerTitle() . "',
 							ADJUSTMENTLEDGERDESC		=	'" . $this->model->getAdjustmentLedgerDesc() . "',
 							ADJUSTMENTLEDGERDATE		=	'" . $this->model->getAdjustmentLedgerDate() . "',
-							ADJUSTMENTLEDGERAMOUNT		=	'" . $this->model->getAdjustmentLedgerAmount() . "',
-							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		ADJUSTMENTLEDGERID		=	'" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
+							ADJUSTMENTLEDGERAMOUNT		=	'" . $this->model->getAdjustmentLedgerAmount() . "',									
+							ISDEFAULT					=	'" . $this->model->getIsDefault(0, 'single') . "',
+							ISNEW						=	'" . $this->model->getIsNew(0, 'single') . "',
+							ISDRAFT						=	'" . $this->model->getIsDraft(0, 'single') . "',
+							ISUPDATE					=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							ISDELETE					=	'" . $this->model->getIsDelete(0, 'single') . "',
+							ISACTIVE					=	'" . $this->model->getIsActive(0, 'single') . "',
+							ISAPPROVED					=	'" . $this->model->getIsApproved(0, 'single') . "',
+							ISREVIEW					=	'" . $this->model->getIsReview(0, 'single') . "',
+							ISPOST						=	'" . $this->model->getIsPost(0, 'single') . "',
+							ISRECONCILED				=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							EXECUTEBY					=	'" . $this->model->getExecuteBy() . "',
+							EXECUTETIME					=	" . $this->model->getExecuteTime() . "
+				WHERE 		ADJUSTMENTLEDGERID			=	'" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE		ADJUSTMENTLEDGER
-				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
+				SET 		ADJUSTMENTTYPEID 			= 	'".$this->model->getAdjustmentLedgerTypeId()."',	
+							BUSINESSPARTNERID			= 	'".$this->model->getBusinessPartnerId()."',
+							INVOICECATEGORYID			=	'".$this->model->getInvoiceCategoryId()."',
+							INVOICETYPEID				=	'".$this->model->getInvoiceTypeId()."',
+							INVOICELEDGERID				=	'".$this->model->getInvoiceLedgerId()."',
+							REFERENCENO					=	'".$this->model->getReferenceNo()."',
 							ADJUSTMENTLEDGERTITLE		=	'" . $this->model->getAdjustmentLedgerTitle() . "',
 							ADJUSTMENTLEDGERDESC		=	'" . $this->model->getAdjustmentLedgerDesc() . "',
 							ADJUSTMENTLEDGERDATE		=	'" . $this->model->getAdjustmentLedgerDate() . "',
-							ADJUSTMENTLEDGERAMOUNT		=	'" . $this->model->getAdjustmentLedgerAmount() . "',
-							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+							ADJUSTMENTLEDGERAMOUNT		=	'" . $this->model->getAdjustmentLedgerAmount() . "',									
+							ISDEFAULT					=	'" . $this->model->getIsDefault(0, 'single') . "',
+							ISNEW						=	'" . $this->model->getIsNew(0, 'single') . "',
+							ISDRAFT						=	'" . $this->model->getIsDraft(0, 'single') . "',
+							ISUPDATE					=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							ISDELETE					=	'" . $this->model->getIsDelete(0, 'single') . "',
+							ISACTIVE					=	'" . $this->model->getIsActive(0, 'single') . "',
+							ISAPPROVED					=	'" . $this->model->getIsApproved(0, 'single') . "',
+							ISREVIEW					=	'" . $this->model->getIsReview(0, 'single') . "',
+							ISPOST						=	'" . $this->model->getIsPost(0, 'single') . "',
+							ISRECONCILED				=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							EXECUTEBY					=	'" . $this->model->getExecuteBy() . "',
+							EXECUTETIME					=	" . $this->model->getExecuteTime() . "
 				WHERE 		ADJUSTMENTLEDGERID			=	'" . $this->model->getAdjustmentLedgerId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));

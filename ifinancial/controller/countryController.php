@@ -17,6 +17,7 @@ require_once ("../model/countryModel.php");
  * @package common application
  * @subpackage country
  * @link http://www.idcms.org
+ * @link http://en.wikipedia.org/wiki/ISO_4217#Code_formation
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class CountryClass extends ConfigClass {

@@ -11,6 +11,7 @@ require_once ("../../class/classValidation.php");
  * @package Common Application
  * @subpackage Country
  * @link http://www.idcms.org
+ * @link  http://en.wikipedia.org/wiki/ISO_4217#Code_formation
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class CountryModel extends ValidationClass {

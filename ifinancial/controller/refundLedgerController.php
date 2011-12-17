@@ -201,6 +201,11 @@ class RefundLedgerClass extends ConfigClass {
 			$sql = "
 			INSERT INTO [".$this->q->getFinancialDatabase()."].[refundLedger]
 					(
+						[refundLedgerId],
+						[businessPartnerId],
+						[invoiceCategoryId],
+						[invoiceTypeId],
+						[invoiceLedgerId],
 						[documentNo],												
 						[refundLedgerTitle],
 						[refundLedgerDesc],
@@ -251,7 +256,12 @@ class RefundLedgerClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	REFUNDLEDGER
 					(
-						DOCUMENTNO,												
+						REFUNDLEDGERID,
+						BUSINESSPARTNERID,
+						INVOICECATEGORYID,
+						INVOICETYPEID,
+						INVOICELEDGERID,
+						DOCUMENTNO,											
 						REFUNDLEDGERTITLE,
 						REFUNDLEDGERDESC,
 						REFUNDLEDGERDATE,
@@ -300,7 +310,12 @@ class RefundLedgerClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	REFUNDLEDGER
 					(
-						DOCUMENTNO,												
+						REFUNDLEDGERID,
+						BUSINESSPARTNERID,
+						INVOICECATEGORYID,
+						INVOICETYPEID,
+						INVOICELEDGERID,
+						DOCUMENTNO,											
 						REFUNDLEDGERTITLE,
 						REFUNDLEDGERDESC,
 						REFUNDLEDGERDATE,
@@ -349,7 +364,12 @@ class RefundLedgerClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	REFUNDLEDGER
 					(
-						DOCUMENTNO,												
+						REFUNDLEDGERID,
+						BUSINESSPARTNERID,
+						INVOICECATEGORYID,
+						INVOICETYPEID,
+						INVOICELEDGERID,
+						DOCUMENTNO,											
 						REFUNDLEDGERTITLE,
 						REFUNDLEDGERDESC,
 						REFUNDLEDGERDATE,
@@ -499,11 +519,14 @@ class RefundLedgerClass extends ConfigClass {
             JOIN	`".$this->q->getFinancialDatabase()."`.`businessPartner`
             USING	(`businessPartnerId`)
 			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceCategory`
-            USING	(`invoiceCategoryId`)
+			AND		`invoiceCategory`.`invoiceCategoryId` 	=	`refundLedger`.`invoiceCategoryId`	
 			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceType`
-            USING	(`invoiceCategoryId`)
+            AND		`invoiceType`.`invoiceTypeId` 			=	`refundLedger`.`invoiceTypeId`
+			AND		`invoiceCategory`.`invoiceCategoryId` 	=	`invoiceType`.`invoiceCategoryId`	
 			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceLedger`
-            USING	(`invoiceCategoryId`,`invoiceTypeId`,`invoiceLedgerId`)
+            ON		`invoiceLedger`.`invoiceLedgerId` 		= 	`refundLedger`.`invoiceLedgerId`
+			AND		`invoiceType`.`invoiceTypeId` 			=	`refundLedger`.`invoiceTypeId`
+			AND		`invoiceCategory`.`invoiceCategoryId` 	=	`refundLedger`.`invoiceCategoryId`
             WHERE 	 " . $this->auditFilter;
 
 			if ($this->model->getRefundLedgerId(0, 'single')) {
@@ -547,9 +570,9 @@ class RefundLedgerClass extends ConfigClass {
             AND			[invoiceType].[invoiceTypeId] 			=	[refundLedger].[invoiceTypeId]
 			AND			[invoiceCategory].[invoiceCategoryId] 	=	[invoiceType].[invoiceCategoryId]	
 			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceLedger]
-            ON			[invoiceLedger].[invoiceLedgerId] 					= 	[refundLedger].[invoiceLedgerId]
+            ON			[invoiceLedger].[invoiceLedgerId] 		= 	[refundLedger].[invoiceLedgerId]
 			AND			[invoiceType].[invoiceTypeId] 			=	[refundLedger].[invoiceTypeId]
-			AND			[invoiceCategory].[invoiceTypeId] 		=	[refundLedger].[invoiceCategoryId]			
+			AND			[invoiceCategory].[invoiceCategoryId] 	=	[refundLedger].[invoiceCategoryId]			
 			WHERE 		" . $this->auditFilter;
 			if ($this->model->getRefundLedgerId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getRefundLedgerId(0, 'single') . "'";
@@ -557,51 +580,135 @@ class RefundLedgerClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT		REFUNDLEDGER.REFUNDLEDGERID   		AS 	\"refundLedgerId\",
-											REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
-											REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
-											REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
-											REFUNDLEDGER.INVOICELEDGERID              AS 	\"invoiceLedgerId\",
-											REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
-											REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
-											REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
-											REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
-											REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
-											REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
-											REFUNDLEDGER.ISDEFAULT    			AS	\"isDefault\",
-											REFUNDLEDGER.ISNEW		  			AS	\"isNew\",
-											REFUNDLEDGER.ISDRAFT	  			AS	\"isDraft\",
-											REFUNDLEDGER.ISUPDATE     			AS	\"isUpdate\",
-											REFUNDLEDGER.ISDELETE	  			AS	\"isDelete\",
-											REFUNDLEDGER.ISACTIVE	  			AS	\"isActive\",
-											REFUNDLEDGER.ISAPPROVED   			AS	\"isApproved\",
-											REFUNDLEDGER.ISREVIEW	  			AS	\"isReview\",
-											REFUNDLEDGER.ISPOST  	  			AS	\"isPost\",
-											REFUNDLEDGER.ISRECONCILED  	  		AS	\"isReconciled\",
-											REFUNDLEDGER.EXECUTEBY    			AS	\"executeBy\",
-											REFUNDLEDGER.EXECUTETIME  			AS	\"executeTime\",
-											STAFF.STAFFNAME		  				AS	\"staffName\"	
-								FROM 		REFUNDLEDGER
-								JOIN		STAFF
-								ON			REFUNDLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".BUSINESSPARTNER
-								USING		BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICECATEGORY
-								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICETYPE]
-								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
-								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICE
-								ON			INVOICE.INVOICELEDGERID 					= 	REFUNDLEDGER.INVOICELEDGERID
-								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
-								AND			INVOICECATEGORY.[INVOICETYPEID 		=	REFUNDLEDGER.INVOICECATEGORYID		
+						REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
+						REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
+						REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
+						REFUNDLEDGER.INVOICELEDGERID        AS 	\"invoiceLedgerId\",
+						REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
+						REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
+						REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
+						REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
+						REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
+						REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
+						REFUNDLEDGER.ISDEFAULT    			AS	\"isDefault\",
+						REFUNDLEDGER.ISNEW		  			AS	\"isNew\",
+						REFUNDLEDGER.ISDRAFT	  			AS	\"isDraft\",
+						REFUNDLEDGER.ISUPDATE     			AS	\"isUpdate\",
+						REFUNDLEDGER.ISDELETE	  			AS	\"isDelete\",
+						REFUNDLEDGER.ISACTIVE	  			AS	\"isActive\",
+						REFUNDLEDGER.ISAPPROVED   			AS	\"isApproved\",
+						REFUNDLEDGER.ISREVIEW	  			AS	\"isReview\",
+						REFUNDLEDGER.ISPOST  	  			AS	\"isPost\",
+						REFUNDLEDGER.ISRECONCILED  	  		AS	\"isReconciled\",
+						REFUNDLEDGER.EXECUTEBY    			AS	\"executeBy\",
+						REFUNDLEDGER.EXECUTETIME  			AS	\"executeTime\",
+						STAFF.STAFFNAME		  				AS	\"staffName\"	
+			FROM 		REFUNDLEDGER
+			JOIN		STAFF
+			ON			REFUNDLEDGER.EXECUTEBY 	  			=	STAFF.STAFFID
+			JOIN		".$this->q->getFinancialDatabase().".BUSINESSPARTNER
+			USING		BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
+			JOIN		".$this->q->getFinancialDatabase().".INVOICECATEGORY
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
+			JOIN		".$this->q->getFinancialDatabase().".INVOICETYPE]
+			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
+			JOIN		".$this->q->getFinancialDatabase().".INVOICE
+			ON			INVOICE.INVOICELEDGERID 			= 	REFUNDLEDGER.INVOICELEDGERID
+			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID		
 			WHERE 	" . $this->auditFilter;
-				if ($this->model->getRefundLedgerId(0, 'single')) {
-					$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getRefundLedgerId(0, 'single') . "'";
-				}
+			if ($this->model->getRefundLedgerId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getRefundLedgerId(0, 'single') . "'";
+			}
 		} else if ($this->q->vendor == self::DB2) {
-
+			$sql = "
+			SELECT		REFUNDLEDGER.REFUNDLEDGERID   		AS 	\"refundLedgerId\",
+						REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
+						REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
+						REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
+						REFUNDLEDGER.INVOICELEDGERID        AS 	\"invoiceLedgerId\",
+						REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
+						REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
+						REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
+						REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
+						REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
+						REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
+						REFUNDLEDGER.ISDEFAULT    			AS	\"isDefault\",
+						REFUNDLEDGER.ISNEW		  			AS	\"isNew\",
+						REFUNDLEDGER.ISDRAFT	  			AS	\"isDraft\",
+						REFUNDLEDGER.ISUPDATE     			AS	\"isUpdate\",
+						REFUNDLEDGER.ISDELETE	  			AS	\"isDelete\",
+						REFUNDLEDGER.ISACTIVE	  			AS	\"isActive\",
+						REFUNDLEDGER.ISAPPROVED   			AS	\"isApproved\",
+						REFUNDLEDGER.ISREVIEW	  			AS	\"isReview\",
+						REFUNDLEDGER.ISPOST  	  			AS	\"isPost\",
+						REFUNDLEDGER.ISRECONCILED  	  		AS	\"isReconciled\",
+						REFUNDLEDGER.EXECUTEBY    			AS	\"executeBy\",
+						REFUNDLEDGER.EXECUTETIME  			AS	\"executeTime\",
+						STAFF.STAFFNAME		  				AS	\"staffName\"	
+			FROM 		REFUNDLEDGER
+			JOIN		STAFF
+			ON			REFUNDLEDGER.EXECUTEBY 	  			=	STAFF.STAFFID
+			JOIN		".$this->q->getFinancialDatabase().".BUSINESSPARTNER
+			USING		BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
+			JOIN		".$this->q->getFinancialDatabase().".INVOICECATEGORY
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
+			JOIN		".$this->q->getFinancialDatabase().".INVOICETYPE]
+			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
+			JOIN		".$this->q->getFinancialDatabase().".INVOICE
+			ON			INVOICE.INVOICELEDGERID 			= 	REFUNDLEDGER.INVOICELEDGERID
+			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID		
+			WHERE 	" . $this->auditFilter;
+			if ($this->model->getRefundLedgerId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getRefundLedgerId(0, 'single') . "'";
+			}
 		} else if ($this->q->vendor == self::POSTGRESS) {
-
+			$sql = "
+			SELECT		REFUNDLEDGER.REFUNDLEDGERID   		AS 	\"refundLedgerId\",
+						REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
+						REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
+						REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
+						REFUNDLEDGER.INVOICELEDGERID        AS 	\"invoiceLedgerId\",
+						REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
+						REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
+						REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
+						REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
+						REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
+						REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
+						REFUNDLEDGER.ISDEFAULT    			AS	\"isDefault\",
+						REFUNDLEDGER.ISNEW		  			AS	\"isNew\",
+						REFUNDLEDGER.ISDRAFT	  			AS	\"isDraft\",
+						REFUNDLEDGER.ISUPDATE     			AS	\"isUpdate\",
+						REFUNDLEDGER.ISDELETE	  			AS	\"isDelete\",
+						REFUNDLEDGER.ISACTIVE	  			AS	\"isActive\",
+						REFUNDLEDGER.ISAPPROVED   			AS	\"isApproved\",
+						REFUNDLEDGER.ISREVIEW	  			AS	\"isReview\",
+						REFUNDLEDGER.ISPOST  	  			AS	\"isPost\",
+						REFUNDLEDGER.ISRECONCILED  	  		AS	\"isReconciled\",
+						REFUNDLEDGER.EXECUTEBY    			AS	\"executeBy\",
+						REFUNDLEDGER.EXECUTETIME  			AS	\"executeTime\",
+						STAFF.STAFFNAME		  				AS	\"staffName\"	
+			FROM 		REFUNDLEDGER
+			JOIN		STAFF
+			ON			REFUNDLEDGER.EXECUTEBY 	  			=	STAFF.STAFFID
+			JOIN		".$this->q->getFinancialDatabase().".BUSINESSPARTNER
+			USING		BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
+			JOIN		".$this->q->getFinancialDatabase().".INVOICECATEGORY
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
+			JOIN		".$this->q->getFinancialDatabase().".INVOICETYPE]
+			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
+			JOIN		".$this->q->getFinancialDatabase().".INVOICE
+			ON			INVOICE.INVOICELEDGERID 			= 	REFUNDLEDGER.INVOICELEDGERID
+			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID		
+			WHERE 	" . $this->auditFilter;
+			if ($this->model->getRefundLedgerId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getRefundLedgerId(0, 'single') . "'";
+			}
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -747,8 +854,6 @@ class RefundLedgerClass extends ConfigClass {
 											[refundLedger].[refundLedgerTitle],
 											[refundLedger].[refundLedgerDesc],
 											[refundLedger].[refundLedgerDate],
-											[refundLedger].[refundLedgerStartDate],
-											[refundLedger].[refundLedgerEndDate],
 											[refundLedger].[refundLedgerAmount],
 											[refundLedger].[isDefault],
 											[refundLedger].[isNew],
@@ -764,19 +869,20 @@ class RefundLedgerClass extends ConfigClass {
 											[refundLedger].[executeTime],
 											[staff].[staffName],
 								ROW_NUMBER() OVER (ORDER BY [refundLedger].[refundLedgerId]) AS 'RowNumber'
-								FROM 		REFUNDLEDGER
-								JOIN		STAFF
-								ON			REFUNDLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".BUSINESSPARTNER
-								USING		BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICECATEGORY
-								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICETYPE]
-								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
-								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICELEDGER
-								ON			INVOICELEDGER.INVOICELEDGERID 					= 	REFUNDLEDGER.INVOICELEDGERID
-								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+								FROM 		[".$this->q->getFinancialDatabase()."].[refundLedger]
+								JOIN		[".$this->q->getManagementDatabase()."].[staff]
+								ON			[refundLedger].[executeBy] 				= 	[staff].[staffId]
+								JOIN		[".$this->q->getFinancialDatabase()."].[businessPartner]
+								USING		[businessPartner].[businessPartnerId] 	=	[refundLedger].[businessPartnerId]
+								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceCategory]
+								AND			[invoiceCategory].[invoiceCategoryId] 	=	[refundLedger].[invoiceCategoryId]	
+								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceType]
+								AND			[invoiceType].[invoiceTypeId] 			=	[refundLedger].[invoiceTypeId]
+								AND			[invoiceCategory].[invoiceCategoryId] 	=	[invoiceType].[invoiceCategoryId]	
+								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceLedger]
+								ON			[invoiceLedger].[invoiceLedgerId] 		= 	[refundLedger].[invoiceLedgerId]
+								AND			[invoiceType].[invoiceTypeId] 			=	[refundLedger].[invoiceTypeId]
+								AND			[invoiceCategory].[invoiceCategoryId] 	=	[refundLedger].[invoiceCategoryId]		
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -797,7 +903,7 @@ class RefundLedgerClass extends ConfigClass {
 											REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
 											REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
 											REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
-											REFUNDLEDGER.INVOICELEDGERID              AS 	\"invoiceLedgerId\",
+											REFUNDLEDGER.INVOICELEDGERID        AS 	\"invoiceLedgerId\",
 											REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
 											REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
 											REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
@@ -965,102 +1071,131 @@ class RefundLedgerClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`refundLedger`
-				SET 		`refundLedgerTypeId` = '".$this->model->getRefundLedgerTypeId()."',
-							 `refundLedgerTitle` = '".$this->model->getRefundLedgerTitle()."',
-							 `refundLedgerDesc` = '".$this->model->getRefundLedgerDesc()."',
-							 `refundLedgerDate` = '".$this->model->getRefundLedgerDate()."',
-							 `refundLedgerAmount` = '".$this->model->getRefundLedgerAmount()."',
- 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`executeTime`		=	" . $this->model->getExecuteTime() . "
+				SET 		`refundLedgerTypeId` 	= 	'".$this->model->getRefundLedgerTypeId()."',
+							`businessPartnerId`		= 	'".$this->model->getBusinessPartnerId()."',
+							`invoiceCategoryId`		=	'".$this->model->getInvoiceCategoryId()."',
+							`invoiceTypeId`			=	'".$this->model->getInvoiceTypeId()."',
+							`invoiceLedgerId`		=	'".$this->model->getInvoiceLedgerId()."',
+							`referenceNo`			=	'".$this->model->getReferenceNo()."',
+							`refundLedgerTitle`		= 	'".$this->model->getRefundLedgerTitle()."',
+							`refundLedgerDesc` 		= 	'".$this->model->getRefundLedgerDesc()."',
+							`refundLedgerDate` 		= 	'".$this->model->getRefundLedgerDate()."',
+							`refundLedgerAmount` 	= 	'".$this->model->getRefundLedgerAmount()."',
+ 							`isDefault`				=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`isNew`					=	'" . $this->model->getIsNew(0, 'single') . "',
+							`isDraft`				=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`isUpdate`				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`isDelete`				=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`isActive`				=	'" . $this->model->getIsActive(0, 'single') . "',
+							`isApproved`			=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`isReview`				=	'" . $this->model->getIsReview(0, 'single') . "',
+							`isPost`				=	'" . $this->model->getIsPost(0, 'single') . "',
+							`executeBy`				=	'" . $this->model->getExecuteBy() . "',
+							`executeTime`			=	" . $this->model->getExecuteTime() . "
 				WHERE 		`refundLedgerId`		=	'" . $this->model->getRefundLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[".$this->q->getFinancialDatabase()."].[refundLedger]
-				SET 		[refundLedgerTypeId] = '".$this->model->getRefundLedgerTypeId()."',
-							[refundLedgerTitle] = '".$this->model->getRefundLedgerTitle()."',
-							[refundLedgerDesc] = '".$this->model->getRefundLedgerDesc()."',
-							[refundLedgerDate] = '".$this->model->getRefundLedgerDate()."',
-							[refundLedgerAmount] = '".$this->model->getRefundLedgerAmount()."',	
-							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[refundLedgerId]			=	'" . $this->model->getRefundLedgerId(0, 'single') . "'";
+				SET 		[refundLedgerTypeId]	= 	'".$this->model->getRefundLedgerTypeId()."',
+							[businessPartnerId]		= 	'".$this->model->getBusinessPartnerId()."',
+							[invoiceCategoryId]		=	'".$this->model->getInvoiceCategoryId()."',
+							[invoiceTypeId]			=	'".$this->model->getInvoiceTypeId()."',
+							[invoiceLedgerId]		=	'".$this->model->getInvoiceLedgerId()."',
+							[referenceNo]			=	'".$this->model->getReferenceNo()."',
+							[refundLedgerTitle] 	= 	'".$this->model->getRefundLedgerTitle()."',
+							[refundLedgerDesc] 		= 	'".$this->model->getRefundLedgerDesc()."',
+							[refundLedgerDate] 		= 	'".$this->model->getRefundLedgerDate()."',
+							[refundLedgerAmount] 	= 	'".$this->model->getRefundLedgerAmount()."',	
+							[isDefault]				=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[isNew]					=	'" . $this->model->getIsNew(0, 'single') . "',
+							[isDraft]				=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[isUpdate]				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[isDelete]				=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[isActive]				=	'" . $this->model->getIsActive(0, 'single') . "',
+							[isApproved]			=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[isReview]				=	'" . $this->model->getIsReview(0, 'single') . "',
+							[isPost]				=	'" . $this->model->getIsPost(0, 'single') . "',
+							[isReconciled]			=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							[executeBy]				=	'" . $this->model->getExecuteBy() . "',
+							[executeTime]			=	" . $this->model->getExecuteTime() . "
+				WHERE 		[refundLedgerId]		=	'" . $this->model->getRefundLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		REFUNDLEDGER
-				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
+				SET 		REFUNDLEDGERTYPEID		= '".$this->model->getRefundLedgerTypeId()."',
+							BUSINESSPARTNERID		= 	'".$this->model->getBusinessPartnerId()."',
+							INVOICECATEGORYID		=	'".$this->model->getInvoiceCategoryId()."',
+							INVOICETYPEID			=	'".$this->model->getInvoiceTypeId()."',
+							INVOICELEDGERID			=	'".$this->model->getInvoiceLedgerId()."',
+							REFERENCENO				=	'".$this->model->getReferenceNo()."',
 							REFUNDLEDGERTITLE		=	'" . $this->model->getRefundLedgerTitle() . "',
 							REFUNDLEDGERDESC		=	'" . $this->model->getRefundLedgerDesc() . "',
 							REFUNDLEDGERDATE		=	'" . $this->model->getRefundLedgerDate() . "',
 							REFUNDLEDGERAMOUNT		=	'" . $this->model->getRefundLedgerAmount() . "',									
-							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		REFUNDLEDGERID		=	'" . $this->model->getRefundLedgerId(0, 'single') . "'";
+							ISDEFAULT				=	'" . $this->model->getIsDefault(0, 'single') . "',
+							ISNEW					=	'" . $this->model->getIsNew(0, 'single') . "',
+							ISDRAFT					=	'" . $this->model->getIsDraft(0, 'single') . "',
+							ISUPDATE				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							ISDELETE				=	'" . $this->model->getIsDelete(0, 'single') . "',
+							ISACTIVE				=	'" . $this->model->getIsActive(0, 'single') . "',
+							ISAPPROVED				=	'" . $this->model->getIsApproved(0, 'single') . "',
+							ISREVIEW				=	'" . $this->model->getIsReview(0, 'single') . "',
+							ISPOST					=	'" . $this->model->getIsPost(0, 'single') . "',
+							ISRECONCILED			=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							EXECUTEBY				=	'" . $this->model->getExecuteBy() . "',
+							EXECUTETIME				=	" . $this->model->getExecuteTime() . "
+				WHERE 		REFUNDLEDGERID			=	'" . $this->model->getRefundLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE	REFUNDLEDGER
-			SET 			DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
+				UPDATE		REFUNDLEDGER
+				SET 		REFUNDLEDGERTYPEID		= '".$this->model->getRefundLedgerTypeId()."',
+							BUSINESSPARTNERID		= 	'".$this->model->getBusinessPartnerId()."',
+							INVOICECATEGORYID		=	'".$this->model->getInvoiceCategoryId()."',
+							INVOICETYPEID			=	'".$this->model->getInvoiceTypeId()."',
+							INVOICELEDGERID			=	'".$this->model->getInvoiceLedgerId()."',
+							REFERENCENO				=	'".$this->model->getReferenceNo()."',
 							REFUNDLEDGERTITLE		=	'" . $this->model->getRefundLedgerTitle() . "',
 							REFUNDLEDGERDESC		=	'" . $this->model->getRefundLedgerDesc() . "',
 							REFUNDLEDGERDATE		=	'" . $this->model->getRefundLedgerDate() . "',
-							REFUNDLEDGERAMOUNT		=	'" . $this->model->getRefundLedgerAmount() . "',
-							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		REFUNDLEDGERID		=	'" . $this->model->getRefundLedgerId(0, 'single') . "'";
+							REFUNDLEDGERAMOUNT		=	'" . $this->model->getRefundLedgerAmount() . "',									
+							ISDEFAULT				=	'" . $this->model->getIsDefault(0, 'single') . "',
+							ISNEW					=	'" . $this->model->getIsNew(0, 'single') . "',
+							ISDRAFT					=	'" . $this->model->getIsDraft(0, 'single') . "',
+							ISUPDATE				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							ISDELETE				=	'" . $this->model->getIsDelete(0, 'single') . "',
+							ISACTIVE				=	'" . $this->model->getIsActive(0, 'single') . "',
+							ISAPPROVED				=	'" . $this->model->getIsApproved(0, 'single') . "',
+							ISREVIEW				=	'" . $this->model->getIsReview(0, 'single') . "',
+							ISPOST					=	'" . $this->model->getIsPost(0, 'single') . "',
+							ISRECONCILED			=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							EXECUTEBY				=	'" . $this->model->getExecuteBy() . "',
+							EXECUTETIME				=	" . $this->model->getExecuteTime() . "
+				WHERE 		REFUNDLEDGERID			=	'" . $this->model->getRefundLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE		REFUNDLEDGER
-				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
+				SET 		REFUNDLEDGERTYPEID		= 	'".$this->model->getRefundLedgerTypeId()."',
+							BUSINESSPARTNERID		= 	'".$this->model->getBusinessPartnerId()."',
+							INVOICECATEGORYID		=	'".$this->model->getInvoiceCategoryId()."',
+							INVOICETYPEID			=	'".$this->model->getInvoiceTypeId()."',
+							INVOICELEDGERID			=	'".$this->model->getInvoiceLedgerId()."',
+							REFERENCENO				=	'".$this->model->getReferenceNo()."',
 							REFUNDLEDGERTITLE		=	'" . $this->model->getRefundLedgerTitle() . "',
 							REFUNDLEDGERDESC		=	'" . $this->model->getRefundLedgerDesc() . "',
 							REFUNDLEDGERDATE		=	'" . $this->model->getRefundLedgerDate() . "',
-							REFUNDLEDGERAMOUNT		=	'" . $this->model->getRefundLedgerAmount() . "',
-							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+							REFUNDLEDGERAMOUNT		=	'" . $this->model->getRefundLedgerAmount() . "',									
+							ISDEFAULT				=	'" . $this->model->getIsDefault(0, 'single') . "',
+							ISNEW					=	'" . $this->model->getIsNew(0, 'single') . "',
+							ISDRAFT					=	'" . $this->model->getIsDraft(0, 'single') . "',
+							ISUPDATE				=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							ISDELETE				=	'" . $this->model->getIsDelete(0, 'single') . "',
+							ISACTIVE				=	'" . $this->model->getIsActive(0, 'single') . "',
+							ISAPPROVED				=	'" . $this->model->getIsApproved(0, 'single') . "',
+							ISREVIEW				=	'" . $this->model->getIsReview(0, 'single') . "',
+							ISPOST					=	'" . $this->model->getIsPost(0, 'single') . "',
+							ISRECONCILED				=	'" . $this->model->getIsReconciled(0, 'single') . "',
+							EXECUTEBY				=	'" . $this->model->getExecuteBy() . "',
+							EXECUTETIME				=	" . $this->model->getExecuteTime() . "
 				WHERE 		REFUNDLEDGERID			=	'" . $this->model->getRefundLedgerId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));

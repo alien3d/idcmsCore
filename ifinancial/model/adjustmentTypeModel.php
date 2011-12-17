@@ -3,14 +3,16 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is adjustmentType model file.This is to ensure strict setting enable for all variable enter to database
- *
+ * Adjustment Model . Basc
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package General Ledger
+ * @package Account Receivable / Account Payable
  * @subpackage Chart Of Account Type
  * @link http://www.idcms.org
+ * @link http://en.wikipedia.org/wiki/Debit_note
+ * @link http://en.wikipedia.org/wiki/Credit_note
+ * @link http://www.accountingexplanation.com/sales_returns_journal.htm
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
        
