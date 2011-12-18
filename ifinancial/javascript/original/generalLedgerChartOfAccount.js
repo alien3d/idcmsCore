@@ -1293,8 +1293,8 @@ Ext
                     if (Ext.isEmpty(value, false)) {
                         return new RegExp('^');
                     }
-                    value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-                    return new RegExp('\b(' + value + ')', 'i');
+                     value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+                    return new RegExp('\\b(' + value + ')', 'i');
                 }
             });
 			

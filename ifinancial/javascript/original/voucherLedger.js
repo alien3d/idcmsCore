@@ -515,6 +515,9 @@ Ext.onReady(function() {
 					name : 'businessPartnerId',
 					type : 'int'
 				}, {
+					name : 'businessPartnerDesc',
+					type : 'string'
+				}, {
 					name : 'businessPartnerCompany',
 					type : 'string'
 				}, {
@@ -1938,8 +1941,8 @@ var voucherTypeStore = new Ext.data.JsonStore({
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
     var voucherTypeId = new Ext.ux.form.ComboBoxMatch({
@@ -1964,8 +1967,8 @@ var voucherTypeStore = new Ext.data.JsonStore({
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
     var documentNo = new Ext.form.TextField({
@@ -2500,8 +2503,8 @@ var voucherTypeStore = new Ext.data.JsonStore({
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
     var transactionModeArrayData = [
@@ -2565,8 +2568,8 @@ var voucherTypeStore = new Ext.data.JsonStore({
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
     var voucherLedgerDetailAmount = new Ext.form.TextField({

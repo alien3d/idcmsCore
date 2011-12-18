@@ -489,43 +489,45 @@ class RefundLedgerClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`refundLedger`.`refundLedgerId`,
-					`refundLedger`.`businessPartnerId`,
-					`refundLedger`.`invoiceCategoryId`,
-					`refundLedger`.`invoiceTypeId`,
-					`refundLedger`.`invoiceLedgerId`,
-					`refundLedger`.`documentNo`,
-					`refundLedger`.`referenceNo`,
-					`refundLedger`.`refundLedgerTitle`,
-					`refundLedger`.`refundLedgerDesc`,
-					`refundLedger`.`refundLedgerDate`,
-					`refundLedger`.`refundLedgerAmount`,
-					`refundLedger`.`isDefault`,
-					`refundLedger`.`isNew`,
-					`refundLedger`.`isDraft`,
-					`refundLedger`.`isUpdate`,
-					`refundLedger`.`isDelete`,
-					`refundLedger`.`isActive`,
-					`refundLedger`.`isApproved`,
-					`refundLedger`.`isReview`,
-					`refundLedger`.`isPost`,
-					`refundLedger`.`isReconciled`,
-					`refundLedger`.`executeBy`,
-					`refundLedger`.`executeTime`,
-					`refundLedgerType`.`refundTypeDesc`,
-                   	`staff`.`staffName`
+						`refundLedger`.`businessPartnerId`,
+						`refundLedger`.`invoiceCategoryId`,
+						`refundLedger`.`invoiceTypeId`,
+						`refundLedger`.`invoiceLedgerId`,
+						`refundLedger`.`documentNo`,
+						`refundLedger`.`referenceNo`,
+						`refundLedger`.`refundLedgerTitle`,
+						`refundLedger`.`refundLedgerDesc`,
+						`refundLedger`.`refundLedgerDate`,
+						`refundLedger`.`refundLedgerAmount`,
+						`refundLedger`.`isDefault`,
+						`refundLedger`.`isNew`,
+						`refundLedger`.`isDraft`,
+						`refundLedger`.`isUpdate`,
+						`refundLedger`.`isDelete`,
+						`refundLedger`.`isActive`,
+						`refundLedger`.`isApproved`,
+						`refundLedger`.`isReview`,
+						`refundLedger`.`isPost`,
+						`refundLedger`.`isReconciled`,
+						`refundLedger`.`executeBy`,
+						`refundLedger`.`executeTime`,
+						`refundType`.`refundTypeDesc`,
+						`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`refundLedger`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
             ON      `refundLedger`.`executeBy` = `staff`.`staffId`
-            JOIN	`".$this->q->getFinancialDatabase()."`.`businessPartner`
+            JOIN		`".$this->q->getFinancialDatabase()."`.`refundType`
+            ON		`refundType`.`refundTypeId` 				=	`refundLedger`.`refundTypeId`
+			JOIN		`".$this->q->getFinancialDatabase()."`.`businessPartner`
             USING	(`businessPartnerId`)
-			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceCategory`
-			AND		`invoiceCategory`.`invoiceCategoryId` 	=	`refundLedger`.`invoiceCategoryId`	
-			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceType`
-            AND		`invoiceType`.`invoiceTypeId` 			=	`refundLedger`.`invoiceTypeId`
+			JOIN		`".$this->q->getFinancialDatabase()."`.`invoiceCategory`
+			 ON		`invoiceCategory`.`invoiceCategoryId` 	=	`refundLedger`.`invoiceCategoryId`	
+			JOIN		`".$this->q->getFinancialDatabase()."`.`invoiceType`
+             ON		`invoiceType`.`invoiceTypeId` 				=	`refundLedger`.`invoiceTypeId`
 			AND		`invoiceCategory`.`invoiceCategoryId` 	=	`invoiceType`.`invoiceCategoryId`	
-			JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceLedger`
+			JOIN		`".$this->q->getFinancialDatabase()."`.`invoiceLedger`
             ON		`invoiceLedger`.`invoiceLedgerId` 		= 	`refundLedger`.`invoiceLedgerId`
-			AND		`invoiceType`.`invoiceTypeId` 			=	`refundLedger`.`invoiceTypeId`
+			AND		`invoiceType`.`invoiceTypeId` 				=	`refundLedger`.`invoiceTypeId`
 			AND		`invoiceCategory`.`invoiceCategoryId` 	=	`refundLedger`.`invoiceCategoryId`
             WHERE 	 " . $this->auditFilter;
 
@@ -559,63 +561,67 @@ class RefundLedgerClass extends ConfigClass {
 						[refundLedger].[executeBy],
 						[refundLedger].[executeTime],
 						[staff].[staffName]
-			FROM 		[".$this->q->getFinancialDatabase()."].[refundLedger]
+			FROM 	[".$this->q->getFinancialDatabase()."].[refundLedger]
 			JOIN		[".$this->q->getManagementDatabase()."].[staff]
-			ON			[refundLedger].[executeBy] 				= 	[staff].[staffId]
+			ON		[refundLedger].[executeBy] 					= 	[staff].[staffId]
+			JOIN		[".$this->q->getFinancialDatabase()."].[refundType]
+            ON		[refundType].[refundTypeId] 					=	[refundType].[refundTypeId]
 			JOIN		[".$this->q->getFinancialDatabase()."].[businessPartner]
-            USING		[businessPartner].[businessPartnerId] 	=	[refundLedger].[businessPartnerId]
+            ON		[businessPartner].[businessPartnerId] 	=	[refundLedger].[businessPartnerId]
 			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceCategory]
-            AND			[invoiceCategory].[invoiceCategoryId] 	=	[refundLedger].[invoiceCategoryId]	
+           ON			[invoiceCategory].[invoiceCategoryId] 	=	[refundLedger].[invoiceCategoryId]	
 			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceType]
-            AND			[invoiceType].[invoiceTypeId] 			=	[refundLedger].[invoiceTypeId]
-			AND			[invoiceCategory].[invoiceCategoryId] 	=	[invoiceType].[invoiceCategoryId]	
+             ON		[invoiceType].[invoiceTypeId] 				=	[refundLedger].[invoiceTypeId]
+			AND		[invoiceCategory].[invoiceCategoryId] 	=	[invoiceType].[invoiceCategoryId]	
 			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceLedger]
-            ON			[invoiceLedger].[invoiceLedgerId] 		= 	[refundLedger].[invoiceLedgerId]
-			AND			[invoiceType].[invoiceTypeId] 			=	[refundLedger].[invoiceTypeId]
-			AND			[invoiceCategory].[invoiceCategoryId] 	=	[refundLedger].[invoiceCategoryId]			
+            ON		[invoiceLedger].[invoiceLedgerId] 			= 	[refundLedger].[invoiceLedgerId]
+			AND		[invoiceType].[invoiceTypeId] 				=	[refundLedger].[invoiceTypeId]
+			AND		[invoiceCategory].[invoiceCategoryId] 	=	[refundLedger].[invoiceCategoryId]			
 			WHERE 		" . $this->auditFilter;
 			if ($this->model->getRefundLedgerId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getRefundLedgerId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		REFUNDLEDGER.REFUNDLEDGERID   		AS 	\"refundLedgerId\",
-						REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
-						REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
-						REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
-						REFUNDLEDGER.INVOICELEDGERID        AS 	\"invoiceLedgerId\",
-						REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
-						REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
-						REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
-						REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
-						REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
-						REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
-						REFUNDLEDGER.ISDEFAULT    			AS	\"isDefault\",
-						REFUNDLEDGER.ISNEW		  			AS	\"isNew\",
-						REFUNDLEDGER.ISDRAFT	  			AS	\"isDraft\",
-						REFUNDLEDGER.ISUPDATE     			AS	\"isUpdate\",
-						REFUNDLEDGER.ISDELETE	  			AS	\"isDelete\",
-						REFUNDLEDGER.ISACTIVE	  			AS	\"isActive\",
-						REFUNDLEDGER.ISAPPROVED   			AS	\"isApproved\",
-						REFUNDLEDGER.ISREVIEW	  			AS	\"isReview\",
-						REFUNDLEDGER.ISPOST  	  			AS	\"isPost\",
-						REFUNDLEDGER.ISRECONCILED  	  		AS	\"isReconciled\",
-						REFUNDLEDGER.EXECUTEBY    			AS	\"executeBy\",
-						REFUNDLEDGER.EXECUTETIME  			AS	\"executeTime\",
-						STAFF.STAFFNAME		  				AS	\"staffName\"	
+			SELECT		REFUNDLEDGER.REFUNDLEDGERID   			AS 	\"refundLedgerId\",
+							REFUNDLEDGER.BUSINESSPARTNERID     	AS 	\"businessPartnerId\",
+							REFUNDLEDGER.INVOICECATEGORYID      	AS 	\"invoiceCategoryId\",
+							REFUNDLEDGER.INVOICETYPEID          		AS 	\"invoiceTypeId\",
+							REFUNDLEDGER.INVOICELEDGERID        	AS 	\"invoiceLedgerId\",
+							REFUNDLEDGER.DOCUMENTNO             		AS 	\"documentNo\",
+							REFUNDLEDGER.REFERENCENO            		AS 	\"referenceNo\",
+							REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
+							REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
+							REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
+							REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
+							REFUNDLEDGER.ISDEFAULT    					AS	\"isDefault\",
+							REFUNDLEDGER.ISNEW		  						AS	\"isNew\",
+							REFUNDLEDGER.ISDRAFT	  						AS	\"isDraft\",
+							REFUNDLEDGER.ISUPDATE     					AS	\"isUpdate\",
+							REFUNDLEDGER.ISDELETE	  						AS	\"isDelete\",
+							REFUNDLEDGER.ISACTIVE	  						AS	\"isActive\",
+							REFUNDLEDGER.ISAPPROVED   					AS	\"isApproved\",
+							REFUNDLEDGER.ISREVIEW	  						AS	\"isReview\",
+							REFUNDLEDGER.ISPOST  	  						AS	\"isPost\",
+							REFUNDLEDGER.ISRECONCILED  	  			AS	\"isReconciled\",
+							REFUNDLEDGER.EXECUTEBY    					AS	\"executeBy\",
+							REFUNDLEDGER.EXECUTETIME  					AS	\"executeTime\",
+							STAFF.STAFFNAME		  								AS	\"staffName\"	
 			FROM 		REFUNDLEDGER
-			JOIN		STAFF
-			ON			REFUNDLEDGER.EXECUTEBY 	  			=	STAFF.STAFFID
-			JOIN		".$this->q->getFinancialDatabase().".BUSINESSPARTNER
-			USING		BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
-			JOIN		".$this->q->getFinancialDatabase().".INVOICECATEGORY
-			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
-			JOIN		".$this->q->getFinancialDatabase().".INVOICETYPE]
-			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			JOIN			STAFF
+			ON			REFUNDLEDGER.EXECUTEBY 	  					=	STAFF.STAFFID
+			JOIN			REFUNDTYPE
+            ON			REFUNDTYPE.REFUNDTYPEID 					=	REFUNDTYPE.REFUNDTYPEID
+			JOIN			BUSINESSPARTNER
+			ON			BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
+			JOIN			INVOICECATEGORY
+			 ON			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
+			JOIN			INVOICETYPE	
+			 ON			INVOICETYPE.INVOICETYPEID 					=	REFUNDLEDGER.INVOICETYPEID
 			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
-			JOIN		".$this->q->getFinancialDatabase().".INVOICE
-			ON			INVOICE.INVOICELEDGERID 			= 	REFUNDLEDGER.INVOICELEDGERID
-			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			JOIN			INVOICE
+			ON			INVOICE.INVOICELEDGERID 						= 	REFUNDLEDGER.INVOICELEDGERID
+			AND			INVOICETYPE.INVOICETYPEID 					=	REFUNDLEDGER.INVOICETYPEID
 			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID		
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getRefundLedgerId(0, 'single')) {
@@ -623,43 +629,45 @@ class RefundLedgerClass extends ConfigClass {
 			}
 		} else if ($this->q->vendor == self::DB2) {
 			$sql = "
-			SELECT		REFUNDLEDGER.REFUNDLEDGERID   		AS 	\"refundLedgerId\",
-						REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
-						REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
-						REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
-						REFUNDLEDGER.INVOICELEDGERID        AS 	\"invoiceLedgerId\",
-						REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
-						REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
-						REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
-						REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
-						REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
-						REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
-						REFUNDLEDGER.ISDEFAULT    			AS	\"isDefault\",
-						REFUNDLEDGER.ISNEW		  			AS	\"isNew\",
-						REFUNDLEDGER.ISDRAFT	  			AS	\"isDraft\",
-						REFUNDLEDGER.ISUPDATE     			AS	\"isUpdate\",
-						REFUNDLEDGER.ISDELETE	  			AS	\"isDelete\",
-						REFUNDLEDGER.ISACTIVE	  			AS	\"isActive\",
-						REFUNDLEDGER.ISAPPROVED   			AS	\"isApproved\",
-						REFUNDLEDGER.ISREVIEW	  			AS	\"isReview\",
-						REFUNDLEDGER.ISPOST  	  			AS	\"isPost\",
-						REFUNDLEDGER.ISRECONCILED  	  		AS	\"isReconciled\",
-						REFUNDLEDGER.EXECUTEBY    			AS	\"executeBy\",
-						REFUNDLEDGER.EXECUTETIME  			AS	\"executeTime\",
-						STAFF.STAFFNAME		  				AS	\"staffName\"	
+			SELECT		REFUNDLEDGER.REFUNDLEDGERID   			AS 	\"refundLedgerId\",
+							REFUNDLEDGER.BUSINESSPARTNERID      	AS 	\"businessPartnerId\",
+							REFUNDLEDGER.INVOICECATEGORYID      	AS 	\"invoiceCategoryId\",
+							REFUNDLEDGER.INVOICETYPEID          		AS 	\"invoiceTypeId\",
+							REFUNDLEDGER.INVOICELEDGERID        	AS 	\"invoiceLedgerId\",
+							REFUNDLEDGER.DOCUMENTNO             		AS 	\"documentNo\",
+							REFUNDLEDGER.REFERENCENO           		AS 	\"referenceNo\",
+							REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
+							REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
+							REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
+							REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
+							REFUNDLEDGER.ISDEFAULT    					AS	\"isDefault\",
+							REFUNDLEDGER.ISNEW		  						AS	\"isNew\",
+							REFUNDLEDGER.ISDRAFT	  						AS	\"isDraft\",
+							REFUNDLEDGER.ISUPDATE     					AS	\"isUpdate\",
+							REFUNDLEDGER.ISDELETE	  						AS	\"isDelete\",
+							REFUNDLEDGER.ISACTIVE	  						AS	\"isActive\",
+							REFUNDLEDGER.ISAPPROVED   					AS	\"isApproved\",
+							REFUNDLEDGER.ISREVIEW	  						AS	\"isReview\",
+							REFUNDLEDGER.ISPOST  	  						AS	\"isPost\",
+							REFUNDLEDGER.ISRECONCILED  	  			AS	\"isReconciled\",
+							REFUNDLEDGER.EXECUTEBY    					AS	\"executeBy\",
+							REFUNDLEDGER.EXECUTETIME  					AS	\"executeTime\",
+							STAFF.STAFFNAME		  								AS	\"staffName\"	
 			FROM 		REFUNDLEDGER
-			JOIN		STAFF
-			ON			REFUNDLEDGER.EXECUTEBY 	  			=	STAFF.STAFFID
-			JOIN		".$this->q->getFinancialDatabase().".BUSINESSPARTNER
-			USING		BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
-			JOIN		".$this->q->getFinancialDatabase().".INVOICECATEGORY
-			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
-			JOIN		".$this->q->getFinancialDatabase().".INVOICETYPE]
-			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			JOIN			STAFF
+			ON			REFUNDLEDGER.EXECUTEBY 	  					=	STAFF.STAFFID
+			JOIN			REFUNDTYPE
+            ON			REFUNDTYPE.REFUNDTYPEID 					=	REFUNDTYPE.REFUNDTYPEID
+			JOIN			BUSINESSPARTNER
+			ON			BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
+			JOIN			INVOICECATEGORY
+			 ON			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
+			JOIN			INVOICETYPE
+			 ON			INVOICETYPE.INVOICETYPEID 					=	REFUNDLEDGER.INVOICETYPEID
 			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
-			JOIN		".$this->q->getFinancialDatabase().".INVOICE
-			ON			INVOICE.INVOICELEDGERID 			= 	REFUNDLEDGER.INVOICELEDGERID
-			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			JOIN			INVOICE
+			ON			INVOICE.INVOICELEDGERID 						= 	REFUNDLEDGER.INVOICELEDGERID
+			AND			INVOICETYPE.INVOICETYPEID 					=	REFUNDLEDGER.INVOICETYPEID
 			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID		
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getRefundLedgerId(0, 'single')) {
@@ -667,43 +675,45 @@ class RefundLedgerClass extends ConfigClass {
 			}
 		} else if ($this->q->vendor == self::POSTGRESS) {
 			$sql = "
-			SELECT		REFUNDLEDGER.REFUNDLEDGERID   		AS 	\"refundLedgerId\",
-						REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
-						REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
-						REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
-						REFUNDLEDGER.INVOICELEDGERID        AS 	\"invoiceLedgerId\",
-						REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
-						REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
-						REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
-						REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
-						REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
-						REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
-						REFUNDLEDGER.ISDEFAULT    			AS	\"isDefault\",
-						REFUNDLEDGER.ISNEW		  			AS	\"isNew\",
-						REFUNDLEDGER.ISDRAFT	  			AS	\"isDraft\",
-						REFUNDLEDGER.ISUPDATE     			AS	\"isUpdate\",
-						REFUNDLEDGER.ISDELETE	  			AS	\"isDelete\",
-						REFUNDLEDGER.ISACTIVE	  			AS	\"isActive\",
-						REFUNDLEDGER.ISAPPROVED   			AS	\"isApproved\",
-						REFUNDLEDGER.ISREVIEW	  			AS	\"isReview\",
-						REFUNDLEDGER.ISPOST  	  			AS	\"isPost\",
-						REFUNDLEDGER.ISRECONCILED  	  		AS	\"isReconciled\",
-						REFUNDLEDGER.EXECUTEBY    			AS	\"executeBy\",
-						REFUNDLEDGER.EXECUTETIME  			AS	\"executeTime\",
-						STAFF.STAFFNAME		  				AS	\"staffName\"	
+			SELECT		REFUNDLEDGER.REFUNDLEDGERID   			AS 	\"refundLedgerId\",
+							REFUNDLEDGER.BUSINESSPARTNERID      	AS 	\"businessPartnerId\",
+							REFUNDLEDGER.INVOICECATEGORYID      	AS 	\"invoiceCategoryId\",
+							REFUNDLEDGER.INVOICETYPEID          		AS 	\"invoiceTypeId\",
+							REFUNDLEDGER.INVOICELEDGERID        	AS 	\"invoiceLedgerId\",
+							REFUNDLEDGER.DOCUMENTNO            		AS 	\"documentNo\",
+							REFUNDLEDGER.REFERENCENO            		AS 	\"referenceNo\",
+							REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
+							REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
+							REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
+							REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
+							REFUNDLEDGER.ISDEFAULT    					AS	\"isDefault\",
+							REFUNDLEDGER.ISNEW		  						AS	\"isNew\",
+							REFUNDLEDGER.ISDRAFT	  						AS	\"isDraft\",
+							REFUNDLEDGER.ISUPDATE     					AS	\"isUpdate\",
+							REFUNDLEDGER.ISDELETE	  						AS	\"isDelete\",
+							REFUNDLEDGER.ISACTIVE	  						AS	\"isActive\",
+							REFUNDLEDGER.ISAPPROVED   					AS	\"isApproved\",
+							REFUNDLEDGER.ISREVIEW	  						AS	\"isReview\",
+							REFUNDLEDGER.ISPOST  	  						AS	\"isPost\",
+							REFUNDLEDGER.ISRECONCILED  	  			AS	\"isReconciled\",
+							REFUNDLEDGER.EXECUTEBY    					AS	\"executeBy\",
+							REFUNDLEDGER.EXECUTETIME  					AS	\"executeTime\",
+							STAFF.STAFFNAME		  								AS	\"staffName\"	
 			FROM 		REFUNDLEDGER
-			JOIN		STAFF
-			ON			REFUNDLEDGER.EXECUTEBY 	  			=	STAFF.STAFFID
-			JOIN		".$this->q->getFinancialDatabase().".BUSINESSPARTNER
-			USING		BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
-			JOIN		".$this->q->getFinancialDatabase().".INVOICECATEGORY
+			JOIN			STAFF
+			ON			REFUNDLEDGER.EXECUTEBY 	  					=	STAFF.STAFFID
+			JOIN			REFUNDTYPE
+            ON			REFUNDTYPE.REFUNDTYPEID 					=	REFUNDTYPE.REFUNDTYPEID
+			JOIN			BUSINESSPARTNER
+			ON			BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
+			JOIN			INVOICECATEGORY
 			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
-			JOIN		".$this->q->getFinancialDatabase().".INVOICETYPE]
-			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			JOIN			INVOICETYPE
+			AND			INVOICETYPE.INVOICETYPEID 					=	REFUNDLEDGER.INVOICETYPEID
 			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
-			JOIN		".$this->q->getFinancialDatabase().".INVOICE
-			ON			INVOICE.INVOICELEDGERID 			= 	REFUNDLEDGER.INVOICELEDGERID
-			AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+			JOIN			INVOICE
+			ON			INVOICE.INVOICELEDGERID 						= 	REFUNDLEDGER.INVOICELEDGERID
+			AND			INVOICETYPE.INVOICETYPEID 					=	REFUNDLEDGER.INVOICETYPEID
 			AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID		
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getRefundLedgerId(0, 'single')) {
@@ -845,44 +855,46 @@ class RefundLedgerClass extends ConfigClass {
 							WITH [refundLedgerDerived] AS
 							(
 								SELECT		[refundLedger].[refundLedgerId],
-											[refundLedger].[businessPartnerId],
-											[refundLedger].[invoiceCategoryId],
-											[refundLedger].[invoiceTypeId],
-											[refundLedger].[invoiceLedgerId],
-											[refundLedger].[documentNo],
-											[refundLedger].[referenceNo],
-											[refundLedger].[refundLedgerTitle],
-											[refundLedger].[refundLedgerDesc],
-											[refundLedger].[refundLedgerDate],
-											[refundLedger].[refundLedgerAmount],
-											[refundLedger].[isDefault],
-											[refundLedger].[isNew],
-											[refundLedger].[isDraft],
-											[refundLedger].[isUpdate],
-											[refundLedger].[isDelete],
-											[refundLedger].[isActive],
-											[refundLedger].[isApproved],
-											[refundLedger].[isReview],
-											[refundLedger].[isPost],
-											[refundLedger].[isReconciled],
-											[refundLedger].[executeBy],
-											[refundLedger].[executeTime],
-											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [refundLedger].[refundLedgerId]) AS 'RowNumber'
+												[refundLedger].[businessPartnerId],
+												[refundLedger].[invoiceCategoryId],
+												[refundLedger].[invoiceTypeId],
+												[refundLedger].[invoiceLedgerId],
+												[refundLedger].[documentNo],
+												[refundLedger].[referenceNo],
+												[refundLedger].[refundLedgerTitle],
+												[refundLedger].[refundLedgerDesc],
+												[refundLedger].[refundLedgerDate],
+												[refundLedger].[refundLedgerAmount],
+												[refundLedger].[isDefault],
+												[refundLedger].[isNew],
+												[refundLedger].[isDraft],
+												[refundLedger].[isUpdate],
+												[refundLedger].[isDelete],
+												[refundLedger].[isActive],
+												[refundLedger].[isApproved],
+												[refundLedger].[isReview],
+												[refundLedger].[isPost],
+												[refundLedger].[isReconciled],
+												[refundLedger].[executeBy],
+												[refundLedger].[executeTime],
+												[staff].[staffName],
+												ROW_NUMBER() OVER (ORDER BY [refundLedger].[refundLedgerId]) AS 'RowNumber'
 								FROM 		[".$this->q->getFinancialDatabase()."].[refundLedger]
-								JOIN		[".$this->q->getManagementDatabase()."].[staff]
-								ON			[refundLedger].[executeBy] 				= 	[staff].[staffId]
-								JOIN		[".$this->q->getFinancialDatabase()."].[businessPartner]
-								USING		[businessPartner].[businessPartnerId] 	=	[refundLedger].[businessPartnerId]
-								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceCategory]
-								AND			[invoiceCategory].[invoiceCategoryId] 	=	[refundLedger].[invoiceCategoryId]	
-								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceType]
-								AND			[invoiceType].[invoiceTypeId] 			=	[refundLedger].[invoiceTypeId]
+								JOIN			[".$this->q->getManagementDatabase()."].[staff]
+								ON			[refundLedger].[executeBy] 					= 	[staff].[staffId]
+								JOIN			[".$this->q->getFinancialDatabase()."].[refundType]
+								ON			[refundType].[refundTypeId] 					=	[refundType].[refundTypeId]
+								JOIN			[".$this->q->getFinancialDatabase()."].[businessPartner]
+								ON			[businessPartner].[businessPartnerId] 	=	[refundLedger].[businessPartnerId]
+								JOIN			[".$this->q->getFinancialDatabase()."].[invoiceCategory]
+								ON			[invoiceCategory].[invoiceCategoryId] 	=	[refundLedger].[invoiceCategoryId]	
+								JOIN			[".$this->q->getFinancialDatabase()."].[invoiceType]
+								ON			[invoiceType].[invoiceTypeId] 				=	[refundLedger].[invoiceTypeId]
 								AND			[invoiceCategory].[invoiceCategoryId] 	=	[invoiceType].[invoiceCategoryId]	
-								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceLedger]
-								ON			[invoiceLedger].[invoiceLedgerId] 		= 	[refundLedger].[invoiceLedgerId]
-								AND			[invoiceType].[invoiceTypeId] 			=	[refundLedger].[invoiceTypeId]
-								AND			[invoiceCategory].[invoiceCategoryId] 	=	[refundLedger].[invoiceCategoryId]		
+								JOIN			[".$this->q->getFinancialDatabase()."].[invoiceLedger]
+								ON			[invoiceLedger].[invoiceLedgerId] 			= 	[refundLedger].[invoiceLedgerId]
+								AND			[invoiceType].[invoiceTypeId] 				=	[refundLedger].[invoiceTypeId]
+								AND			[invoiceCategory].[invoiceCategoryId]	=	[refundLedger].[invoiceCategoryId]		
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -899,44 +911,46 @@ class RefundLedgerClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT		REFUNDLEDGER.REFUNDLEDGERID   		AS 	\"refundLedgerId\",
-											REFUNDLEDGER.BUSINESSPARTNERID      AS 	\"businessPartnerId\",
-											REFUNDLEDGER.INVOICECATEGORYID      AS 	\"invoiceCategoryId\",
-											REFUNDLEDGER.INVOICETYPEID          AS 	\"invoiceTypeId\",
-											REFUNDLEDGER.INVOICELEDGERID        AS 	\"invoiceLedgerId\",
-											REFUNDLEDGER.DOCUMENTNO             AS 	\"documentNo\",
-											REFUNDLEDGER.REFERENCENO            AS 	\"referenceNo\",
-											REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
-											REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
-											REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
-											REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
-											REFUNDLEDGER.ISDEFAULT    			AS	\"isDefault\",
-											REFUNDLEDGER.ISNEW		  			AS	\"isNew\",
-											REFUNDLEDGER.ISDRAFT	  			AS	\"isDraft\",
-											REFUNDLEDGER.ISUPDATE     			AS	\"isUpdate\",
-											REFUNDLEDGER.ISDELETE	  			AS	\"isDelete\",
-											REFUNDLEDGER.ISACTIVE	  			AS	\"isActive\",
-											REFUNDLEDGER.ISAPPROVED   			AS	\"isApproved\",
-											REFUNDLEDGER.ISREVIEW	  			AS	\"isReview\",
-											REFUNDLEDGER.ISPOST  	  			AS	\"isPost\",
-											REFUNDLEDGER.ISRECONCILED  	  		AS	\"isReconciled\",
-											REFUNDLEDGER.EXECUTEBY    			AS	\"executeBy\",
-											REFUNDLEDGER.EXECUTETIME  			AS	\"executeTime\",
-											STAFF.STAFFNAME		  				AS	\"staffName\"	
+								SELECT		REFUNDLEDGER.REFUNDLEDGERID   			AS 	\"refundLedgerId\",
+												REFUNDLEDGER.BUSINESSPARTNERID      	AS 	\"businessPartnerId\",
+												REFUNDLEDGER.INVOICECATEGORYID     	AS 	\"invoiceCategoryId\",
+												REFUNDLEDGER.INVOICETYPEID         		AS 	\"invoiceTypeId\",
+												REFUNDLEDGER.INVOICELEDGERID        	AS 	\"invoiceLedgerId\",
+												REFUNDLEDGER.DOCUMENTNO            		AS 	\"documentNo\",
+												REFUNDLEDGER.REFERENCENO            		AS 	\"referenceNo\",
+												REFUNDLEDGER.REFUNDLEDGERTITLE 		AS 	\"refundLedgerTitle\",
+												REFUNDLEDGER.REFUNDLEDGERDESC 		AS 	\"refundLedgerDesc\",
+												REFUNDLEDGER.REFUNDLEDGERDATE 		AS 	\"refundLedgerDate\",
+												REFUNDLEDGER.REFUNDLEDGERAMOUNT		AS 	\"refundLedgerAmount\",
+												REFUNDLEDGER.ISDEFAULT    					AS	\"isDefault\",
+												REFUNDLEDGER.ISNEW		  						AS	\"isNew\",
+												REFUNDLEDGER.ISDRAFT	  						AS	\"isDraft\",
+												REFUNDLEDGER.ISUPDATE     					AS	\"isUpdate\",
+												REFUNDLEDGER.ISDELETE	  						AS	\"isDelete\",
+												REFUNDLEDGER.ISACTIVE	  						AS	\"isActive\",
+												REFUNDLEDGER.ISAPPROVED   					AS	\"isApproved\",
+												REFUNDLEDGER.ISREVIEW	  						AS	\"isReview\",
+												REFUNDLEDGER.ISPOST  	  						AS	\"isPost\",
+												REFUNDLEDGER.ISRECONCILED  	  			AS	\"isReconciled\",
+												REFUNDLEDGER.EXECUTEBY    					AS	\"executeBy\",
+												REFUNDLEDGER.EXECUTETIME  					AS	\"executeTime\",
+												STAFF.STAFFNAME		  								AS	\"staffName\"	
 								FROM 		REFUNDLEDGER
-								JOIN		STAFF
+								JOIN			STAFF
 								ON			REFUNDLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".BUSINESSPARTNER
-								USING		BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICECATEGORY
-								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICETYPE]
-								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
+								JOIN			REFUNDTYPE
+								ON			REFUNDTYPE.REFUNDTYPEID 					=	REFUNDTYPE.REFUNDTYPEID
+								JOIN			BUSINESSPARTNER
+								ON			BUSINESSPARTNER.BUSINESSPARTNERID 	=	REFUNDLEDGER.BUSINESSPARTNERID
+								JOIN			INVOICECATEGORY
+								ON			INVOICECATEGORY.INVOICECATEGORYID 	=	REFUNDLEDGER.INVOICECATEGORYID	
+								JOIN			INVOICETYPE
+								ON			INVOICETYPE.INVOICETYPEID 					=	REFUNDLEDGER.INVOICETYPEID
 								AND			INVOICECATEGORY.INVOICECATEGORYID 	=	INVOICETYPE.INVOICECATEGORYID	
-								JOIN		".$THIS->Q->GETFINANCIALDATABASE().".INVOICELEDGER
-								ON			INVOICELEDGER.INVOICELEDGERID 					= 	REFUNDLEDGER.INVOICELEDGERID
-								AND			INVOICETYPE.INVOICETYPEID 			=	REFUNDLEDGER.INVOICETYPEID
-								AND			INVOICECATEGORY.INVOICETYPEID 		=	REFUNDLEDGER.INVOICECATEGORYID	
+								JOIN			INVOICELEDGER
+								ON			INVOICELEDGER.INVOICELEDGERID 			= 	REFUNDLEDGER.INVOICELEDGERID
+								AND			INVOICETYPE.INVOICETYPEID 					=	REFUNDLEDGER.INVOICETYPEID
+								AND			INVOICECATEGORY.INVOICETYPEID 			=	REFUNDLEDGER.INVOICECATEGORYID	
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -1071,7 +1085,7 @@ class RefundLedgerClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`refundLedger`
-				SET 		`refundLedgerTypeId` 	= 	'".$this->model->getRefundLedgerTypeId()."',
+				SET 		`refundTypeId` 	= 	'".$this->model->getRefundLedgerTypeId()."',
 							`businessPartnerId`		= 	'".$this->model->getBusinessPartnerId()."',
 							`invoiceCategoryId`		=	'".$this->model->getInvoiceCategoryId()."',
 							`invoiceTypeId`			=	'".$this->model->getInvoiceTypeId()."',
@@ -1096,7 +1110,7 @@ class RefundLedgerClass extends ConfigClass {
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[".$this->q->getFinancialDatabase()."].[refundLedger]
-				SET 		[refundLedgerTypeId]	= 	'".$this->model->getRefundLedgerTypeId()."',
+				SET 		[refundTypeId]	= 	'".$this->model->getRefundLedgerTypeId()."',
 							[businessPartnerId]		= 	'".$this->model->getBusinessPartnerId()."',
 							[invoiceCategoryId]		=	'".$this->model->getInvoiceCategoryId()."',
 							[invoiceTypeId]			=	'".$this->model->getInvoiceTypeId()."',
@@ -2014,7 +2028,10 @@ class RefundLedgerClass extends ConfigClass {
 				`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountDesc`,
 				`country`.`countryCurrencyCode`,
 				`generalLedgerChartOfAccountCategory`.`generalLedgerChartOfAccountCategoryDesc`,
-				`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeDesc`       
+				`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeDesc``businessPartner`.`businessPartnerId`,
+				concat(`businessPartner`.`businessPartnerFirstName`,
+						concat('-',`businessPartner`.`businessPartnerLastName`)) AS `businessDesc`,
+				`businessPartner`.`businessPartnerCompany`					
 		FROM 	`".$this->q->getFinancialDatabase()."`.`refundLedgerDetail`
 		JOIN	`".$this->q->getFinancialDatabase()."`.`refundLedger`
 		USING	(`refundLedgerId`) 
@@ -2025,6 +2042,8 @@ class RefundLedgerClass extends ConfigClass {
 		USING	(`generalLedgerChartOfAccountCategoryId`)
 		JOIN	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccount`
 		USING	(`generalLedgerChartOfAccountId`,`generalLedgerChartOfAccountCategoryId`,`generalLedgerChartOfAccountTypeId`)
+		JOIN		`".$this->q->getFinancialDatabase()."`.`businessPartner`
+        USING	(`businessPartnerId`)
 		WHERE  `refundLedgerDetail`.`refundLedgerId`='".$this->model->getRefundLedgerId(0,'single')."'";
 		//echo "<br>--------".$sqlRefundLedgerDetail."-------";
 		$resultRefundLedgerDetail=$this->q->fast($sqlRefundLedgerDetail);
@@ -2060,6 +2079,7 @@ class RefundLedgerClass extends ConfigClass {
 				`generalLedgerChartOfAccountDesc`, 
 				`businessPartnerId`, 
 				`businessPartnerDesc`, 
+				`businessPartnerCompany`, 
 				`isDefault`, 
 				`isNew`, 
 				`isDraft`, 
@@ -2092,6 +2112,7 @@ class RefundLedgerClass extends ConfigClass {
 				'".$row['generalLedgerChartOfAccountDesc']."', 
 				'".$row['businessPartnerId']."',
 				'".$row['businessPartnerDesc']."', 
+				'".$row['businessPartnerCompany']."',
 				'".$row['isDefault']."', 
 				'".$row['isNew']."', 
 				'".$row['isDraft']."', 

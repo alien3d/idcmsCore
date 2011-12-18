@@ -1810,7 +1810,10 @@ class DepositLedgerClass extends ConfigClass {
 				`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountDesc`,
 				`country`.`countryCurrencyCode`,
 				`generalLedgerChartOfAccountCategory`.`generalLedgerChartOfAccountCategoryDesc`,
-				`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeDesc`       
+				`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeDesc`,
+				concat(`businessPartner`.`businessPartnerFirstName`,
+						concat('-',`businessPartner`.`businessPartnerLastName`)) AS `businessDesc`,
+				`businessPartner`.`businessPartnerCompany`	       
 		FROM 	`".$this->q->getFinancialDatabase()."`.`depositLedgerDetail`
 		JOIN	`".$this->q->getFinancialDatabase()."`.`depositLedger`
 		USING	(`depositLedgerId`) 
@@ -1821,6 +1824,8 @@ class DepositLedgerClass extends ConfigClass {
 		USING	(`generalLedgerChartOfAccountCategoryId`)
 		JOIN	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccount`
 		USING	(`generalLedgerChartOfAccountId`,`generalLedgerChartOfAccountCategoryId`,`generalLedgerChartOfAccountTypeId`)
+		JOIN		`".$this->q->getFinancialDatabase()."`.`businessPartner`
+        USING	(`businessPartnerId`)
 		WHERE  `depositLedgerDetail`.`depositLedgerId`='".$this->model->getDepositLedgerId(0,'single')."'";
 		//echo "<br>--------".$sqlDepositLedgerDetail."-------";
 		$resultDepositLedgerDetail=$this->q->fast($sqlDepositLedgerDetail);
@@ -1856,6 +1861,7 @@ class DepositLedgerClass extends ConfigClass {
 				`generalLedgerChartOfAccountDesc`, 
 				`businessPartnerId`, 
 				`businessPartnerDesc`, 
+				`businessPartnerCompany`,  
 				`isDefault`, 
 				`isNew`, 
 				`isDraft`, 
@@ -1888,6 +1894,7 @@ class DepositLedgerClass extends ConfigClass {
 				'".$row['generalLedgerChartOfAccountDesc']."', 
 				'".$row['businessPartnerId']."',
 				'".$row['businessPartnerDesc']."', 
+				'".$row['businessPartnerCompany']."',
 				'".$row['isDefault']."', 
 				'".$row['isNew']."', 
 				'".$row['isDraft']."', 

@@ -42,7 +42,7 @@ if (isset($_SESSION['theme'])) { ?>
     <script  type="text/javascript"
     src="../../javascript/adapter/ext/ext-base.js"></script>
     <script  type="text/javascript"
-    src="../../javascript/ext-all.js"></script>
+    src="../../javascript/ext-all-debug.js"></script>
     <script type="text/javascript"
     src="../../javascript/examples/ux/gridfilters/menu/RangeMenu.js"></script>
     <script type="text/javascript"

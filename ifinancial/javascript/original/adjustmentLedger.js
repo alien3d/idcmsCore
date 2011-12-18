@@ -485,6 +485,9 @@ Ext.onReady(function () {
 					name : 'businessPartnerId',
 					type : 'int'
 				}, {
+					name : 'businessPartnerDesc',
+					type : 'string'
+				}, {
 					name : 'businessPartnerCompany',
 					type : 'string'
 				}, {
@@ -2299,8 +2302,8 @@ Ext.onReady(function () {
 				if (Ext.isEmpty(value, false)) {
 					return new RegExp('^');
 				}
-				value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-				return new RegExp('\b(' + value + ')', 'i');
+				 value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+				return new RegExp('\\b(' + value + ')', 'i');
 			}
 		});
 	var adjustmentTypeId = new Ext.ux.form.ComboBoxMatch({
@@ -2325,8 +2328,8 @@ Ext.onReady(function () {
 				if (Ext.isEmpty(value, false)) {
 					return new RegExp('^');
 				}
-				value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-				return new RegExp('\b(' + value + ')', 'i');
+				 value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+				return new RegExp('\\b(' + value + ')', 'i');
 			}
 		});
 	var invoiceCategoryId = new Ext.ux.form.ComboBoxMatch({
@@ -2351,8 +2354,8 @@ Ext.onReady(function () {
 				if (Ext.isEmpty(value, false)) {
 					return new RegExp('^');
 				}
-				value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-				return new RegExp('\b(' + value + ')', 'i');
+				 value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+				return new RegExp('\\b(' + value + ')', 'i');
 			},
 			listeners : {
 				'select': function(combo, record, index) {
@@ -2402,8 +2405,8 @@ Ext.onReady(function () {
 				if (Ext.isEmpty(value, false)) {
 					return new RegExp('^');
 				}
-				value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-				return new RegExp('\b(' + value + ')', 'i');
+				 value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+				return new RegExp('\\b(' + value + ')', 'i');
 			},
 			listeners : {
 				'select': function(combo, record, index) {
@@ -2456,8 +2459,8 @@ Ext.onReady(function () {
 				if (Ext.isEmpty(value, false)) {
 					return new RegExp('^');
 				}
-				value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-				return new RegExp('\b(' + value + ')', 'i');
+				 value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+				return new RegExp('\\b(' + value + ')', 'i');
 			}
 		});
 	var documentNo = new Ext.form.TextField({
@@ -2948,8 +2951,8 @@ Ext.onReady(function () {
 				if (Ext.isEmpty(value, false)) {
 					return new RegExp('^');
 				}
-				value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-				return new RegExp('\b(' + value + ')', 'i');
+				 value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+				return new RegExp('\\b(' + value + ')', 'i');
 			}
 		});
 	var transactionModeArrayData = [
@@ -3013,8 +3016,8 @@ Ext.onReady(function () {
 				if (Ext.isEmpty(value, false)) {
 					return new RegExp('^');
 				}
-				value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-				return new RegExp('\b(' + value + ')', 'i');
+				 value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+				return new RegExp('\\b(' + value + ')', 'i');
 			}
 		});
 	var adjustmentLedgerDetailAmount = new Ext.form.TextField({

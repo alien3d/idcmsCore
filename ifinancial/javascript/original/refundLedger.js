@@ -515,6 +515,9 @@ Ext.onReady(function() {
 					name : 'businessPartnerId',
 					type : 'int'
 				}, {
+					name : 'businessPartnerDesc',
+					type : 'string'
+				}, {
 					name : 'businessPartnerCompany',
 					type : 'string'
 				}, {
@@ -2574,8 +2577,8 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
     var refundTypeId = new Ext.ux.form.ComboBoxMatch({
@@ -2600,10 +2603,11 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
+	
     var invoiceCategoryId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
         fieldLabel: invoiceCategoryForeignKeyLabel,
@@ -2619,25 +2623,26 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
         anchor: '95%',
         selectOnFocus: true,
         mode: 'local',
-        allowBlank: false,
+        allowBlank: true,
         blankText: blankTextLabel,
         createValueMatcher: function(value) {
+			
             value = String(value).replace(/\s*/g, '');
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         },
 		listeners : {
 				'select': function(combo, record, index) {
 					Ext.Ajax.request({
-						url: '../controller/invoiceCategoryController.php',
+						url: '../controller/invoiceTypeController.php',
 						method: 'GET',
 						params: {
 							method: 'read',
 							invoiceCategoryId: combo.value,
-							leafId leafId,
+							leafId: leafId,
 							isadmin :isAdmin
 						},
 						success: function(response, options) {
@@ -2677,20 +2682,20 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         },
 		listeners : {
 				'select': function(combo, record, index) {
 					Ext.Ajax.request({
-						url: '../controller/invoiceTypeController.php',
+						url: '../controller/invoiceLedgerController.php',
 						method: 'GET',
 						params: {
 							method: 'read',
-							field: 'sequence',
-							table: 'folder',
-							moduleId: combo.value,
-							leafIdTemp: leafIdTemp
+							invoiceCategoryId: Ext.getCmp('invoiceCategoryId').getValue(),
+							invoiceTypeId: combo.value,
+							leafId: leafId,
+							isAdmin:isAdmin
 						},
 						success: function(response, options) {
 							jsonResponse = Ext.decode(response.responseText);
@@ -2730,8 +2735,8 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
     var documentNo = new Ext.form.TextField({
@@ -3266,8 +3271,8 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
     var transactionModeArrayData = [
@@ -3331,8 +3336,8 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
     var refundLedgerDetailAmount = new Ext.form.TextField({

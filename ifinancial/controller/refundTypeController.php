@@ -385,55 +385,129 @@ class RefundTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`refundType`.`refundTypeId`,`refundType`.`refundTypeSequence`,`refundType`.`generalLedgerJournalCode`,`refundType`.`refundTypeDesc`,`refundType`.`isDefault`,`refundType`.`isNew`,`refundType`.`isDraft`,`refundType`.`isUpdate`,`refundType`.`isDelete`,`refundType`.`isActive`,`refundType`.`isApproved`,`refundType`.`isReview`,`refundType`.`isPost`,`refundType`.`executeBy`,`refundType`.`executeTime`
-                    ,`staff`.`staffName`
+			SELECT	`refundType`.`refundTypeId`,
+						`refundType`.`refundTypeSequence`,
+						`refundType`.`refundTypeCode`,
+						`refundType`.`refundTypeDesc`,
+						`refundType`.`isDefault`,
+						`refundType`.`isNew`,
+						`refundType`.`isDraft`,
+						`refundType`.`isUpdate`,
+						`refundType`.`isDelete`,
+						`refundType`.`isActive`,
+						`refundType`.`isApproved`,
+						`refundType`.`isReview`,
+						`refundType`.`isPost`,
+						`refundType`.`executeBy`,
+						`refundType`.`executeTime`,
+						`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`refundType`
-            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `refundType`.`executeBy` = `staff`.`staffId`
+            JOIN    	`".$this->q->getManagementDatabase()."`.`staff`
+            ON     	 `refundType`.`executeBy` = `staff`.`staffId`
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getRefundTypeId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getRefundTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT`refundType`.`refundTypeId`,`refundType`.`refundTypeSequence`,`refundType`.`generalLedgerJournalCode`,`refundType`.`refundTypeDesc`,`refundType`.`isDefault`,`refundType`.`isNew`,`refundType`.`isDraft`,`refundType`.`isUpdate`,`refundType`.`isDelete`,`refundType`.`isActive`,`refundType`.`isApproved`,`refundType`.`isReview`,`refundType`.`isPost`,`refundType`.`executeBy`,`refundType`.`executeTime`
-                    `staff`.`staffName`
-            FROM    `".$this->q->getFixAssetDatabase()."`.`refundType`
-            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
-            ON      `refundType`.`executeBy` = `staff`.`staffId`
+			SELECT	[refundType].[refundTypeId],
+						[refundType].[refundTypeSequence],
+						[refundType].[refundTypeCode],
+						[refundType].[refundTypeDesc],
+						[refundType].[isDefault],
+						[refundType].[isNew],
+						[refundType].[isDraft],
+						[refundType].[isUpdate],
+						[refundType].[isDelete],
+						[refundType].[isActive],
+						[refundType].[isApproved],
+						[refundType].[isReview],
+						[refundType].[isPost],
+						[refundType].[executeBy],
+						[refundType].[executeTime],
+						[staff].[staffName]
+            FROM    [".$this->q->getFinancialDatabase()."].[refundType]
+            JOIN    	[".$this->q->getManagementDatabase()."].[staff]
+            ON     	 [refundType].[executeBy] = [staff].[staffId`
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getRefundTypeId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getRefundTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		REFUNDTYPE.REFUNDTYPEID   		 	AS 	\"refundTypeId\",
-						REFUNDTYPE.REFUNDTYPESEQUENCE 				AS 	\"refundTypeSequence\",
-						REFUNDTYPE.REFUNDTYPECODE 			AS 	\"refundTypeCode\",
-						REFUNDTYPE.REFUNDTYPEDESC 			AS 	\"refundTypeDesc\",
-						REFUNDTYPE.ISDEFAULT    			AS	\"isDefault\",
-						REFUNDTYPE.ISNEW		  			AS	\"isNew\",
-						REFUNDTYPE.ISDRAFT	  				AS	\"isDraft\",
-						REFUNDTYPE.ISUPDATE     			AS	\"isUpdate\",
-						REFUNDTYPE.ISDELETE	  			AS	\"isDelete\",
-						REFUNDTYPE.ISACTIVE	  			AS	\"isActive\",
-						REFUNDTYPE.ISAPPROVED   			AS	\"isApproved\",
-						REFUNDTYPE.ISREVIEW	  			AS	\"isReview\",
-						REFUNDTYPE.ISPOST  	  			AS	\"isPost\",
-						REFUNDTYPE.EXECUTEBY    			AS	\"executeBy\",
-						REFUNDTYPE.EXECUTETIME  			AS	\"executeTime\",
-						STAFF.STAFFNAME		  			AS	\"staffName\"	
+			SELECT		REFUNDTYPE.REFUNDTYPEID   		 		AS 	\"refundTypeId\",
+							REFUNDTYPE.REFUNDTYPESEQUENCE 		AS 	\"refundTypeSequence\",
+							REFUNDTYPE.REFUNDTYPECODE 			AS 	\"refundTypeCode\",
+							REFUNDTYPE.REFUNDTYPEDESC 				AS 	\"refundTypeDesc\",
+							REFUNDTYPE.ISDEFAULT    					AS	\"isDefault\",
+							REFUNDTYPE.ISNEW		  						AS	\"isNew\",
+							REFUNDTYPE.ISDRAFT	  						AS	\"isDraft\",
+							REFUNDTYPE.ISUPDATE     						AS	\"isUpdate\",
+							REFUNDTYPE.ISDELETE	  						AS	\"isDelete\",
+							REFUNDTYPE.ISACTIVE	  						AS	\"isActive\",
+							REFUNDTYPE.ISAPPROVED   					AS	\"isApproved\",
+							REFUNDTYPE.ISREVIEW	  						AS	\"isReview\",
+							REFUNDTYPE.ISPOST  	  						AS	\"isPost\",
+							REFUNDTYPE.EXECUTEBY    					AS	\"executeBy\",
+							REFUNDTYPE.EXECUTETIME  					AS	\"executeTime\",
+							STAFF.STAFFNAME		  							AS	\"staffName\"	
 			FROM 		REFUNDTYPE
-			JOIN		STAFF
+			JOIN			STAFF
 			ON			REFUNDTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getRefundTypeId(0, 'single')) {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getRefundTypeId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
-
+			$sql = "
+			SELECT		REFUNDTYPE.REFUNDTYPEID   		 		AS 	\"refundTypeId\",
+							REFUNDTYPE.REFUNDTYPESEQUENCE 		AS 	\"refundTypeSequence\",
+							REFUNDTYPE.REFUNDTYPECODE 			AS 	\"refundTypeCode\",
+							REFUNDTYPE.REFUNDTYPEDESC 				AS 	\"refundTypeDesc\",
+							REFUNDTYPE.ISDEFAULT    					AS	\"isDefault\",
+							REFUNDTYPE.ISNEW		  						AS	\"isNew\",
+							REFUNDTYPE.ISDRAFT	  						AS	\"isDraft\",
+							REFUNDTYPE.ISUPDATE     						AS	\"isUpdate\",
+							REFUNDTYPE.ISDELETE	  						AS	\"isDelete\",
+							REFUNDTYPE.ISACTIVE	  						AS	\"isActive\",
+							REFUNDTYPE.ISAPPROVED   					AS	\"isApproved\",
+							REFUNDTYPE.ISREVIEW	  						AS	\"isReview\",
+							REFUNDTYPE.ISPOST  	  						AS	\"isPost\",
+							REFUNDTYPE.EXECUTEBY    					AS	\"executeBy\",
+							REFUNDTYPE.EXECUTETIME  					AS	\"executeTime\",
+							STAFF.STAFFNAME		  							AS	\"staffName\"	
+			FROM 		REFUNDTYPE
+			JOIN			STAFF
+			ON			REFUNDTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
+			WHERE 	" . $this->auditFilter;
+			if ($this->model->getRefundTypeId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getRefundTypeId(0, 'single') . "'";
+			}
 		} else if ($this->q->vendor == self::POSTGRESS) {
-
+			$sql = "
+			SELECT		REFUNDTYPE.REFUNDTYPEID   		 		AS 	\"refundTypeId\",
+							REFUNDTYPE.REFUNDTYPESEQUENCE 		AS 	\"refundTypeSequence\",
+							REFUNDTYPE.REFUNDTYPECODE 			AS 	\"refundTypeCode\",
+							REFUNDTYPE.REFUNDTYPEDESC 				AS 	\"refundTypeDesc\",
+							REFUNDTYPE.ISDEFAULT    					AS	\"isDefault\",
+							REFUNDTYPE.ISNEW		  						AS	\"isNew\",
+							REFUNDTYPE.ISDRAFT	  						AS	\"isDraft\",
+							REFUNDTYPE.ISUPDATE     						AS	\"isUpdate\",
+							REFUNDTYPE.ISDELETE	  						AS	\"isDelete\",
+							REFUNDTYPE.ISACTIVE	  						AS	\"isActive\",
+							REFUNDTYPE.ISAPPROVED   					AS	\"isApproved\",
+							REFUNDTYPE.ISREVIEW	  						AS	\"isReview\",
+							REFUNDTYPE.ISPOST  	  						AS	\"isPost\",
+							REFUNDTYPE.EXECUTEBY    					AS	\"executeBy\",
+							REFUNDTYPE.EXECUTETIME  					AS	\"executeTime\",
+							STAFF.STAFFNAME		  							AS	\"staffName\"	
+			FROM 		REFUNDTYPE
+			JOIN			STAFF
+			ON			REFUNDTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
+			WHERE 	" . $this->auditFilter;
+			if ($this->model->getRefundTypeId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getRefundTypeId(0, 'single') . "'";
+			}
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -567,20 +641,20 @@ class RefundTypeClass extends ConfigClass {
 							WITH [refundTypeDerived] AS
 							(
 								SELECT 		[refundType].[refundTypeId],
-											[refundType].[refundTypeSequence],
-											[refundType].[refundTypeCode],
-											[refundType].[refundTypeDesc],
-											[refundType].[isDefault],
-											[refundType].[isNew],
-											[refundType].[isDraft],
-											[refundType].[isUpdate],
-											[refundType].[isDelete],
-											[refundType].[isApproved],
-											[refundType].[isReview],
-											[refundType].[isPost],
-											[refundType].[executeBy],
-											[refundType].[executeTime],
-											[staff].[staffName],
+													[refundType].[refundTypeSequence],
+													[refundType].[refundTypeCode],
+													[refundType].[refundTypeDesc],
+													[refundType].[isDefault],
+													[refundType].[isNew],
+													[refundType].[isDraft],
+													[refundType].[isUpdate],
+													[refundType].[isDelete],
+													[refundType].[isApproved],
+													[refundType].[isReview],
+													[refundType].[isPost],
+													[refundType].[executeBy],
+													[refundType].[executeTime],
+													[staff].[staffName],
 								ROW_NUMBER() OVER (ORDER BY [refundType].[refundTypeId]) AS 'RowNumber'
 								FROM 	['".$this->q->getFinancialDatabase()."'].[refundType]
 								JOIN	[".$this->q->getManagementDatabase()."].[staff]
@@ -601,25 +675,25 @@ class RefundTypeClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	REFUNDTYPE.REFUNDTYPEID   		AS 	\"refundTypeId\",
-										REFUNDTYPE.REFUNDTYPESEQUENCE 			AS 	\"refundTypeSequence\",
-										REFUNDTYPE.REFUNDTYPECODE 		AS 	\"refundTypeCode\",
-										REFUNDTYPE.REFUNDTYPEDESC 		AS 	\"refundTypeDesc\",
-										REFUNDTYPE.ISDEFAULT    		AS	\"isDefault\",
-										REFUNDTYPE.ISNEW		  		AS	\"isNew\",
-										REFUNDTYPE.ISDRAFT	 			AS	\"isDraft\",
-										REFUNDTYPE.ISUPDATE     		AS	\"isUpdate\",
-										REFUNDTYPE.ISDELETE	  		AS	\"isDelete\",
-										REFUNDTYPE.ISACTIVE	  		AS	\"isActive\",
-										REFUNDTYPE.ISAPPROVED   		AS	\"isApproved\",
-										REFUNDTYPE.ISREVIEW	  		AS 	\"isReview\",
-										REFUNDTYPE.ISPOST		  		AS	\"isPost\",
-										REFUNDTYPE.EXECUTEBY    		AS	\"executeBy\",
-										REFUNDTYPE.EXECUTETIME  		AS	\"executeTime\",
-										STAFF.STAFFNAME		  								AS	\"staffName\"	
-								FROM 	REFUNDTYPE
-								JOIN	STAFF
-								ON		REFUNDTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
+											SELECT		REFUNDTYPE.REFUNDTYPEID   		 		AS 	\"refundTypeId\",
+															REFUNDTYPE.REFUNDTYPESEQUENCE 		AS 	\"refundTypeSequence\",
+															REFUNDTYPE.REFUNDTYPECODE 			AS 	\"refundTypeCode\",
+															REFUNDTYPE.REFUNDTYPEDESC 				AS 	\"refundTypeDesc\",
+															REFUNDTYPE.ISDEFAULT    					AS	\"isDefault\",
+															REFUNDTYPE.ISNEW		  						AS	\"isNew\",
+															REFUNDTYPE.ISDRAFT	  						AS	\"isDraft\",
+															REFUNDTYPE.ISUPDATE     						AS	\"isUpdate\",
+															REFUNDTYPE.ISDELETE	  						AS	\"isDelete\",
+															REFUNDTYPE.ISACTIVE	  						AS	\"isActive\",
+															REFUNDTYPE.ISAPPROVED   					AS	\"isApproved\",
+															REFUNDTYPE.ISREVIEW	  						AS	\"isReview\",
+															REFUNDTYPE.ISPOST  	  						AS	\"isPost\",
+															REFUNDTYPE.EXECUTEBY    					AS	\"executeBy\",
+															REFUNDTYPE.EXECUTETIME  					AS	\"executeTime\",
+															STAFF.STAFFNAME		  							AS	\"staffName\"	
+											FROM 		REFUNDTYPE
+											JOIN			STAFF
+											ON			REFUNDTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -660,7 +734,18 @@ class RefundTypeClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getRefundTypeId(0, 'single')) {
-			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getRefundTypeId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getRefundTypeId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+			$end = microtime(true);
+			$time = $end - $start;
+			$json_encode = json_encode(
+				array(	'success' => true, 
+							'total' => $total, 
+							'message' =>  $this->systemString->getReadMessage(), 
+							'time'=>$time,							
+							'firstRecord' => $this->recordSet->firstRecord('value'), 
+							'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getRefundTypeId(0, 'single')), 
+							'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getRefundTypeId(0, 'single')), 
+							'lastRecord' => $this->recordSet->lastRecord('value'),
+							'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -668,7 +753,18 @@ class RefundTypeClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+				array(	'success' => true, 
+							'total' => $total, 
+							'message' =>  $this->systemString->getReadMessage(), 
+							'time'=>$time,							
+							'firstRecord' => $this->recordSet->firstRecord('value'), 
+							'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getRefundTypeId(0, 'single')), 
+							'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getRefundTypeId(0, 'single')), 
+							'lastRecord' => $this->recordSet->lastRecord('value'),
+							'data' => $items));
 			exit();
 		}
 	}
@@ -728,40 +824,39 @@ class RefundTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`".$this->q->getFinancialDatabase()."`.`refundType`.`refundType`
-				SET 	`refundType`.`refundTypeSequence`		=	'" . $this->model->getRefundTypeSequence() . "',
-							`refundType`.`refundTypeCode`		=	'" . $this->model->getRefundTypeCode() . "',
-							`refundType`.`refundTypeDesc`		=	'" . $this->model->getRefundTypeDesc() . "',
-							`refundType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`refundType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`refundType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`refundType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`refundType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`refundType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`refundType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`refundType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`refundType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`refundType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`refundType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				UPDATE	`".$this->q->getFinancialDatabase()."`.`refundType`.`refundType`
+				SET 			`refundTypeSequence`		=	'" . $this->model->getRefundTypeSequence() . "',
+								`refundTypeCode`		=	'" . $this->model->getRefundTypeCode() . "',
+								`refundTypeDesc`		=	'" . $this->model->getRefundTypeDesc() . "',
+								`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+								`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+								`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+								`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+								`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+								`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+								`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+								`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+								`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+								`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+								`executeTime`		=	" . $this->model->getExecuteTime() . "
 				WHERE 		`refundType`.`refundTypeId`		=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		['".$this->q->getFinancialDatabase()."'].[refundType]
-				SET 		[refundType].[refundTypeSequence]		=	'" . $this->model->getRefundTypeSequence() . "',
-							[refundType].[refundTypeCode]		=	'" . $this->model->getRefundTypeCode() . "',
-							[refundType].[refundTypeDesc]		=	'" . $this->model->getRefundTypeDesc() . "',
-							[[refundType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							[refundType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							[refundType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							[refundType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							[refundType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							[refundType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							[refundType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							[refundType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							[refundType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							[refundType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							[refundType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[refundType].[refundTypeId]			=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
+				UPDATE 	['".$this->q->getFinancialDatabase()."'].[refundType]
+				SET 			[refundTypeSequence]		=	'" . $this->model->getRefundTypeSequence() . "',
+								[refundTypeCode]		=	'" . $this->model->getRefundTypeCode() . "',
+								[refundTypeDesc]		=	'" . $this->model->getRefundTypeDesc() . "',
+								[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+								[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+								[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+								[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+								[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+								[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+								[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+								[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+								[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+								[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 		[refundTypeId]			=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		REFUNDTYPE
@@ -828,7 +923,12 @@ class RefundTypeClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+						"message" => $this->systemString->getUpdateMessage(),
+						"time"=>$time));
 		exit();
 	}
 
@@ -884,78 +984,78 @@ class RefundTypeClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE 	`".$this->q->getFinancialDatabase()."`.`refundType`
-				SET 	`refundType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`refundType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`refundType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`refundType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`refundType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`refundType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`refundType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`refundType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`refundType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`refundType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`refundType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`refundType`.`refundTypeId`		=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
+				SET 	`		`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+								`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+								`isDraft`				=	'" . $this->model->getIsDraft(0, 'single') . "',
+								`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+								`isDelete`				=	'" . $this->model->getIsDelete(0, 'single') . "',
+								`isActive`				=	'" . $this->model->getIsActive(0, 'single') . "',
+								`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+								`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+								`isPost`				=	'" . $this->model->getIsPost(0, 'single') . "',
+								`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+								`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`refundTypeId`		=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	['".$this->q->getFinancialDatabase()."'].[refundType].[refundType]
-				SET 	[refundType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						[refundType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[refundType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[refundType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[refundType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[refundType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[refundType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[refundType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[refundType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[refundType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[refundType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[refundType].[refundTypeId]		=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
+				SET 			[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+								[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+								[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+								[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+								[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+								[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+								[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+								[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+								[isPost]				=	'" . $this->model->getIsPost(0, 'single') . "',
+								[executeBy]		=	'" . $this->model->getExecuteBy() . "',
+								[executeTime]	=	" . $this->model->getExecuteTime() . "
+				WHERE 		[refundTypeId]	=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	REFUNDTYPE
-				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
-						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						ISUPDATE		=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						ISDELETE		=	'" . $this->model->getIsDelete(0, 'single') . "',
-						ISACTIVE		=	'" . $this->model->getIsActive(0, 'single') . "',
-						ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						ISREVIEW		=	'" . $this->model->getIsReview(0, 'single') . "',
-						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
-						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	REFUNDTYPEID		=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
+				SET 			ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
+								ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+								ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
+								ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+								ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+								ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+								ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
+								ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+								ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+								EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
+								EXECUTETIME	=	" . $this->model->getExecuteTime() . "
+				WHERE 		REFUNDTYPEID	=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 				UPDATE 	REFUNDTYPE
-				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
-						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						ISUPDATE		=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						ISDELETE		=	'" . $this->model->getIsDelete(0, 'single') . "',
-						ISACTIVE		=	'" . $this->model->getIsActive(0, 'single') . "',
-						ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						ISREVIEW		=	'" . $this->model->getIsReview(0, 'single') . "',
-						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
-						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	REFUNDTYPEID		=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
+				SET 			ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
+								ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+								ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
+								ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+								ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+								ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+								ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
+								ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+								ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+								EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
+								EXECUTETIME	=	" . $this->model->getExecuteTime() . "
+				WHERE 		REFUNDTYPEID	=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE 	REFUNDTYPE
-				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
-						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						ISUPDATE		=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						ISDELETE		=	'" . $this->model->getIsDelete(0, 'single') . "',
-						ISACTIVE		=	'" . $this->model->getIsActive(0, 'single') . "',
-						ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						ISREVIEW		=	'" . $this->model->getIsReview(0, 'single') . "',
-						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
-						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	REFUNDTYPEID		=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
+				SET 			ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
+								ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+								ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
+								ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+								ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+								ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+								ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
+								ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+								ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+								EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
+								EXECUTETIME	=	" . $this->model->getExecuteTime() . "
+				WHERE 		REFUNDTYPEID	=	'" . $this->model->getRefundTypeId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -969,7 +1069,13 @@ class RefundTypeClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(
+				"success" => true, 
+				"message" => $this->systemString->getDeleteMessage(),
+				"time"=>$time));
 		exit();
 	}
 

@@ -442,7 +442,7 @@ class BusinessPartnerClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	`iFinancial`.`businessPartner`.`isActive`		=	1	";
+				$this->auditFilter = "`businessPartner`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	[businessPartner].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
@@ -479,39 +479,47 @@ class BusinessPartnerClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`iFinancial`.`businessPartner`.`businessPartnerId`,
-					`iFinancial`.`businessPartner`.`businessPartnerCompany`,
-					`iFinancial`.`businessPartner`.`businessPartnerLastName`,
-					`iFinancial`.`businessPartner`.`businessPartnerFirstName`,
-					`iFinancial`.`businessPartner`.`businessPartnerEmail`,
-					`iFinancial`.`businessPartner`.`businessPartnerJobTitle`,
-					`iFinancial`.`businessPartner`.`businessPartnerBusinessPhone`,
-					`iFinancial`.`businessPartner`.`businessPartnerHomePhone`,
-					`iFinancial`.`businessPartner`.`businessPartnerMobilePhone`,
-					`iFinancial`.`businessPartner`.`businessPartnerFaxNum`,
-					`iFinancial`.`businessPartner`.`businessPartnerAddress`,
-					`iFinancial`.`businessPartner`.`businessPartnerCity`,
-					`iFinancial`.`businessPartner`.`businessPartnerState`,
-					`iFinancial`.`businessPartner`.`businessPartnerPostcode`,
-					`iFinancial`.`businessPartner`.`businessPartnerCountry`,
-					`iFinancial`.`businessPartner`.`businessPartnerWebPage`,
-					`iFinancial`.`businessPartner`.`businessPartnerNotes`,
-					`iFinancial`.`businessPartner`.`businessPartnerAttachments`,						
-					`iFinancial`.`businessPartner`.`isDefault`,
-					`iFinancial`.`businessPartner`.`isNew`,
-					`iFinancial`.`businessPartner`.`isDraft`,
-					`iFinancial`.`businessPartner`.`isUpdate`,
-					`iFinancial`.`businessPartner`.`isDelete`,
-					`iFinancial`.`businessPartner`.`isActive`,
-					`iFinancial`.`businessPartner`.`isApproved`,
-					`iFinancial`.`businessPartner`.`isReview`,
-					`iFinancial`.`businessPartner`.`isPost`,
-					`iFinancial`.`businessPartner`.`executeBy`,
-					`iFinancial`.`businessPartner`.`executeTime`,
+			SELECT`businessPartner`.`businessPartnerId`,
+				`businessPartner`.`businessPartnerCompany`,
+				`businessPartner`.`businessPartnerLastName`,
+				`businessPartner`.`businessPartnerFirstName`,
+				`businessPartner`.`businessPartnerEmail`,
+				`businessPartner`.`businessPartnerJobTitle`,
+				`businessPartner`.`businessPartnerBusinessPhone`,
+				`businessPartner`.`businessPartnerHomePhone`,
+				`businessPartner`.`businessPartnerMobilePhone`,
+				`businessPartner`.`businessPartnerFaxNum`,
+				`businessPartner`.`businessPartnerAddress`,
+				`businessPartner`.`businessPartnerCity`,
+				`businessPartner`.`businessPartnerState`,
+				`businessPartner`.`businessPartnerPostcode`,
+				`businessPartner`.`businessPartnerCountry`,
+				`businessPartner`.`businessPartnerWebPage`,
+				`businessPartner`.`businessPartnerNotes`,
+				`businessPartner`.`businessPartnerAttachments`,						
+				`businessPartner`.`isDefault`,
+				`businessPartner`.`isNew`,
+				`businessPartner`.`isDraft`,
+				`businessPartner`.`isUpdate`,
+				`businessPartner`.`isDelete`,
+				`businessPartner`.`isActive`,
+				`businessPartner`.`isApproved`,
+				`businessPartner`.`isReview`,
+				`businessPartner`.`isPost`,
+				`businessPartner`.`executeBy`,
+				`businessPartner`.`executeTime`,
+					if(isnull(`businessPartner`.`businessPartnerLastName`),
+					if(isnull(`businessPartner`.`businessPartnerFirstName`),
+						`businessPartner`.`businessPartnerCompany`,
+						`businessPartner`.`businessPartnerFirstName`),
+						if(isnull(`businessPartner`.`businessPartnerFirstName`),
+							`businessPartner`.`businessPartnerLastName`,
+							concat(`businessPartner`.`businessPartnerFirstName`,
+							concat(' , ',`businessPartner`.`businessPartnerLastName`)))) AS `businessPartnerDesc`,
 					`iManagement`.`staff`.`staffName`
 			FROM 	`iFinancial`.`businessPartner`
 			JOIN	`iManagement`.`staff`
-			ON		`iFinancial`.`businessPartner`.`executeBy` = `iManagement`.`staff`.`staffId`
+			ON	`businessPartner`.`executeBy` = `iManagement`.`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getBusinessPartnerId(0, 'single')) {
 				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getBusinessPartnerId(0, 'single') . "'";
@@ -520,37 +528,37 @@ class BusinessPartnerClass extends ConfigClass {
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[businessPartner].[businessPartnerId],
-					[businessPartner].[businessPartnerCompany],
-					[businessPartner].[businessPartnerLastName],
-					[businessPartner].[businessPartnerFirstName],
-					[businessPartner].[businessPartnerEmail],
-					[businessPartner].[businessPartnerJobTitle],
-					[businessPartner].[businessPartnerBusinessPhone],
-					[businessPartner].[businessPartnerHomePhone],
-					[businessPartner].[businessPartnerMobilePhone],
-					[businessPartner].[businessPartnerFaxNum],
-					[businessPartner].[businessPartnerAddress],
-					[businessPartner].[businessPartnerCity],
-					[businessPartner].[businessPartnerState],
-					[businessPartner].[businessPartnerPostcode],
-					[businessPartner].[businessPartnerCountry],
-					[businessPartner].[businessPartnerWebPage],
-					[businessPartner].[businessPartnerNotes],
-					[businessPartner].[businessPartnerAttachments],
-					[businessPartner].[isDefault],
-					[businessPartner].[isNew],
-					[businessPartner].[isDraft],
-					[businessPartner].[isUpdate],
-					[businessPartner].[isDelete],
-					[businessPartner].[isActive],
-					[businessPartner].[isApproved],
-					[businessPartner].[isReview],
-					[businessPartner].[isPost],
-					[businessPartner].[executeBy],
-					[businessPartner].[executeTime],
-					[staff].[staffName]
+						[businessPartner].[businessPartnerCompany],
+						[businessPartner].[businessPartnerLastName],
+						[businessPartner].[businessPartnerFirstName],
+						[businessPartner].[businessPartnerEmail],
+						[businessPartner].[businessPartnerJobTitle],
+						[businessPartner].[businessPartnerBusinessPhone],
+						[businessPartner].[businessPartnerHomePhone],
+						[businessPartner].[businessPartnerMobilePhone],
+						[businessPartner].[businessPartnerFaxNum],
+						[businessPartner].[businessPartnerAddress],
+						[businessPartner].[businessPartnerCity],
+						[businessPartner].[businessPartnerState],
+						[businessPartner].[businessPartnerPostcode],
+						[businessPartner].[businessPartnerCountry],
+						[businessPartner].[businessPartnerWebPage],
+						[businessPartner].[businessPartnerNotes],
+						[businessPartner].[businessPartnerAttachments],
+						[businessPartner].[isDefault],
+						[businessPartner].[isNew],
+						[businessPartner].[isDraft],
+						[businessPartner].[isUpdate],
+						[businessPartner].[isDelete],
+						[businessPartner].[isActive],
+						[businessPartner].[isApproved],
+						[businessPartner].[isReview],
+						[businessPartner].[isPost],
+						[businessPartner].[executeBy],
+						[businessPartner].[executeTime],
+						[staff].[staffName]
 			FROM 	[businessPartner]
-			JOIN	[staff]
+			JOIN		[staff]
 			ON		[businessPartner].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getBusinessPartnerId(0, 'single')) {
@@ -559,37 +567,37 @@ class BusinessPartnerClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT		BUSINESSPARTNER.BUSINESSPARTNERID   		 	AS 	\"businessPartnerId\",
-						BUSINESSPARTNER.BUSINESSPARTNERCOMPANY			AS 	\"businessPartnerCompany\",
-						BUSINESSPARTNER.BUSINESSPARTNERLASTNAME			AS 	\"businessPartnerLastName\",
-						BUSINESSPARTNER.BUSINESSPARTNERFIRSTNAME		AS 	\"businessPartnerFirstName\",
-						BUSINESSPARTNER.BUSINESSPARTNEREMAIL			AS 	\"businessPartnerEmail\",
-						BUSINESSPARTNER.BUSINESSPARTNERJOBTITLE			AS 	\"businessPartnerJobTitle\",
-						BUSINESSPARTNER.BUSINESSPARTNERBUISNESSPHONE	AS 	\"businessPartnerBusinessPhone\",
-						BUSINESSPARTNER.BUSINESSPARTNERHOMEPHONE		AS 	\"businessPartnerHomePhone\",
-						BUSINESSPARTNER.BUSINESSPARTNERMOBILEPHONE		AS 	\"businessPartnerMobilePhone\",
-						BUSINESSPARTNER.BUSINESSPARTNERFAXNUM			AS 	\"businessPartnerFaxNum\",
-						BUSINESSPARTNER.BUSINESSPARTNERADDRESS			AS 	\"businessPartnerAddress\",
-						BUSINESSPARTNER.BUSINESSPARTNERCITY				AS 	\"businessPartnerCity\",
-						BUSINESSPARTNER.BUSINESSPARTNERSTATE			AS 	\"businessPartnerState\",
-						BUSINESSPARTNER.BUSINESSPARTNERPOSTCODE			AS 	\"businessPartnerPostcode\",
-						BUSINESSPARTNER.BUSINESSPARTNERCOUNTRY			AS 	\"businessPartnerCountry\",
-						BUSINESSPARTNER.BUSINESSPARTNERWEBPAGE			AS 	\"businessPartnerWebPage\",
-						BUSINESSPARTNER.BUSINESSPARTNERNOTES			AS 	\"businessPartnerNotes\",
-						BUSINESSPARTNER.BUSINESSPARTNERATTACHMENTS		AS 	\"businessPartnerAttachments\",					
-						BUSINESSPARTNER.ISDEFAULT    				AS	\"isDefault\",
-						BUSINESSPARTNER.ISNEW		  				AS	\"isNew\",
-						BUSINESSPARTNER.ISDRAFT	  				AS	\"isDraft\",
-						BUSINESSPARTNER.ISUPDATE     				AS	\"isUpdate\",
-						BUSINESSPARTNER.ISDELETE	  				AS	\"isDelete\",
-						BUSINESSPARTNER.ISACTIVE	  				AS	\"isActive\",
-						BUSINESSPARTNER.ISAPPROVED   				AS	\"isApproved\",
-						BUSINESSPARTNER.ISREVIEW	  				AS	\"isReview\",
-						BUSINESSPARTNER.ISPOST  	  				AS	\"isPost\",
-						BUSINESSPARTNER.EXECUTEBY    				AS	\"executeBy\",
-						BUSINESSPARTNER.EXECUTETIME  				AS	\"executeTime\",
-						STAFF.STAFFNAME		  				AS	\"staffName\"	
+							BUSINESSPARTNER.BUSINESSPARTNERCOMPANY			AS 	\"businessPartnerCompany\",
+							BUSINESSPARTNER.BUSINESSPARTNERLASTNAME			AS 	\"businessPartnerLastName\",
+							BUSINESSPARTNER.BUSINESSPARTNERFIRSTNAME		AS 	\"businessPartnerFirstName\",
+							BUSINESSPARTNER.BUSINESSPARTNEREMAIL			AS 	\"businessPartnerEmail\",
+							BUSINESSPARTNER.BUSINESSPARTNERJOBTITLE			AS 	\"businessPartnerJobTitle\",
+							BUSINESSPARTNER.BUSINESSPARTNERBUISNESSPHONE	AS 	\"businessPartnerBusinessPhone\",
+							BUSINESSPARTNER.BUSINESSPARTNERHOMEPHONE		AS 	\"businessPartnerHomePhone\",
+							BUSINESSPARTNER.BUSINESSPARTNERMOBILEPHONE		AS 	\"businessPartnerMobilePhone\",
+							BUSINESSPARTNER.BUSINESSPARTNERFAXNUM			AS 	\"businessPartnerFaxNum\",
+							BUSINESSPARTNER.BUSINESSPARTNERADDRESS			AS 	\"businessPartnerAddress\",
+							BUSINESSPARTNER.BUSINESSPARTNERCITY				AS 	\"businessPartnerCity\",
+							BUSINESSPARTNER.BUSINESSPARTNERSTATE			AS 	\"businessPartnerState\",
+							BUSINESSPARTNER.BUSINESSPARTNERPOSTCODE			AS 	\"businessPartnerPostcode\",
+							BUSINESSPARTNER.BUSINESSPARTNERCOUNTRY			AS 	\"businessPartnerCountry\",
+							BUSINESSPARTNER.BUSINESSPARTNERWEBPAGE			AS 	\"businessPartnerWebPage\",
+							BUSINESSPARTNER.BUSINESSPARTNERNOTES			AS 	\"businessPartnerNotes\",
+							BUSINESSPARTNER.BUSINESSPARTNERATTACHMENTS		AS 	\"businessPartnerAttachments\",					
+							BUSINESSPARTNER.ISDEFAULT    				AS	\"isDefault\",
+							BUSINESSPARTNER.ISNEW		  				AS	\"isNew\",
+							BUSINESSPARTNER.ISDRAFT	  				AS	\"isDraft\",
+							BUSINESSPARTNER.ISUPDATE     				AS	\"isUpdate\",
+							BUSINESSPARTNER.ISDELETE	  				AS	\"isDelete\",
+							BUSINESSPARTNER.ISACTIVE	  				AS	\"isActive\",
+							BUSINESSPARTNER.ISAPPROVED   				AS	\"isApproved\",
+							BUSINESSPARTNER.ISREVIEW	  				AS	\"isReview\",
+							BUSINESSPARTNER.ISPOST  	  				AS	\"isPost\",
+							BUSINESSPARTNER.EXECUTEBY    				AS	\"executeBy\",
+							BUSINESSPARTNER.EXECUTETIME  				AS	\"executeTime\",
+							STAFF.STAFFNAME		  				AS	\"staffName\"	
 			FROM 		BUSINESSPARTNER
-			JOIN		STAFF
+			JOIN			STAFF
 			ON			BUSINESSPARTNER.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getBusinessPartnerId(0, 'single')) {
@@ -1083,13 +1091,7 @@ class BusinessPartnerClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getBusinessPartnerId(0, 'single');
-			$this->q->audit = $this->audit;
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1229,11 +1231,7 @@ class BusinessPartnerClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			// advance logging future
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getBusinessPartnerId(0, 'single');
-			$this->q->audit = $this->audit;
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));

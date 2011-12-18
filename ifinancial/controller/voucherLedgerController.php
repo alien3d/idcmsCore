@@ -562,13 +562,79 @@ class VoucherLedgerClass extends ConfigClass {
 			JOIN	BUSINESSPARTNER
 			ON		VOUCHERLEDGER.BUSINESSPARTNERID = BUSINESSPARTNER.BUSINESSPARTNERID 
 			WHERE 	" . $this->auditFilter;
-			//	if ($this->model->getVoucherLedgerId(0, 'single')) {
-			//		$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getVoucherLedgerId(0, 'single') . "'";
-			//	}
+				if ($this->model->getVoucherLedgerId(0, 'single')) {
+					$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getVoucherLedgerId(0, 'single') . "'";
+				}
 		} else if ($this->q->vendor == self::DB2) {
-
+				$sql = "
+			SELECT	VOUCHERLEDGER.VOUCHERLEDGERID   	AS 	\"voucherLedgerId\",
+					VOUCHERLEDGER.VOUCHERTYPEID			AS	\"voucherTypeId\",
+					VOUCHERLEDGER.BUSINESSPARTNERID		AS	\"businessPartnerId\",
+					VOUCHERLEDGER.DOCUMENTNO 			AS 	\"documentNo\",
+					VOUCHERLEDGER.REFERENCENO 			AS 	\"referenceNo\",
+					VOUCHERLEDGER.VOUCHERLEDGERTITLE 	AS 	\"voucherLedgerTitle\",
+					VOUCHERLEDGER.VOUCHERLEDGERDESC 	AS 	\"voucherLedgerDesc\",
+					VOUCHERLEDGER.VOUCHERLEDGERDATE 	AS 	\"voucherLedgerDate\",
+					VOUCHERLEDGER.VOUCHERLEDGERAMOUNT 	AS 	\"voucherLedgerAmount\",
+					VOUCHERLEDGER.ISDEFAULT    			AS	\"isDefault\",
+					VOUCHERLEDGER.ISNEW		  			AS	\"isNew\",
+					VOUCHERLEDGER.ISDRAFT	  			AS	\"isDraft\",
+					VOUCHERLEDGER.ISUPDATE     			AS	\"isUpdate\",
+					VOUCHERLEDGER.ISDELETE	  			AS	\"isDelete\",
+					VOUCHERLEDGER.ISACTIVE	  			AS	\"isActive\",
+					VOUCHERLEDGER.ISAPPROVED   			AS	\"isApproved\",
+					VOUCHERLEDGER.ISREVIEW	  			AS	\"isReview\",
+					VOUCHERLEDGER.ISPOST  	  			AS	\"isPost\",
+					VOUCHERLEDGER.ISRECONCILED  	  	AS	\"isReconciled\",
+					VOUCHERLEDGER.EXECUTEBY    			AS	\"executeBy\",
+					VOUCHERLEDGER.EXECUTETIME  			AS	\"executeTime\",
+					STAFF.STAFFNAME		  				AS	\"staffName\"	
+			FROM 	VOUCHERLEDGER
+			JOIN	STAFF
+			ON		VOUCHERLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
+			JOIN	VOUCHERTYPE
+			ON		VOUCHERLEDGER.VOUCHERTYPEID = VOUCHERTYPE.VOUCHERTYPEID
+			JOIN	BUSINESSPARTNER
+			ON		VOUCHERLEDGER.BUSINESSPARTNERID = BUSINESSPARTNER.BUSINESSPARTNERID 
+			WHERE 	" . $this->auditFilter;
+				if ($this->model->getVoucherLedgerId(0, 'single')) {
+					$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getVoucherLedgerId(0, 'single') . "'";
+				}
 		} else if ($this->q->vendor == self::POSTGRESS) {
-
+					$sql = "
+			SELECT	VOUCHERLEDGER.VOUCHERLEDGERID   	AS 	\"voucherLedgerId\",
+					VOUCHERLEDGER.VOUCHERTYPEID			AS	\"voucherTypeId\",
+					VOUCHERLEDGER.BUSINESSPARTNERID		AS	\"businessPartnerId\",
+					VOUCHERLEDGER.DOCUMENTNO 			AS 	\"documentNo\",
+					VOUCHERLEDGER.REFERENCENO 			AS 	\"referenceNo\",
+					VOUCHERLEDGER.VOUCHERLEDGERTITLE 	AS 	\"voucherLedgerTitle\",
+					VOUCHERLEDGER.VOUCHERLEDGERDESC 	AS 	\"voucherLedgerDesc\",
+					VOUCHERLEDGER.VOUCHERLEDGERDATE 	AS 	\"voucherLedgerDate\",
+					VOUCHERLEDGER.VOUCHERLEDGERAMOUNT 	AS 	\"voucherLedgerAmount\",
+					VOUCHERLEDGER.ISDEFAULT    			AS	\"isDefault\",
+					VOUCHERLEDGER.ISNEW		  			AS	\"isNew\",
+					VOUCHERLEDGER.ISDRAFT	  			AS	\"isDraft\",
+					VOUCHERLEDGER.ISUPDATE     			AS	\"isUpdate\",
+					VOUCHERLEDGER.ISDELETE	  			AS	\"isDelete\",
+					VOUCHERLEDGER.ISACTIVE	  			AS	\"isActive\",
+					VOUCHERLEDGER.ISAPPROVED   			AS	\"isApproved\",
+					VOUCHERLEDGER.ISREVIEW	  			AS	\"isReview\",
+					VOUCHERLEDGER.ISPOST  	  			AS	\"isPost\",
+					VOUCHERLEDGER.ISRECONCILED  	  	AS	\"isReconciled\",
+					VOUCHERLEDGER.EXECUTEBY    			AS	\"executeBy\",
+					VOUCHERLEDGER.EXECUTETIME  			AS	\"executeTime\",
+					STAFF.STAFFNAME		  				AS	\"staffName\"	
+			FROM 	VOUCHERLEDGER
+			JOIN	STAFF
+			ON		VOUCHERLEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
+			JOIN	VOUCHERTYPE
+			ON		VOUCHERLEDGER.VOUCHERTYPEID = VOUCHERTYPE.VOUCHERTYPEID
+			JOIN	BUSINESSPARTNER
+			ON		VOUCHERLEDGER.BUSINESSPARTNERID = BUSINESSPARTNER.BUSINESSPARTNERID 
+			WHERE 	" . $this->auditFilter;
+				if ($this->model->getVoucherLedgerId(0, 'single')) {
+					$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getVoucherLedgerId(0, 'single') . "'";
+				}
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -970,7 +1036,6 @@ class VoucherLedgerClass extends ConfigClass {
 							[isActive]				=	'" . $this->model->getIsActive(0, 'single') . "',
 							[isApproved]			=	'" . $this->model->getIsApproved(0, 'single') . "',
 							[isReview]				=	'" . $this->model->getIsReview(0, 'single') . "',
-							[isPost]				=	'" . $this->model->getIsPost(0, 'single') . "',
 							[isReconciled]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]				=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]			=	" . $this->model->getExecuteTime() . "
@@ -1838,7 +1903,10 @@ class VoucherLedgerClass extends ConfigClass {
 				`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountDesc`,
 				`country`.`countryCurrencyCode`,
 				`generalLedgerChartOfAccountCategory`.`generalLedgerChartOfAccountCategoryDesc`,
-				`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeDesc`       
+				`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeDesc`,
+				concat(`businessPartner`.`businessPartnerFirstName`,
+						concat('-',`businessPartner`.`businessPartnerLastName`)) AS `businessDesc`,
+				`businessPartner`.`businessPartnerCompany`	       
 		FROM 	`".$this->q->getFinancialDatabase()."`.`voucherLedgerDetail`
 		JOIN	`".$this->q->getFinancialDatabase()."`.`voucherLedger`
 		USING	(`voucherLedgerId`) 
@@ -1848,6 +1916,8 @@ class VoucherLedgerClass extends ConfigClass {
 		JOIN	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountType`
 		USING	(`generalLedgerChartOfAccountCategoryId`)
 		JOIN	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccount`
+		JOIN		`".$this->q->getFinancialDatabase()."`.`businessPartner`
+        USING	(`businessPartnerId`)
 		USING	(`generalLedgerChartOfAccountId`,`generalLedgerChartOfAccountCategoryId`,`generalLedgerChartOfAccountTypeId`)
 		WHERE  `voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherLedgerId(0,'single')."'";
 		//echo "<br>--------".$sqlVoucherLedgerDetail."-------";
@@ -1884,6 +1954,7 @@ class VoucherLedgerClass extends ConfigClass {
 				`generalLedgerChartOfAccountDesc`, 
 				`businessPartnerId`, 
 				`businessPartnerDesc`, 
+				`businessPartnerCompany`, 
 				`isDefault`, 
 				`isNew`, 
 				`isDraft`, 
@@ -1916,6 +1987,7 @@ class VoucherLedgerClass extends ConfigClass {
 				'".$row['generalLedgerChartOfAccountDesc']."', 
 				'".$row['businessPartnerId']."',
 				'".$row['businessPartnerDesc']."', 
+				'".$row['businessPartnerCompany']."',
 				'".$row['isDefault']."', 
 				'".$row['isNew']."', 
 				'".$row['isDraft']."', 

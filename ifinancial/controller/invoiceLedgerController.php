@@ -390,7 +390,7 @@ class InvoiceLedgerClass extends ConfigClass {
 			SELECT	`invoiceLedger`.`invoiceLedgerId`,
 						`invoiceLedger`.`invoiceCategoryId`,
 						`invoiceLedger`.`invoiceTypeId`,
-						`invoiceLedger`.`invoiceBusinessPartnerId`,
+						`invoiceLedger`.`businessPartnerId`,
 						`invoiceLedger`.`documentNo`,
 						`invoiceLedger`.`referenceNo`,
 						`invoiceLedger`.`invoiceLedgerTitle`,
@@ -416,7 +416,7 @@ class InvoiceLedgerClass extends ConfigClass {
             FROM    `".$this->q->getFinancialDatabase()."`.`invoiceLedger`
             JOIN    `".$this->q->getManagementDatabase()."`.`staff`
             ON      `invoiceLedger`.`executeBy` = `staff`.`staffId`
-            JOIN	`".$this->q->getFinancialDatabase()."`.`businessPartnerId`
+            JOIN	`".$this->q->getFinancialDatabase()."`.`businessPartner`
             USING	(`businessPartnerId`)
 			 JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceCategory`
             USING	(`invoiceCategoryId`)
@@ -441,7 +441,7 @@ class InvoiceLedgerClass extends ConfigClass {
 			SELECT	[invoiceLedger].[invoiceLedgerId],
 						[invoiceLedger].[invoiceCategoryId],
 						[invoiceLedger].[invoiceTypeId],
-						[invoiceLedger].[invoiceBusinessPartnerId],
+						[invoiceLedger].[businessPartnerId],
 						[invoiceLedger].[documentNo],
 						[invoiceLedger].[referenceNo],
 						[invoiceLedger].[invoiceLedgerTitle],
@@ -467,10 +467,10 @@ class InvoiceLedgerClass extends ConfigClass {
 			FROM 	[".$this->q->getFinancialDatabase()."].[invoiceLedger]
 			JOIN		[".$this->q->getManagementDatabase()."].[staff]
 			ON		[invoiceLedger].[executeBy] = [staff].[staffId]
-			JOIN		[".$this->q->getFinancialDatabase()."].[businessPartnerId]
-			ON		[businessPartnerId].[businessPartnerId]	= [invoiceLedger].[businessPartnerId]
+			JOIN		[".$this->q->getFinancialDatabase()."].[businessPartner]
+			ON		[businessPartnerId].[businessPartner]	= [invoiceLedger].[businessPartnerId]
 			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceCategory]
-            ON		[invoiceCategory].[invoiceCategoryId] = [invoiceLedger].[invoiceCategoryId]
+            ON		[invoiceCategory].[invoiceCategory] = [invoiceLedger].[invoiceCategoryId]
 			JOIN		[".$this->q->getFinancialDatabase()."].[invoiceType]
             ON		[invoiceCategory].[invoiceCategoryId] = [invoiceType].[invoiceCategoryId]
 			AND		[invoiceType].[invoiceTypeId] = [invoiceLedger].[invoiceTypeId]
@@ -513,8 +513,8 @@ class InvoiceLedgerClass extends ConfigClass {
 			FROM 		INVOICELEDGER
 			JOIN			STAFF
 			ON			INVOICELEDGER.EXECUTEBY 	  						=	STAFF.STAFFID
-			JOIN			BUSINESSPARTNERID
-			ON			BUSINESSPARTNERID.BUSINESSPARTNERID	= 	INVOICELEDGER.BUSINESSPARTNERID
+			JOIN			BUSINESSPARTNER
+			ON			BUSINESSPARTNER.BUSINESSPARTNERID	= 	INVOICELEDGER.BUSINESSPARTNERID
 			JOIN			INVOICECATEGORY
             ON			INVOICECATEGORY.INVOICECATEGORYID		= 	INVOICELEDGER.INVOICECATEGORYID
 			JOIN			INVOICETYPE
@@ -525,7 +525,7 @@ class InvoiceLedgerClass extends ConfigClass {
 					$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
 				}
 				if ($this->model->getInvoiceCategoryId()) {
-					$sql .= " AND `" .  strtoupper(this->model->getTableName()). "`.INVOICECATEGORYID='" . $this->model->getInvoiceTypeId() . "'";
+					$sql .= " AND `" .  strtoupper($this->model->getTableName()). "`.INVOICECATEGORYID='" . $this->model->getInvoiceTypeId() . "'";
 				}
 				if ($this->model->getInvoiceTypeId()) {
 					$sql .= " AND  `" . strtoupper( $this->model->getTableName()). "`.INVOICETYPEID='" . $this->model->getInvoiceTypeId() . "'";
@@ -559,8 +559,8 @@ class InvoiceLedgerClass extends ConfigClass {
 			FROM 		INVOICELEDGER
 			JOIN			STAFF
 			ON			INVOICELEDGER.EXECUTEBY 	  						=	STAFF.STAFFID
-			JOIN			BUSINESSPARTNERID
-			ON			BUSINESSPARTNERID.BUSINESSPARTNERID	= 	INVOICELEDGER.BUSINESSPARTNERID
+			JOIN			BUSINESSPARTNER
+			ON			BUSINESSPARTNER.BUSINESSPARTNERID	= 	INVOICELEDGER.BUSINESSPARTNERID
 			JOIN			INVOICECATEGORY
             ON			INVOICECATEGORY.INVOICECATEGORYID		= 	INVOICELEDGER.INVOICECATEGORYID
 			JOIN			INVOICETYPE
@@ -571,7 +571,7 @@ class InvoiceLedgerClass extends ConfigClass {
 					$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
 				}
 				if ($this->model->getInvoiceCategoryId()) {
-					$sql .= " AND `" .  strtoupper(this->model->getTableName()). "`.INVOICECATEGORYID='" . $this->model->getInvoiceTypeId() . "'";
+					$sql .= " AND `" .  strtoupper($this->model->getTableName()). "`.INVOICECATEGORYID='" . $this->model->getInvoiceTypeId() . "'";
 				}
 				if ($this->model->getInvoiceTypeId()) {
 					$sql .= " AND  `" . strtoupper( $this->model->getTableName()). "`.INVOICETYPEID='" . $this->model->getInvoiceTypeId() . "'";
@@ -605,8 +605,8 @@ class InvoiceLedgerClass extends ConfigClass {
 			FROM 		INVOICELEDGER
 			JOIN			STAFF
 			ON			INVOICELEDGER.EXECUTEBY 	  						=	STAFF.STAFFID
-			JOIN			BUSINESSPARTNERID
-			ON			BUSINESSPARTNERID.BUSINESSPARTNERID	= 	INVOICELEDGER.BUSINESSPARTNERID
+			JOIN			BUSINESSPARTNER
+			ON			BUSINESSPARTNER.BUSINESSPARTNERID	= 	INVOICELEDGER.BUSINESSPARTNERID
 			JOIN			INVOICECATEGORY
             ON			INVOICECATEGORY.INVOICECATEGORYID		= 	INVOICELEDGER.INVOICECATEGORYID
 			JOIN			INVOICETYPE
@@ -617,7 +617,7 @@ class InvoiceLedgerClass extends ConfigClass {
 					$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
 				}
 				if ($this->model->getInvoiceCategoryId()) {
-					$sql .= " AND `" .  strtoupper(this->model->getTableName()). "`.INVOICECATEGORYID='" . $this->model->getInvoiceTypeId() . "'";
+					$sql .= " AND `" .  strtoupper($this->model->getTableName()). "`.INVOICECATEGORYID='" . $this->model->getInvoiceTypeId() . "'";
 				}
 				if ($this->model->getInvoiceTypeId()) {
 					$sql .= " AND  `" . strtoupper( $this->model->getTableName()). "`.INVOICETYPEID='" . $this->model->getInvoiceTypeId() . "'";
@@ -1911,7 +1911,10 @@ class InvoiceLedgerClass extends ConfigClass {
 				`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountDesc`,
 				`country`.`countryCurrencyCode`,
 				`generalLedgerChartOfAccountCategory`.`generalLedgerChartOfAccountCategoryDesc`,
-				`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeDesc`       
+				`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeDesc`,
+				concat(`businessPartner`.`businessPartnerFirstName`,
+						concat('-',`businessPartner`.`businessPartnerLastName`)) AS `businessDesc`,
+				`businessPartner`.`businessPartnerCompany`	       
 		FROM 	`".$this->q->getFinancialDatabase()."`.`invoiceLedgerDetail`
 		JOIN	`".$this->q->getFinancialDatabase()."`.`invoiceLedger`
 		USING	(`invoiceLedgerId`) 
@@ -1922,6 +1925,8 @@ class InvoiceLedgerClass extends ConfigClass {
 		USING	(`generalLedgerChartOfAccountCategoryId`)
 		JOIN	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccount`
 		USING	(`generalLedgerChartOfAccountId`,`generalLedgerChartOfAccountCategoryId`,`generalLedgerChartOfAccountTypeId`)
+		JOIN		`".$this->q->getFinancialDatabase()."`.`businessPartner`
+        USING	(`businessPartnerId`)
 		WHERE  `invoiceLedgerDetail`.`invoiceLedgerId`='".$this->model->getInvoiceLedgerId(0,'single')."'";
 		//echo "<br>--------".$sqlInvoiceLedgerDetail."-------";
 		$resultInvoiceLedgerDetail=$this->q->fast($sqlInvoiceLedgerDetail);
@@ -1957,6 +1962,7 @@ class InvoiceLedgerClass extends ConfigClass {
 				`generalLedgerChartOfAccountDesc`, 
 				`businessPartnerId`, 
 				`businessPartnerDesc`, 
+				`businessPartnerCompany`, 
 				`isDefault`, 
 				`isNew`, 
 				`isDraft`, 
@@ -1989,6 +1995,7 @@ class InvoiceLedgerClass extends ConfigClass {
 				'".$row['generalLedgerChartOfAccountDesc']."', 
 				'".$row['businessPartnerId']."',
 				'".$row['businessPartnerDesc']."', 
+				'".$row['businessPartnerCompany']."',
 				'".$row['isDefault']."', 
 				'".$row['isNew']."', 
 				'".$row['isDraft']."', 

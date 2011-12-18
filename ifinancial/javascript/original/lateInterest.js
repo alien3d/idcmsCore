@@ -1870,8 +1870,8 @@ Ext.onReady(function() {
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         },
         listeners: {
             'select': function(index, scrollIntoView) {
@@ -2442,8 +2442,8 @@ Ext.onReady(function() {
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
     var transactionModeArrayData = [
@@ -2507,8 +2507,8 @@ Ext.onReady(function() {
             if (Ext.isEmpty(value, false)) {
                 return new RegExp('^');
             }
-            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
-            return new RegExp('\b(' + value + ')', 'i');
+             value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
         }
     });
     var generalLedgerJournalDetailAmount = new Ext.form.TextField({
