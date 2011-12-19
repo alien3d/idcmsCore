@@ -26,6 +26,7 @@ abstract class ValidationClass
     private $isApproved;
     private $isReview;
     private $isPost;
+    private $isReconciled; // special for  accounting module
     private $executeBy;
     private $executeTime;
     
@@ -695,4 +696,22 @@ abstract class ValidationClass
     {
         $this->filterDate = $filterDate;
     }
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getIsReconciled()
+	{
+	    return $this->isReconciled;
+	}
+
+	/**
+	 * 
+	 * @param $isReconciled
+	 */
+	public function setIsReconciled($isReconciled)
+	{
+	    $this->isReconciled = $isReconciled;
+	}
 }

@@ -1311,7 +1311,12 @@ Ext.onReady(function () {
 					name : 'executeTime',
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s'
-				}
+				}, {
+		            key: '',
+		            foreignKey: 'no',
+		            name: 'transactionMode',
+		            type: 'string'
+		        }
 			]
 		});
 	

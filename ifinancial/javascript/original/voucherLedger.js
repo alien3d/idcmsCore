@@ -371,6 +371,11 @@ Ext.onReady(function() {
             dataIndex: 'executeTime',
             column: 'executeTime',
             table: 'logAdvance'
+        }, {
+            key: '',
+            foreignKey: 'no',
+            name: 'staffName',
+            type: 'string'
         }]
     });
     var logAdvanceColumnModel = [new Ext.grid.RowNumberer(), {
@@ -2223,6 +2228,11 @@ var voucherTypeStore = new Ext.data.JsonStore({
             name: 'executeTime',
             type: 'date',
             dateFormat: 'Y-m-d H:i:s'
+        }, {
+            key: '',
+            foreignKey: 'no',
+            name: 'staffName',
+            type: 'string'
         }]
     }); // end voucherLedgerDetail request
     var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters({
@@ -3112,8 +3122,14 @@ var voucherTypeStore = new Ext.data.JsonStore({
                     }]
                 }]
             }]
-        },
-        voucherLedgerDetailGrid],
+        },{
+        	xtype : 'tabPanel',
+        	activeTabs : 0 ,
+        	items : [voucherLedgerDetailGrid,invoiceAllocationGrid 
+        	         
+        	]
+        }
+        ],
         buttonVAlign: 'top',
         buttonAlign: 'left',
         iconCls: 'application_form',
@@ -3281,7 +3297,7 @@ var voucherTypeStore = new Ext.data.JsonStore({
                                                 start: 0,
                                                 limit: perPage
                                             }
-                                        })
+                                        });
                                     } else {
                                         Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }

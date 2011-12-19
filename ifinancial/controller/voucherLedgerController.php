@@ -177,8 +177,6 @@ class VoucherLedgerClass extends ConfigClass {
 					'".$this->model->getVoucherLedgerTitle()."',
 					'".$this->model->getVoucherLedgerDesc()."',
 					'".$this->model->getVoucherLedgerDate()."',
-					'".$this->model->getVoucherLedgerStartDate()."',
-					'".$this->model->getVoucherLedgerEndDate()."',
 					'".$this->model->getVoucherLedgerAmount()."',
 					'".$this->model->getIsDefault(0, 'single')."',
 					'".$this->model->getIsNew(0, 'single')."',

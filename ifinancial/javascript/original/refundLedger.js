@@ -2636,25 +2636,9 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
         },
 		listeners : {
 				'select': function(combo, record, index) {
-					Ext.Ajax.request({
-						url: '../controller/invoiceTypeController.php',
-						method: 'GET',
-						params: {
-							method: 'read',
-							invoiceCategoryId: combo.value,
-							leafId: leafId,
-							isadmin :isAdmin
-						},
-						success: function(response, options) {
-							jsonResponse = Ext.decode(response.responseText);
-							if (jsonResponse.success == false) {
-								Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-							} else {
-								//Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-							}
-						},
-						failure: function(response, options) {
-							Ext.MessageBox.alert(systemLabel, escape(response.status) + ':' + escape(response.statusText));
+					invoiceTypeStore.load ({
+						params :{
+							invoiceCategoryId : combo.value
 						}
 					});
 				}
@@ -2687,26 +2671,10 @@ var invoiceLedgerStore = new Ext.data.JsonStore({
         },
 		listeners : {
 				'select': function(combo, record, index) {
-					Ext.Ajax.request({
-						url: '../controller/invoiceLedgerController.php',
-						method: 'GET',
-						params: {
-							method: 'read',
-							invoiceCategoryId: Ext.getCmp('invoiceCategoryId').getValue(),
-							invoiceTypeId: combo.value,
-							leafId: leafId,
-							isAdmin:isAdmin
-						},
-						success: function(response, options) {
-							jsonResponse = Ext.decode(response.responseText);
-							if (jsonResponse.success == false) {
-								Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-							} else {
-								//Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-							}
-						},
-						failure: function(response, options) {
-							Ext.MessageBox.alert(systemLabel, escape(response.status) + ':' + escape(response.statusText));
+					invoiceLedgerStore.load ({
+						params :{
+							invoiceCategoryId : Ext.getCmp('invoiceCategoryId').getValue(),
+							invoiceTypeId : combo.value
 						}
 					});
 				}

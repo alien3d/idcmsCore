@@ -8,8 +8,8 @@
 		$targetTable=$_GET['table'];
 	}
 	$targetTableId = $targetTable."Id";
-	$targetMasterTable='generalLedgerJournalId'; // parent primary key
-	$targetGridType="first"; // first -normal table ,second -edit in grid table
+	$targetMasterTable='invoiceAllocationId'; // parent primary key
+	$targetGridType="second"; // first -normal table ,second -edit in grid table
 	$managementDb="imanagement";
 	$mysqlOpenTag="`";
 	$mysqlCloseTag="`";

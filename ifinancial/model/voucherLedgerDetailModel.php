@@ -6,8 +6,8 @@ require_once ("../../class/classValidation.php");
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package General Ledger
- * @subpackage Journal Detail
+ * @package Account Receivable
+ * @subpackage Voucher Transaction Detail
  * @link http://www.idcms.org
  * @http://en.wikipedia.org/wiki/VoucherLedger
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -48,7 +48,7 @@ class VoucherLedgerDetailModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('generalledgerjournaldetail');
+		$this->setTableName('voucherLedgerDetail');
 		$this->setPrimaryKeyName('voucherLedgerDetailId');
 		/**
 		 * All the $_POST enviroment.

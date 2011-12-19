@@ -22,6 +22,10 @@ class VoucherLedgerModel extends ValidationClass {
 	/**
 	 * @var int
 	 */
+	private $businessPartnerId;
+	/**
+	 * @var int
+	 */
 	private $voucherTypeId;
 	/**
 	* @var string
@@ -66,6 +70,9 @@ class VoucherLedgerModel extends ValidationClass {
 		 */
 		if (isset($_POST ['voucherLedgerId'])) {
 			$this->setVoucherLedgerId($this->strict($_POST ['voucherLedgerId'], 'numeric'), 0, 'single');
+		}
+		if (isset($_POST ['businessPartnerId'])) {
+			$this->setBusinessPartnerId($this->strict($_POST ['businessPartnerId'], 'numeric'));
 		}
 		if (isset($_POST ['voucherTypeId'])) {
 			$this->setVoucherTypeId($this->strict($_POST ['voucherTypeId'], 'numeric'));
@@ -499,6 +506,16 @@ class VoucherLedgerModel extends ValidationClass {
 	public function setVoucherTypeId($voucherTypeId)
 	{
 	    $this->voucherTypeId = $voucherTypeId;
+	}
+
+	public function getBusinessPartnerId()
+	{
+	    return $this->businessPartnerId;
+	}
+
+	public function setBusinessPartnerId($businessPartnerId)
+	{
+	    $this->businessPartnerId = $businessPartnerId;
 	}
 }
 

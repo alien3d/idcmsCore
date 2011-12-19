@@ -14,13 +14,13 @@ require_once ("../model/voucherLedgerDetailModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package General Ledger
- * @subpackage Journal Detail
+ * @package Voucher
+ * @subpackage Voucher Transaction Detail
  * @link http://www.idcms.org
  * @http://en.wikipedia.org/wiki/Voucher
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class VoucherDetailClass extends ConfigClass {
+class VoucherLedgerDetailClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -92,7 +92,7 @@ class VoucherDetailClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new GeneralLedgerJournalDetailModel ();
+		$this->model = new VoucherLedgerDetailModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -165,11 +165,11 @@ class VoucherDetailClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getVoucherId() . "',
+						'" . $this->model->getVoucherLedgerId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						'" . $this->model->getCountryId() . "',
 						'".$this->model->getTransactionMode()."',
-						'" . $this->model->getVoucherDetailAmount() . "',
+						'" . $this->model->getVoucherLedgerDetailAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -205,12 +205,12 @@ class VoucherDetailClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getVoucherId() . "',
+						'" . $this->model->getVoucherLedgerId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						'".$this->model->getTransactionMode()."',
 						'" . $this->model->getCountryId() . "',
 						'".$this->model->getTransactionMode()."',
-						'" . $this->model->getVoucherDetailAmount() . "',
+						'" . $this->model->getVoucherLedgerDetailAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -247,11 +247,11 @@ class VoucherDetailClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getVoucherId() . "',
+						'" . $this->model->getVoucherLedgerId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						'".$this->model->getTransactionMode()."',
 						'" . $this->model->getCountryId() . "',
-						'" . $this->model->getVoucherDetailAmount() . "',
+						'" . $this->model->getVoucherLedgerDetailAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -287,11 +287,11 @@ class VoucherDetailClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getVoucherId() . "',
+						'" . $this->model->getVoucherLedgerId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						'".$this->model->getTransactionMode()."',
 						'" . $this->model->getCountryId() . "',
-						'" . $this->model->getVoucherDetailAmount() . "',
+						'" . $this->model->getVoucherLedgerDetailAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -327,12 +327,12 @@ class VoucherDetailClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getVoucherId() . "',
+						'" . $this->model->getVoucherLedgerId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						'".$this->model->getTransactionMode()."',
 						'" . $this->model->getCountryId() . "',
 						'".$this->model->getTransactionMode()."',
-						'" . $this->model->getVoucherDetailAmount() . "',
+						'" . $this->model->getVoucherLedgerDetailAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -440,11 +440,11 @@ class VoucherDetailClass extends ConfigClass {
 			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
             ON      `voucherLedgerDetail`.`executeBy` = `staff`.`staffId`
             WHERE  ". $this->auditFilter;
-			if ($this->model->getVoucherDetailId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getVoucherDetailId(0, 'single') . "'";
+			if ($this->model->getVoucherLedgerDetailId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getVoucherLedgerDetailId(0, 'single') . "'";
 			}
-			if ($this->model->getVoucherId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`voucherLedgerId`='" . $this->model->getVoucherId(0, 'single') . "'";
+			if ($this->model->getVoucherLedgerId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`voucherLedgerId`='" . $this->model->getVoucherLedgerId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -470,8 +470,8 @@ class VoucherDetailClass extends ConfigClass {
 			JOIN	[".$this->q->getManagementDatabase()."].[staff]
 			ON		[voucherLedgerDetail].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getVoucherId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getVoucherId(0, 'single') . "'";
+			if ($this->model->getVoucherLedgerId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getVoucherLedgerId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -495,8 +495,8 @@ class VoucherDetailClass extends ConfigClass {
 			JOIN		IMANAGEMENT.STAFF
 			ON			EXECUTEBY 	  	=	IMANAGEMENT.STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getVoucherId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getVoucherId(0, 'single') . "'";
+			if ($this->model->getVoucherLedgerId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getVoucherLedgerId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -718,7 +718,7 @@ class VoucherDetailClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getVoucherDetailId(0, 'single'))) {
+		if (!($this->model->getVoucherLedgerDetailId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -729,15 +729,15 @@ class VoucherDetailClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getVoucherDetailId(0, 'single')) {
+		if ($this->model->getVoucherLedgerDetailId(0, 'single')) {
 			$json_encode = json_encode(
 			array('success' => true,
 			      'total' => $total, 
 			      'message' =>  $this->systemString->getReadMessage(), 
 			 
 			      'firstRecord' => $this->recordSet->firstRecord('value'), 
-			      'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getVoucherId(0, 'single')), 
-			      'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getVoucherId(0, 'single')), 
+			      'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getVoucherLedgerId(0, 'single')), 
+			      'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getVoucherLedgerId(0, 'single')), 
 			      'lastRecord' => $this->recordSet->lastRecord('value'),
 				  'data' => $items ));
 			$json_encode = str_replace("[", "", $json_encode);
@@ -749,8 +749,8 @@ class VoucherDetailClass extends ConfigClass {
 			}
 			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(),
 			   'firstRecord' => $this->recordSet->firstRecord('value'), 
-			      'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getVoucherId(0, 'single')), 
-			      'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getVoucherId(0, 'single')), 
+			      'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getVoucherLedgerId(0, 'single')), 
+			      'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getVoucherLedgerId(0, 'single')), 
 			      'lastRecord' => $this->recordSet->lastRecord('value'),
 			'data' => $items));
 			exit();
@@ -779,27 +779,27 @@ class VoucherDetailClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" .$this->model->getVoucherDetailId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" .$this->model->getVoucherLedgerDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getVoucherDetailId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getVoucherLedgerDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getVoucherDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getVoucherLedgerDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getVoucherDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getVoucherLedgerDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getVoucherDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getVoucherLedgerDetailId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -813,12 +813,12 @@ class VoucherDetailClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`voucherLedgerDetail`
-				SET 		`voucherLedgerId`			=	'" . $this->model->getVoucherId() . "',
+				SET 		`voucherLedgerId`			=	'" . $this->model->getVoucherLedgerId() . "',
 							`generalLedgerChartOfAccountId`		=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 							`transactionMode`					= 	'".$this->model->getTransactionMode()."',	
 							`countryId`							=	'" . $this->model->getCountryId() . "',
 							`transactionMode`					=	'".$this->model->getTransactionMode()."',
-							`voucherLedgerDetailAmount`	=	'" . $this->model->getVoucherDetailAmount() . "',
+							`voucherLedgerDetailAmount`	=	'" . $this->model->getVoucherLedgerDetailAmount() . "',
 							`isDefault`							=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`								=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`								=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -830,16 +830,16 @@ class VoucherDetailClass extends ConfigClass {
 							`isPost`								=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`							=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`							=	" . $this->model->getExecuteTime() . "
-				WHERE 		`voucherLedgerDetailId`		=	'" . $this->model->getVoucherDetailId(0, 'single') . "'";
+				WHERE 		`voucherLedgerDetailId`		=	'" . $this->model->getVoucherLedgerDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[".$this->q->getFinancialDatabase()."].[voucherLedgerDetail]
-				SET 		[voucherLedgerId]			=	'" . $this->model->getVoucherId() . "',
+				SET 		[voucherLedgerId]			=	'" . $this->model->getVoucherLedgerId() . "',
 							[generalLedgerChartOfAccountId]		=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 							[transactionMode]					=  '".$this->model->getTransactionMode()."',
 							[countryId]							=	'" . $this->model->getCountryId()  . "',
 							[transactionMode]					=	'".$this->model->getTransactionMode()."',
-							[voucherLedgerDetailAmount]	=	'" . $this->model->getVoucherDetailAmount() . "',
+							[voucherLedgerDetailAmount]	=	'" . $this->model->getVoucherLedgerDetailAmount() . "',
 							[isDefault]							=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]								=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]								=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -851,15 +851,15 @@ class VoucherDetailClass extends ConfigClass {
 							[isPost]								=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]							=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]							=	" . $this->model->getExecuteTime() . "
-			WHERE 			[voucherLedgerDetailId]		=	'" . $this->model->getVoucherDetailId(0, 'single') . "'";
+			WHERE 			[voucherLedgerDetailId]		=	'" . $this->model->getVoucherLedgerDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 			UPDATE		VOUCHERLEDGERDETAIL
-			SET 		VOUCHERLEDGERID						=	'" . $this->model->getVoucherId() . "',
+			SET 		VOUCHERLEDGERID						=	'" . $this->model->getVoucherLedgerId() . "',
 						GENERALLEDGERCHARTOFACCOUNTID					=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						COUNTRYID								=	'" . $this->model->getCountryId()  . "',
 						TRANSACTIONMODE					=	'".$this->model->getTransactionMode()."',
-						VOUCHERLEDGERDETAILAMOUNT				=	'" . $this->model->getVoucherDetailAmount() . "',
+						VOUCHERLEDGERDETAILAMOUNT				=	'" . $this->model->getVoucherLedgerDetailAmount() . "',
 						ISDEFAULT										=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW											=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT										=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -871,17 +871,17 @@ class VoucherDetailClass extends ConfigClass {
 						ISPOST										=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY										=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME									=	" . $this->model->getExecuteTime() . "
-			WHERE 		VOUCHERLEDGERDETAILID					=	'" . $this->model->getVoucherDetailId(0, 'single') . "'";
+			WHERE 		VOUCHERLEDGERDETAILID					=	'" . $this->model->getVoucherLedgerDetailId(0, 'single') . "'";
 					
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 			UPDATE		VOUCHERLEDGERDETAIL
-			SET 		VOUCHERLEDGERID						=	'" . $this->model->getVoucherId() . "',
+			SET 		VOUCHERLEDGERID						=	'" . $this->model->getVoucherLedgerId() . "',
 						GENERALLEDGERCHARTOFACCOUNTID					=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						COUNTRYID								=	'" . $this->model->getCountryId()  . "',
 												TRANSACTIONMODE					=	'".$this->model->getTransactionMode()."',
 						
-						VOUCHERLEDGERDETAILAMOUNT				=	'" . $this->model->getVoucherDetailAmount() . "',
+						VOUCHERLEDGERDETAILAMOUNT				=	'" . $this->model->getVoucherLedgerDetailAmount() . "',
 						ISDEFAULT										=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW											=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT										=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -893,16 +893,16 @@ class VoucherDetailClass extends ConfigClass {
 						ISPOST										=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY										=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME									=	" . $this->model->getExecuteTime() . "
-			WHERE 		VOUCHERLEDGERDETAILID					=	'" . $this->model->getVoucherDetailId(0, 'single') . "'";
+			WHERE 		VOUCHERLEDGERDETAILID					=	'" . $this->model->getVoucherLedgerDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 			UPDATE		VOUCHERLEDGERDETAIL
-			SET 		VOUCHERLEDGERID						=	'" . $this->model->getVoucherId() . "',
+			SET 		VOUCHERLEDGERID						=	'" . $this->model->getVoucherLedgerId() . "',
 						GENERALLEDGERCHARTOFACCOUNTID					=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						COUNTRYID								=	'" . $this->model->getCountryId()  . "',
 												TRANSACTIONMODE					=	'".$this->model->getTransactionMode()."',
 						
-						VOUCHERLEDGERDETAILAMOUNT				=	'" . $this->model->getVoucherDetailAmount() . "',
+						VOUCHERLEDGERDETAILAMOUNT				=	'" . $this->model->getVoucherLedgerDetailAmount() . "',
 						ISDEFAULT										=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW											=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT										=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -914,7 +914,7 @@ class VoucherDetailClass extends ConfigClass {
 						ISPOST										=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY										=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME									=	" . $this->model->getExecuteTime() . "
-			WHERE 		VOUCHERLEDGERDETAILID					=	'" . $this->model->getVoucherDetailId(0, 'single') . "'";
+			WHERE 		VOUCHERLEDGERDETAILID					=	'" . $this->model->getVoucherLedgerDetailId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -958,27 +958,27 @@ class VoucherDetailClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getVoucherId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getVoucherLedgerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . getVoucherDetailId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . getVoucherLedgerDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getVoucherDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getVoucherLedgerDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getVoucherDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getVoucherLedgerDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" .$this->model->getVoucherDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" .$this->model->getVoucherLedgerDetailId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -1003,7 +1003,7 @@ class VoucherDetailClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`voucherLedgerDetailId`		=	'" . $this->model->getVoucherId(0, 'single') . "'";
+				WHERE 	`voucherLedgerDetailId`		=	'" . $this->model->getVoucherLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	[".$this->q->getFinancialDatabase()."].[voucherLedgerDetail]
@@ -1018,7 +1018,7 @@ class VoucherDetailClass extends ConfigClass {
 						[voucherLedgerDetail].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[voucherLedgerDetail].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[voucherLedgerDetail].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[voucherLedgerDetail].[voucherLedgerDetailId]		=	'" .getVoucherDetailId(0, 'single') . "'";
+				WHERE 	[voucherLedgerDetail].[voucherLedgerDetailId]		=	'" .getVoucherLedgerDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE VOUCHERLEDGERDETAIL
@@ -1033,7 +1033,7 @@ class VoucherDetailClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	VOUCHERLEDGERDETAILID		=	'" . getVoucherDetailId(0, 'single') . "'";
+				WHERE 	VOUCHERLEDGERDETAILID		=	'" . getVoucherLedgerDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 				UPDATE VOUCHERLEDGERDETAIL
@@ -1048,7 +1048,7 @@ class VoucherDetailClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	VOUCHERLEDGERDETAILID		=	'" . getVoucherDetailId(0, 'single') . "'";
+				WHERE 	VOUCHERLEDGERDETAILID		=	'" . getVoucherLedgerDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE VOUCHERLEDGERDETAIL
@@ -1063,7 +1063,7 @@ class VoucherDetailClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	VOUCHERLEDGERDETAILID		=	'" .getVoucherDetailId(0, 'single') . "'";
+				WHERE 	VOUCHERLEDGERDETAILID		=	'" .getVoucherLedgerDetailId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -1153,7 +1153,7 @@ class VoucherDetailClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getVoucherDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getVoucherLedgerDetailId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1177,7 +1177,7 @@ class VoucherDetailClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getVoucherDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getVoucherLedgerDetailId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1201,7 +1201,7 @@ class VoucherDetailClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getVoucherDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getVoucherLedgerDetailId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1225,7 +1225,7 @@ class VoucherDetailClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getVoucherDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getVoucherLedgerDetailId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1249,7 +1249,7 @@ class VoucherDetailClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getVoucherDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getVoucherLedgerDetailId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 							if(!$this->getIsAdmin()){
@@ -1270,7 +1270,7 @@ class VoucherDetailClass extends ConfigClass {
 										exit();
 									}
 									$sqlLooping .= "
-							WHEN '" . $this->model->getVoucherDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getVoucherLedgerDetailId($i, 'array') . "'
 							THEN '0'";
 									$sqlLooping .= " END,";
 								}
@@ -1297,7 +1297,7 @@ class VoucherDetailClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getVoucherDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getVoucherLedgerDetailId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1321,7 +1321,7 @@ class VoucherDetailClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getVoucherDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getVoucherLedgerDetailId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1345,7 +1345,7 @@ class VoucherDetailClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getVoucherDetailId($i, 'array') . "'
+                            WHEN '" . $this->model->getVoucherLedgerDetailId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1369,7 +1369,7 @@ class VoucherDetailClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getVoucherDetailId($i, 'array') . "'
+                                WHEN '" . $this->model->getVoucherLedgerDetailId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1430,31 +1430,31 @@ class VoucherDetailClass extends ConfigClass {
 			$sql = "
 			SELECT	`voucherLedgerId`
 			FROM 	`voucherLedgerDetail`
-			WHERE 	`voucherLedgerId` 	= 	'" . $this->model->getVoucherId() . "'
+			WHERE 	`voucherLedgerId` 	= 	'" . $this->model->getVoucherLedgerId() . "'
 			AND		`isActive`		=	1";
 			} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[voucherLedgerId]
 			FROM 	['".$this->q->getFinancialDatabase()."'][voucherLedgerDetail]
-			WHERE 	[voucherLedgerId] 	= 	'" . $this->model->getVoucherId() . "'
+			WHERE 	[voucherLedgerId] 	= 	'" . $this->model->getVoucherLedgerId() . "'
 			AND		[isActive]		=	1";
 			} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	VOUCHERLEDGERID
 			FROM 	VOUCHERLEDGERDETAIL
-			WHERE 	VOUCHERLEDGERID 	= 	'" . $this->model->getVoucherId() . "'
+			WHERE 	VOUCHERLEDGERID 	= 	'" . $this->model->getVoucherLedgerId() . "'
 			AND		ISACTIVE		=	1";
 			} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	VOUCHERLEDGERID
 			FROM 	VOUCHERLEDGERDETAIL
-			WHERE 	VOUCHERLEDGERID 	= 	'" . $this->model->getVoucherId() . "'
+			WHERE 	VOUCHERLEDGERID 	= 	'" . $this->model->getVoucherLedgerId() . "'
 			AND		ISACTIVE		=	1";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	VOUCHERLEDGERID
 			FROM 	VOUCHERLEDGERDETAIL
-			WHERE 	VOUCHERLEDGERID 	= 	'" . $this->model->getVoucherId() . "'
+			WHERE 	VOUCHERLEDGERID 	= 	'" . $this->model->getVoucherLedgerId() . "'
 			AND		ISACTIVE		=	1";
 			} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -1485,7 +1485,7 @@ class VoucherDetailClass extends ConfigClass {
 		
 			SELECT `voucherLedgerAmount` as total
 			FROM 	`".$this->q->getFinancialDatabase()."`.`voucherLedger`
-			WHERE   `voucherLedger`.`voucherLedgerId`='".$this->model->getVoucherId(0,'single')."'
+			WHERE   `voucherLedger`.`voucherLedgerId`='".$this->model->getVoucherLedgerId(0,'single')."'
 		";
 		$resultMaster = $this->q->fast($sqlMaster);
 		$rowMaster = $this->q->fetchArray($resultMaster);
@@ -1494,7 +1494,7 @@ class VoucherDetailClass extends ConfigClass {
 		$sqlDetail="	
 			SELECT `voucherLedgerDetailAmount` as total
 			FROM 	`".$this->q->getFinancialDatabase()."`.`voucherLedgerDetail`
-			WHERE   `voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherId(0,'single')."'
+			WHERE   `voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherLedgerId(0,'single')."'
 		
 		";
 		$resultDetail = $this->q->fast($sqlDetail);
@@ -1517,7 +1517,7 @@ class VoucherDetailClass extends ConfigClass {
 		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
 		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
 		AND		`voucherLedgerDetail`.`isActive`=1
-		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherId()."' ";
+		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherLedgerId()."' ";
 		$resultAsset = $this->q->fast($sql);
 		$rowAsset  = $this->q->fetchArray($resultAsset);
 		$asset 	 	= $row['total'];
@@ -1530,7 +1530,7 @@ class VoucherDetailClass extends ConfigClass {
 		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
 		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=2  
 		AND		`voucherLedgerDetail`.`isActive`=1 
-		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherId()."' ";
+		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherLedgerId()."' ";
 		$resultLiability = $this->q->fast($sqlLiability);
 		$rowLiability  = $this->q->fetchArray($resultLiability);
 		$liability 	 	= $row['total'];
@@ -1543,7 +1543,7 @@ class VoucherDetailClass extends ConfigClass {
 		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
 		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=3  
 		AND		`voucherLedgerDetail`.`isActive`=1 
-		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherId()."' ";
+		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherLedgerId()."' ";
 		$resultIncome = $this->q->fast($sqlIncome);
 		$rowIncome  = $this->q->fetchArray($resultIncome);
 		$income 	 	= $row['total'];
@@ -1556,7 +1556,7 @@ class VoucherDetailClass extends ConfigClass {
 		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
 		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=4  
 		AND		`voucherLedgerDetail`.`isActive`=1 
-		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherId()."' ";
+		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherLedgerId()."' ";
 		$resultExpenses= $this->q->fast($sqlExpenses);
 		$rowExpenses  = $this->q->fetchArray($resultExpenses);
 		$expenses 	 	= $row['total'];
@@ -1577,7 +1577,7 @@ class VoucherDetailClass extends ConfigClass {
 		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
 		AND		`voucherLedgerDetail`.`transactionMode`='D'
 		AND		`voucherLedgerDetail`.`isActive`=1 
-		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherId()."' ";
+		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherLedgerId()."' ";
 		$resultDebit = $this->q->fast($sqlDebit);
 		$rowDebit  = $this->q->fetchArray($resultDebit);
 		$debit 	 	= $rowDebit['total'];
@@ -1590,7 +1590,7 @@ class VoucherDetailClass extends ConfigClass {
 		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
 		AND		`voucherLedgerDetail`.`transactionMode`='C'
 		AND		`voucherLedgerDetail`.`isActive`=1 
-		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherId()."' ";
+		AND   	`voucherLedgerDetail`.`voucherLedgerId`='".$this->model->getVoucherLedgerId()."' ";
 		$resultCredit = $this->q->fast($sqlCredit);
 		$rowCredit  = $this->q->fetchArray($resultCredit);
 		$credit	 	= $rowCredit['total'];
@@ -1680,7 +1680,7 @@ class VoucherDetailClass extends ConfigClass {
 
 }
 
-$voucherLedgerDetailObject = new GeneralLedgerJournalDetailClass ();
+$voucherLedgerDetailObject = new VoucherLedgerDetailClass ();
 
 /**
  * crud -create,read,update,delete

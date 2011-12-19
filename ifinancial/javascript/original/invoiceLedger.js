@@ -2081,6 +2081,15 @@ Ext.onReady(function () {
 				}
 				 value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
 				return new RegExp('\\b(' + value + ')', 'i');
+			},
+		listeners : {
+				'select': function(combo, record, index) {
+					invoiceTypeStore.load ({
+						params :{
+							invoiceCategoryId : combo.value
+						}
+					});
+				}
 			}
 		});
 	var invoiceTypeId = new Ext.ux.form.ComboBoxMatch({
@@ -3393,7 +3402,7 @@ Ext.onReady(function () {
 														start : 0,
 														limit : perPage
 													}
-												})
+												});
 											} else {
 												Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
 											}

@@ -1,10 +1,53 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?php	session_start();
+$staffId='staffId';
+$theme ='theme';
+if (strlen($_SESSION[$staffId])==0) {
+	// check if the any session equal to zero redirect to index.php
+	$page="../index.php?message=Masa tamat";
+	print"<script>parent.location.replace('".$page."')</script>";
+}
+include('../../Connections/main.php');	?>
+<html>
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-</head>
+<link rel="stylesheet" type="text/css"
+	href="../../javascript/resources/css/ext-all.css">
+<link rel="stylesheet" type="text/css"
+	href="../../javascript/resources/css/icons.css">
+<link rel="stylesheet" type="text/css"
+	href="../../javascript/examples/ux/gridfilters/css/GridFilters.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../javascript/examples/ux/gridfilters/css/RangeMenu.css" />
+<link rel="stylesheet" type="text/css"
+	href="../../javascript/examples/ux/statusbar/css/statusbar.css">
+<link rel="stylesheet" type="text/css"
+	href="../../javascript/examples/ux/css/RowEditor.css">
+<?php // only execute when exist
+if(isset($_SESSION['theme'])) { ?>
+<link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
 
+<?php }  ?>
+</head>
 <body>
 </body>
+<script type="text/javascript"
+	src="../../javascript/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="../../javascript/ext-all.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/iframe.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/Ext.ux.TabCloseMenu/Ext.ux.TabCloseMenu.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/TabScrollerMenu.js"></script>
+	    <script type="text/javascript" src="../../javascript/examples/ux/Portal.js"></script>
+    <script type="text/javascript" src="../../javascript/examples/ux/PortalColumn.js"></script>
+
+    <script type="text/javascript" src="../../javascript/examples/ux/Portlet.js"></script>
+		<script type="text/javascript" src="../../javascript/examples/portal/sample-grid.js"></script>
+    <script type="text/javascript" src="../../javascript/examples/shared/examples.js"></script>
+<?php require_once("../../shared/setting.php"); ?>
+<script type="text/javascript" src="../javascript/original/welcome.js"></script>
 </html>
+
+

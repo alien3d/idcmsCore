@@ -92,7 +92,7 @@ class InvoiceLedgerDetailClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new GeneralLedgerJournalDetailModel ();
+		$this->model = new InvoiceLedgerDetailModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -1676,7 +1676,7 @@ class InvoiceLedgerDetailClass extends ConfigClass {
 
 }
 
-$invoiceLedgerDetailObject = new GeneralLedgerJournalDetailClass ();
+$invoiceLedgerDetailObject = new InvoiceLedgerDetailClass ();
 
 /**
  * crud -create,read,update,delete

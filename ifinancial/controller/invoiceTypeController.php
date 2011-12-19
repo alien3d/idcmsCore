@@ -15,7 +15,7 @@ require_once ("../model/invoiceTypeModel.php");
  * @version 2
  * @author hafizan
  * @package Account Receivable
- * @subpackage Journal Type
+ * @subpackage Invoice Type
  * @link http://www.idcms.org
  * @link http://en.wikipedia.org/wiki/Invoice
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -390,7 +390,8 @@ class InvoiceTypeClass extends ConfigClass {
 						`invoiceType`.`invoiceTypeSequence`,
 						`invoiceType`.`invoiceTypeCode`,
 						`invoiceType`.`invoiceTypeDesc`,
-						`invoiceType`.`invoiceCreditLimit`,
+						`invoiceType`.`invoiceTypeCreditLimit`,
+						`invoiceType`.`invoiceTypePeriodLimit`,
 						`invoiceType`.`invoiceTypeInterestRate`,
 						`invoiceType`.`invoiceTypeMinimumDeposit`,
 						`invoiceType`.`isDefault`,
@@ -408,7 +409,7 @@ class InvoiceTypeClass extends ConfigClass {
 						`invoiceCategory`.`invoiceCategoryDesc`,
 						`staff`.`staffName`
             FROM    `".$this->q->getFinancialDatabase()."`.`invoiceType`
-            JOIN   	 `".$this->q->getManagementDatabase()."`.`invoiceCategory`
+            JOIN   	 `".$this->q->getFinancialDatabase()."`.`invoiceCategory`
 			USING	(`invoiceCategoryId`)
 			JOIN    	`".$this->q->getManagementDatabase()."`.`staff`
             ON      	`invoiceType`.`executeBy` = `staff`.`staffId`
@@ -417,7 +418,7 @@ class InvoiceTypeClass extends ConfigClass {
 				$sql .= " AND  `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			}
 			if ($this->model->getInvoiceCategoryId()) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`invoiceCategoryId`='" . $this->model->getInvoiceTypeId() . "'";
+				$sql .= " AND `" . $this->model->getTableName() . "`.`invoiceCategoryId`='" . $this->model->getInvoiceCategoryId() . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -426,7 +427,8 @@ class InvoiceTypeClass extends ConfigClass {
 						[invoiceType].[invoiceTypeSequence],
 						[invoiceType].[invoiceTypeCode],
 						[invoiceType].[invoiceTypeDesc],
-						[invoiceType].[invoiceCreditLimit],
+						[invoiceType].[invoiceTypeCreditLimit],
+						[invoiceType].[invoiceTypePeriodLimit],
 						[invoiceType].[invoiceTypeInterestRate],
 						[invoiceType].[invoiceTypeMinimumDeposit],
 						[invoiceType].[isDefault],
@@ -444,16 +446,16 @@ class InvoiceTypeClass extends ConfigClass {
 						[invoiceCategory].[invoiceCategoryDesc],
 						[staff].[staffName]
             FROM    [".$this->q->getFinancialDatabase()."].[invoiceType]
-			JOIN   	 [".$this->q->getManagementDatabase()."].[invoiceCategory]
+			JOIN   	 [".$this->q->getFinancialDatabase()."].[invoiceCategory]
 			ON		[invoiceType].[invoiceCategoryId] = [invoiceCategory].[invoiceCategoryId] 
             JOIN    [".$this->q->getManagementDatabase()."].[staff]
             ON      [invoiceType].[executeBy] = [staff].[staffId]
             WHERE  	" . $this->auditFilter;
-			if ($this->model->getInvoiceTypeId(0, 'single')) {
+			if ($this->model->getInvoiceTypeId()) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			}
-			if ($this->model->getInvoiceCategoryId() {
-				$sql .= " AND [" . $this->model->getTableName() . "].[invoiceCategoryId] ='" . $this->model->getInvoiceTypeId() . "'";
+			if ($this->model->getInvoiceCategoryId()) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[invoiceCategoryId] ='" . $this->model->getInvoiceCategoryId() . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -462,7 +464,8 @@ class InvoiceTypeClass extends ConfigClass {
 							INVOICETYPE.INVOICETYPESEQUENCE 			AS 	\"invoiceTypeSequence\",
 							INVOICETYPE.INVOICETYPECODE 					AS 	\"invoiceTypeCode\",
 							INVOICETYPE.INVOICETYPEDESC 					AS 	\"invoiceTypeDesc\",
-							INVOICETYPE.INVOICECREDITLIMIT				AS 	\"invoiceCreditLimit\",
+							INVOICETYPE.INVOICECREDITLIMIT				AS 	\"invoiceTypeCreditLimit\",
+							INVOICETYPE.INVOICETYPELIMIT				AS 	\"invoiceTypePeriodLimit\",
 							INVOICETYPE.INVOICETYPEINTERESTRATE		AS 	\"invoiceTypeInterestRate\",
 							INVOICETYPE.INVOICETYPEMINIMUMDEPOSIT	AS 	\"invoiceTypeMinimumDeposit\",
 							INVOICETYPE.ISDEFAULT    							AS	\"isDefault\",
@@ -489,7 +492,7 @@ class InvoiceTypeClass extends ConfigClass {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			}
 			if ($this->model->getInvoiceCategoryId()) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . ".INVOICECATEGORY='" . $this->model->getInvoiceTypeId() . "'";
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . ".INVOICECATEGORY='" . $this->model->getInvoiceCategoryId() . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 				$sql = "
@@ -498,7 +501,8 @@ class InvoiceTypeClass extends ConfigClass {
 								INVOICETYPE.INVOICETYPESEQUENCE 			AS 	\"invoiceTypeSequence\",
 								INVOICETYPE.INVOICETYPECODE 					AS 	\"invoiceTypeCode\",
 								INVOICETYPE.INVOICETYPEDESC 					AS 	\"invoiceTypeDesc\",
-								INVOICETYPE.INVOICECREDITLIMIT				AS 	\"invoiceCreditLimit\",
+								INVOICETYPE.INVOICECREDITLIMIT				AS 	\"invoiceTypeCreditLimit\",
+							INVOICETYPE.INVOICETYPELIMIT				AS 	\"invoiceTypePeriodLimit\",
 								INVOICETYPE.INVOICETYPEINTERESTRATE		AS 	\"invoiceTypeInterestRate\",
 								INVOICETYPE.INVOICETYPEMINIMUMDEPOSIT	AS 	\"invoiceTypeMinimumDeposit\",
 								INVOICETYPE.ISDEFAULT    							AS	\"isDefault\",
@@ -525,7 +529,7 @@ class InvoiceTypeClass extends ConfigClass {
 					$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 				}
 				if ($this->model->getInvoiceCategoryId()) {
-					$sql .= " AND " . strtoupper($this->model->getTableName()) . ".INVOICECATEGORY='" . $this->model->getInvoiceTypeId() . "'";
+					$sql .= " AND " . strtoupper($this->model->getTableName()) . ".INVOICECATEGORY='" . $this->model->getInvoiceCategoryId() . "'";
 				}
 		} else if ($this->q->vendor == self::POSTGRESS) {
 			$sql = "
@@ -534,7 +538,8 @@ class InvoiceTypeClass extends ConfigClass {
 							INVOICETYPE.INVOICETYPESEQUENCE 			AS 	\"invoiceTypeSequence\",
 							INVOICETYPE.INVOICETYPECODE 					AS 	\"invoiceTypeCode\",
 							INVOICETYPE.INVOICETYPEDESC 					AS 	\"invoiceTypeDesc\",
-							INVOICETYPE.INVOICECREDITLIMIT				AS 	\"invoiceCreditLimit\",
+							INVOICETYPE.INVOICECREDITLIMIT				AS 	\"invoiceTypeCreditLimit\",
+							INVOICETYPE.INVOICETYPELIMIT				AS 	\"invoiceTypePeriodLimit\",
 							INVOICETYPE.INVOICETYPEINTERESTRATE		AS 	\"invoiceTypeInterestRate\",
 							INVOICETYPE.INVOICETYPEMINIMUMDEPOSIT	AS 	\"invoiceTypeMinimumDeposit\",
 							INVOICETYPE.ISDEFAULT    							AS	\"isDefault\",
@@ -561,7 +566,7 @@ class InvoiceTypeClass extends ConfigClass {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getInvoiceTypeId(0, 'single') . "'";
 			}
 			if ($this->model->getInvoiceCategoryId()) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . ".INVOICECATEGORY='" . $this->model->getInvoiceTypeId() . "'";
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . ".INVOICECATEGORY='" . $this->model->getInvoiceCategoryId() . "'";
 			}
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -695,33 +700,36 @@ class InvoiceTypeClass extends ConfigClass {
 				$sql = "
 							WITH [invoiceTypeDerived] AS
 							(
-								SELECT 			[invoiceType].[invoiceTypeId],
-														[invoiceType].[invoiceCategoryId],
-														[invoiceType].[invoiceTypeSequence],
-														[invoiceType].[invoiceTypeCode],
-														[invoiceType].[invoiceTypeDesc],
-														[invoiceType].[invoiceCreditLimit],
-														[invoiceType].[invoiceTypeInterestRate],
-														[invoiceType].[invoiceTypeMinimumDeposit],
-														[invoiceType].[isDefault],
-														[invoiceType].[isNew],
-														[invoiceType].[isDraft],
-														[invoiceType].[isUpdate],
-														[invoiceType].[isDelete],
-														[invoiceType].[isActive],
-														[invoiceType].[isApproved],
-														[invoiceType].[isReview],
-														[invoiceType].[isPost],
-														[invoiceType].[executeBy],
-														[invoiceType].[executeTime],
-														[invoiceCategory].[invoiceCategoryCode],
-														[invoiceCategory].[invoiceCategoryDesc],
-														[staff].[staffName]
-								ROW_NUMBER() OVER (ORDER BY [invoiceType].[invoiceTypeId]) AS 'RowNumber'
-								FROM 	['".$this->q->getFinancialDatabase()."'].[invoiceType]
-								JOIN	[".$this->q->getManagementDatabase()."].[staff]
-								ON		[invoiceType].[executeBy] = [staff].[staffId]
-								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
+								SELECT 		[invoiceType].[invoiceTypeId],
+											[invoiceType].[invoiceCategoryId],
+											[invoiceType].[invoiceTypeSequence],
+											[invoiceType].[invoiceTypeCode],
+											[invoiceType].[invoiceTypeDesc],
+											[invoiceType].[invoiceTypeCreditLimit],
+											[invoiceType].[invoiceTypePeriodLimit],
+											[invoiceType].[invoiceTypeInterestRate],
+											[invoiceType].[invoiceTypeMinimumDeposit],
+											[invoiceType].[isDefault],
+											[invoiceType].[isNew],
+											[invoiceType].[isDraft],
+											[invoiceType].[isUpdate],
+											[invoiceType].[isDelete],
+											[invoiceType].[isActive],
+											[invoiceType].[isApproved],
+											[invoiceType].[isReview],
+											[invoiceType].[isPost],
+											[invoiceType].[executeBy],
+											[invoiceType].[executeTime],
+											[invoiceCategory].[invoiceCategoryCode],
+											[invoiceCategory].[invoiceCategoryDesc],
+											[staff].[staffName]
+											ROW_NUMBER() OVER (ORDER BY [invoiceType].[invoiceTypeId]) AS 'RowNumber'
+									FROM    [".$this->q->getFinancialDatabase()."].[invoiceType]
+									JOIN   	[".$this->q->getFinancialDatabase()."].[invoiceCategory]
+									ON		[invoiceType].[invoiceCategoryId] = [invoiceCategory].[invoiceCategoryId] 
+						            JOIN    [".$this->q->getManagementDatabase()."].[staff]
+						            ON      [invoiceType].[executeBy] = [staff].[staffId]
+									WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
 							FROM 		[invoiceTypeDerived]
@@ -737,25 +745,34 @@ class InvoiceTypeClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	INVOICETYPE.INVOICETYPEID   		AS 	\"invoiceTypeId\",
-										INVOICETYPE.INVOICETYPESEQUENCE 			AS 	\"invoiceTypeSequence\",
-										INVOICETYPE.INVOICETYPECODE 		AS 	\"invoiceTypeCode\",
-										INVOICETYPE.INVOICETYPEDESC 		AS 	\"invoiceTypeDesc\",
-										INVOICETYPE.ISDEFAULT    		AS	\"isDefault\",
-										INVOICETYPE.ISNEW		  		AS	\"isNew\",
-										INVOICETYPE.ISDRAFT	 			AS	\"isDraft\",
-										INVOICETYPE.ISUPDATE     		AS	\"isUpdate\",
-										INVOICETYPE.ISDELETE	  		AS	\"isDelete\",
-										INVOICETYPE.ISACTIVE	  		AS	\"isActive\",
-										INVOICETYPE.ISAPPROVED   		AS	\"isApproved\",
-										INVOICETYPE.ISREVIEW	  		AS 	\"isReview\",
-										INVOICETYPE.ISPOST		  		AS	\"isPost\",
-										INVOICETYPE.EXECUTEBY    		AS	\"executeBy\",
-										INVOICETYPE.EXECUTETIME  		AS	\"executeTime\",
-										STAFF.STAFFNAME		  								AS	\"staffName\"	
-								FROM 	INVOICETYPE
-								JOIN	STAFF
-								ON		INVOICETYPE.EXECUTEBY 	  	=	STAFF.STAFFID
+								SELECT		INVOICETYPE.INVOICETYPEID   		 				AS 	\"invoiceTypeId\",
+											INVOICETYPE.INVOICECATEGORYID   			AS 	\"invoiceCategoryId\",
+											INVOICETYPE.INVOICETYPESEQUENCE 			AS 	\"invoiceTypeSequence\",
+											INVOICETYPE.INVOICETYPECODE 					AS 	\"invoiceTypeCode\",
+											INVOICETYPE.INVOICETYPEDESC 					AS 	\"invoiceTypeDesc\",
+											INVOICETYPE.INVOICECREDITLIMIT				AS 	\"invoiceTypeCreditLimit\",
+											INVOICETYPE.INVOICETYPELIMIT				AS 	\"invoiceTypePeriodLimit\",
+											INVOICETYPE.INVOICETYPEINTERESTRATE		AS 	\"invoiceTypeInterestRate\",
+											INVOICETYPE.INVOICETYPEMINIMUMDEPOSIT	AS 	\"invoiceTypeMinimumDeposit\",
+											INVOICETYPE.ISDEFAULT    							AS	\"isDefault\",
+											INVOICETYPE.ISNEW		  								AS	\"isNew\",
+											INVOICETYPE.ISDRAFT	  								AS	\"isDraft\",
+											INVOICETYPE.ISUPDATE     							AS	\"isUpdate\",
+											INVOICETYPE.ISDELETE	  								AS	\"isDelete\",
+											INVOICETYPE.ISACTIVE	  								AS	\"isActive\",
+											INVOICETYPE.ISAPPROVED   							AS	\"isApproved\",
+											INVOICETYPE.ISREVIEW	  							AS	\"isReview\",
+											INVOICETYPE.ISPOST  	  								AS	\"isPost\",
+											INVOICETYPE.EXECUTEBY    							AS	\"executeBy\",
+											INVOICETYPE.EXECUTETIME  							AS	\"executeTime\",
+											INVOICETYPE.INVOICECATEGORYCODE 			AS 	\"invoiceCategoryCode\",
+											INVOICETYPE.INVOICECATEGORYDESC 			AS 	\"invoiceCategoryDesc\",
+											STAFF.STAFFNAME		  									AS	\"staffName\"	
+							FROM 		INVOICETYPE
+							JOIN			STAFF
+							ON			INVOICETYPE.EXECUTEBY 	  	=	STAFF.STAFFID
+							JOIN   		INVOICECATEGORY
+							ON			INVOICETYPE.INVOICECATEGORYID = INVOICECATEGORY.INVOICECATEGORYID 
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )

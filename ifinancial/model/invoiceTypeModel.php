@@ -13,13 +13,21 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-       
+
 class InvoiceTypeModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
 	private $invoiceTypeId;
+	/**
+	 * @var int
+	 */
+	private $invoiceCategoryId;
+	/**
+	 * @var int
+	 */
+	private $lateInterestId;
 	/**
 	 * @var string
 	 */
@@ -32,6 +40,22 @@ class InvoiceTypeModel extends ValidationClass {
 	 * @var string
 	 */
 	private $invoiceTypeDesc;
+	/**
+	 * @var int
+	 */
+	private $invoiceTypeCreditLimit;
+	/**
+	 * @var int
+	 */
+	private $invoiceTypePeriodLimit;
+	/**
+	 * @var float
+	 */
+	private $invoiceTypeInterestRate;
+	/**
+	 * @var float
+	 */
+	private $invoiceMinimumDeposit;
 
 
 	/* (non-PHPdoc)
@@ -50,6 +74,12 @@ class InvoiceTypeModel extends ValidationClass {
 		if (isset($_POST ['invoiceTypeId'])) {
 			$this->setInvoiceTypeId($this->strict($_POST ['invoiceTypeId'], 'numeric'), 0, 'single');
 		}
+		if (isset($_POST ['invoiceCategoryId'])) {
+			$this->setInvoiceCategoryId($this->strict($_POST ['invoiceCategoryId'], 'string'));
+		}
+		if (isset($_POST ['lateInterestId'])) {
+			$this->setLateInterestId($this->strict($_POST ['lateInterestId'], 'string'));
+		}
 		if (isset($_POST ['invoiceTypeSequence'])) {
 			$this->setInvoiceTypeSequence($this->strict($_POST ['invoiceTypeSequence'], 'string'));
 		}
@@ -59,7 +89,18 @@ class InvoiceTypeModel extends ValidationClass {
 		if (isset($_POST ['invoiceTypeDesc'])) {
 			$this->setInvoiceTypeDesc($this->strict($_POST ['invoiceTypeDesc'], 'string'));
 		}
-
+		if (isset($_POST ['invoiceTypeCreditLimit'])) {
+			$this->setInvoiceTypeCreditLimit($this->strict($_POST ['invoiceTypeCreditLimit'], 'currency'));
+		}
+		if (isset($_POST ['invoiceTypePeriodLimit'])) {
+			$this->setInvoiceTypePeriodLimit($this->strict($_POST ['invoiceTypePeriodLimit'], 'currency'));
+		}
+		if (isset($_POST ['invoiceTypeInterestRate'])) {
+			$this->setInvoiceTypeInterestRate($this->strict($_POST ['invoiceTypeInterestRate'], 'currency'));
+		}
+		if (isset($_POST ['invoiceTypeMinimumDeposit'])) {
+			$this->setInvoiceTypeMinimumDeposit($this->strict($_POST ['invoiceTypeMinimumDeposit'], 'currency'));
+		}
 		/**
 		 * All the $_GET enviroment.
 		 */
@@ -325,7 +366,7 @@ class InvoiceTypeModel extends ValidationClass {
 		} else if ($type == 'array') {
 			$this->invoiceTypeId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setGeneralledgerId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setInvoiceTypeId ?"));
 			exit();
 		}
 	}
@@ -342,7 +383,7 @@ class InvoiceTypeModel extends ValidationClass {
 		} else if ($type == 'array') {
 			return $this->invoiceTypeId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getGeneralledgerId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getInvoiceTypeId ?"));
 			exit();
 		}
 	}
@@ -350,75 +391,183 @@ class InvoiceTypeModel extends ValidationClass {
 
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getInvoiceTypeSequence()
 	{
-	    return $this->invoiceTypeSequence;
+		return $this->invoiceTypeSequence;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $invoiceTypeSequence
 	 */
 	public function setInvoiceTypeSequence($invoiceTypeSequence)
 	{
-	    $this->invoiceTypeSequence = $invoiceTypeSequence;
+		$this->invoiceTypeSequence = $invoiceTypeSequence;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getInvoiceTypeCode()
 	{
-	    return $this->invoiceTypeCode;
+		return $this->invoiceTypeCode;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $invoiceTypeCode
 	 */
 	public function setInvoiceTypeCode($invoiceTypeCode)
 	{
-	    $this->invoiceTypeCode = $invoiceTypeCode;
+		$this->invoiceTypeCode = $invoiceTypeCode;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getInvoiceTypeDesc()
 	{
-	    return $this->invoiceTypeDesc;
+		return $this->invoiceTypeDesc;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $invoiceTypeDesc
 	 */
 	public function setInvoiceTypeDesc($invoiceTypeDesc)
 	{
-	    $this->invoiceTypeDesc = $invoiceTypeDesc;
+		$this->invoiceTypeDesc = $invoiceTypeDesc;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getInvoiceTypeSequenceDesc()
 	{
-	    return $this->invoiceTypeSequenceDesc;
+		return $this->invoiceTypeSequenceDesc;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $invoiceTypeSequenceDesc
 	 */
 	public function setInvoiceTypeSequenceDesc($invoiceTypeSequenceDesc)
 	{
-	    $this->invoiceTypeSequenceDesc = $invoiceTypeSequenceDesc;
+		$this->invoiceTypeSequenceDesc = $invoiceTypeSequenceDesc;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceCategoryId()
+	{
+		return $this->invoiceCategoryId;
+	}
+
+	/**
+	 *
+	 * @param $invoiceCategoryId
+	 */
+	public function setInvoiceCategoryId($invoiceCategoryId)
+	{
+		$this->invoiceCategoryId = $invoiceCategoryId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getLateInterestId()
+	{
+		return $this->lateInterestId;
+	}
+
+	/**
+	 *
+	 * @param $lateInterestId
+	 */
+	public function setLateInterestId($lateInterestId)
+	{
+		$this->lateInterestId = $lateInterestId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceTypeCreditLimit()
+	{
+		return $this->invoiceTypeCreditLimit;
+	}
+
+	/**
+	 *
+	 * @param $invoiceTypeCreditLimit
+	 */
+	public function setInvoiceTypeCreditLimit($invoiceTypeCreditLimit)
+	{
+		$this->invoiceTypeCreditLimit = $invoiceTypeCreditLimit;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceTypePeriodLimit()
+	{
+		return $this->invoiceTypePeriodLimit;
+	}
+
+	/**
+	 *
+	 * @param $invoiceTypePeriodLimit
+	 */
+	public function setInvoiceTypePeriodLimit($invoiceTypePeriodLimit)
+	{
+		$this->invoiceTypePeriodLimit = $invoiceTypePeriodLimit;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceTypeInterestRate()
+	{
+		return $this->invoiceTypeInterestRate;
+	}
+
+	/**
+	 *
+	 * @param $invoiceTypeInterestRate
+	 */
+	public function setInvoiceTypeInterestRate($invoiceTypeInterestRate)
+	{
+		$this->invoiceTypeInterestRate = $invoiceTypeInterestRate;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getInvoiceMinimumDeposit()
+	{
+		return $this->invoiceMinimumDeposit;
+	}
+
+	/**
+	 *
+	 * @param $invoiceMinimumDeposit
+	 */
+	public function setInvoiceMinimumDeposit($invoiceMinimumDeposit)
+	{
+		$this->invoiceMinimumDeposit = $invoiceMinimumDeposit;
 	}
 }
 
