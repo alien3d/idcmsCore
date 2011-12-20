@@ -2383,7 +2383,7 @@ Ext.onReady(function () {
 				}
 			]
 		}); // end invoiceLedgerDetail request
-	var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters({
+	var invoiceLedgerDetailFilters = new Ext.ux.grid.GridFilters({
 			encode : false,
 			local : false,
 			filters : [{
@@ -3185,6 +3185,7 @@ Ext.onReady(function () {
 				scrollDelay : false
 			})
 		});
+	// end of invoice detail	
 	var formPanel = new Ext.form.FormPanel({
 			url : '../controller/invoiceLedgerController.php',
 			name : 'formPanel',

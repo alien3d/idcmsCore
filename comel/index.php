@@ -1,14 +1,20 @@
 <?php 
 	//include("controller.php");// file
     $targetFolder='iFinancial';
-	$targetDatabase='mysql';
+	if($_GET['targetDatabase']) { 
+		$targetDatabase = $_GET['targetDatabase'];
+	} else { 
+		$targetDatabase='mysql';
+	}
 	$targetDb="ifinancial";
+	$targetDbObject="\".\$this->q->getFinancialDatabase().\"";
+	$targetDbManagementObject="\".\$this->q->getManagementDatabase().\"";
 	$targetTable ='country';
 	if($_GET['table']){
 		$targetTable=$_GET['table'];
 	}
 	$targetTableId = $targetTable."Id";
-	$targetMasterTable='invoiceAllocationId'; // parent primary key
+	$targetMasterTable='voucherLedgerId'; // parent primary key
 	$targetGridType="second"; // first -normal table ,second -edit in grid table
 	$managementDb="imanagement";
 	$mysqlOpenTag="`";
@@ -241,7 +247,7 @@ AND  column_name ='".$columnName."'		";
 		/**
 		* @var ".$jsonType."
 		*/
-		private ".$columnName." ";
+		private \$".$columnName."; ";
 		}
 				
 				if($columnName=='executeBy') {
@@ -624,7 +630,7 @@ AND  column_name ='".$columnName."'		";
 	$str5.=substr($str5,0,-1);
 	
 	
-	$gridFilterJs.="var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters(
+	$gridFilterJs.="var ".$targetTable."Filters = new Ext.ux.grid.GridFilters(
 					{
 						encode : false,
 						local : false,
@@ -647,20 +653,33 @@ AND  column_name ='".$columnName."'		";
 		$str2= str_replace($item.",",'',$str2);
 	}
 	$str2.=(substr($str2,0,-1));
-	
-	
-	$insertStatement.="
-	\$sql=\"INSERT INTO `".$targetDb."`.`".$targetTable."` ( ";
-	foreach($columnNameArray as $columnNameMysql) { 
-		$insertStatementAField.="	`".$columnNameMysql."`,";
+	// start insert statement
+	if($targetDatabase=='mysql') { 
+		$insertStatement.="
+		\$sql=\"INSERT INTO `".$targetDbObject."`.`".$targetTable."` ( \n";
+		foreach($columnNameArray as $columnNameMysql) { 
+			$insertStatementAField.="	`".$columnNameMysql."`,\n";
+		}
+	} else if ($targetDatabase=='mssql') {
+		$insertStatement.="
+		\$sql=\"INSERT INTO [".$targetDbObject."].[".$targetTable."] (\n";
+		foreach($columnNameArray as $columnNameMysql) { 
+			$insertStatementAField.="	[".$columnNameMysql."],\n";
+		}
+	} else if ($targetDatabase =='oracle' || $targetDatabase=='db2' || $targetDatabase=='postgress') {
+		$insertStatement.="
+		\$sql=\"INSERT INTO 	".strtoupper($targetTable)." ( \n";
+		foreach($columnNameArray as $columnNameMysql) { 
+			$insertStatementAField.="	".strtoupper($columnNameMysql).",\n";
+		}
 	}
-	$insertStatementField.= (substr($insertStatementAField,0,-1));
+	$insertStatementField.= (substr($insertStatementAField,0,-2));
 	$insertStatement.=$insertStatementField;
-	$insertStatement.=") VALUES ( ";
+	$insertStatement.="\n) VALUES ( \n";
 	foreach($columnNameArray as $columnNameMysql) {
 		$i++;
 		if($i==1){
-			$insertStatementInsideValue.="null,";
+			$insertStatementInsideValue.="null,\n";
 		}else if ($columnNameMysql=='executeTime'){
 			$insertStatementInsideValue.=" \".\$this->model->get".ucFirst($columnNameMysql)."().\",\n";
 		}else if($columnNameMysql !='isDefault' &&
@@ -681,56 +700,201 @@ AND  column_name ='".$columnName."'		";
 	}
 	$insertStatementValue.=(substr($insertStatementInsideValue,0,-2));
 	$insertStatement.=$insertStatementValue;
-	$insertStatement.=");\";";
-	
-	$updateStatement="\$sql=\"UPDATE `".$targetDb."`.`".$targetTable."` SET ";
-	foreach($columnNameArray as $columnNameMysql) {
-		if($columnNameMysql !='isDefault' &&
-			   $columnNameMysql !='isNew' &&
-			   $columnNameMysql !='isDraft'&&
-			   $columnNameMysql !='isUpdate'&&
-			   $columnNameMysql !='isDelete'&&
-			   $columnNameMysql !='isActive'&&
-			   $columnNameMysql !='isApproved'&&
-			   $columnNameMysql !='isReview'&&
-			   $columnNameMysql !='isPost'&&
-			   $columnNameMysql !='isSeperated'&&
-			   $columnNameMysql !='isConsolidation') {	
-			$updateStatementInsideValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',\n";
-		} else {
-			$updateStatementInsideValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',\n";
+	$insertStatement.="\n);\";";
+	// end  create statement
+	// start update statement
+	if($targetDatabase=='mysql') { 
+		$updateStatement="\$sql=\"UPDATE `".$targetDbObject."`.`".$targetTable."` SET ";
+		foreach($columnNameArray as $columnNameMysql) {
+			if($columnNameMysql !='isDefault' &&
+				   $columnNameMysql !='isNew' &&
+				   $columnNameMysql !='isDraft'&&
+				   $columnNameMysql !='isUpdate'&&
+				   $columnNameMysql !='isDelete'&&
+				   $columnNameMysql !='isActive'&&
+				   $columnNameMysql !='isApproved'&&
+				   $columnNameMysql !='isReview'&&
+				   $columnNameMysql !='isPost'&&
+				   $columnNameMysql !='isSeperated'&&
+				   $columnNameMysql !='isConsolidation') {	
+				$updateStatementInsideValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',\n";
+			} else {
+				$updateStatementInsideValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',\n";
+			}
 		}
-	}
-	$updateStatementValue.=(substr($updateStatementInsideValue,0,-2));
-	
-	$updateStatement.=$updateStatementValue;
-	$updateStatement.=" WHERE `".($targetTable)."Id`='\".get".ucfirst($targetTable)."Id('0','single').\"'\";";
-	$deleteStatement = "
-	\$sql=\"  	UPDATE 	`".$targetDb."`.`".$targetTable."`
-				SET 	`isDefault`				=	'\" . \$this->model->getIsDefault(0, 'single') . \"',
-						`isNew`					=	'\" . \$this->model->getIsNew(0, 'single') . \"',
-						`isDraft`				=	'\" . \$this->model->getIsDraft(0, 'single') . \"',
-						`isUpdate`				=	'\" . \$this->model->getIsUpdate(0, 'single') . \"',
-						`isDelete`				=	'\" . \$this->model->getIsDelete(0, 'single') . \"',
-						`isActive`				=	'\" . \$this->model->getIsActive(0, 'single') . \"',
-						`isApproved`			=	'\" . \$this->model->getIsApproved(0, 'single') . \"',
-						`isReview`				=	'\" . \$this->model->getIsReview(0, 'single') . \"',
-						`isPost`				=	'\" . \$this->model->getIsPost(0, 'single') . \"',
-						`executeBy`				=	'\" . \$this->model->getExecuteBy() . \"',
-						`executeTime`			=	\" . \$this->model->getExecuteTime() . \"
-				WHERE 	`".$targetTable."Id`	=  '\" . \$this->model->getGeneralLedgerChartOfAccountId(0, 'single') . \"'\";";
-	
-	$readStatement.="\$sql = \"SELECT";
+		$updateStatementValue.=(substr($updateStatementInsideValue,0,-2));
+		$updateStatement.=$updateStatementValue;
+		$updateStatement.=" WHERE `".($targetTableId)."`='\".get".ucfirst($targetTable)."Id('0','single').\"'\";";
+	} else if ($targetDatabase=='mssql') {
+		$updateStatement="\$sql=\"UPDATE [".$targetDbObject."].[".$targetTable."] SET ";
 			foreach($columnNameArray as $columnNameMysql) {
-				$readInsideStatement.="`".$targetTable."`.`".$columnNameMysql."`,";
+			if($columnNameMysql !='isDefault' &&
+				   $columnNameMysql !='isNew' &&
+				   $columnNameMysql !='isDraft'&&
+				   $columnNameMysql !='isUpdate'&&
+				   $columnNameMysql !='isDelete'&&
+				   $columnNameMysql !='isActive'&&
+				   $columnNameMysql !='isApproved'&&
+				   $columnNameMysql !='isReview'&&
+				   $columnNameMysql !='isPost'&&
+				   $columnNameMysql !='isSeperated'&&
+				   $columnNameMysql !='isConsolidation') {	
+				$updateStatementInsideValue.=" [".$columnNameMysql."] = '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',\n";
+			} else {
+				$updateStatementInsideValue.=" [".$columnNameMysql."] = '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',\n";
+			}
+		}
+		$updateStatementValue.=(substr($updateStatementInsideValue,0,-2));
+		$updateStatement.=$updateStatementValue;
+		$updateStatement.=" WHERE [".($targetTableId)."]='\".get".ucfirst($targetTable)."Id('0','single').\"'\";";
+		
+	} else if ($targetDatabase =='oracle' || $targetDatabase=='db2' || $targetDatabase=='postgress') {
+		$updateStatement="\$sql=\"UPDATE `".strtoupper($targetTable)."` SET\n ";
+		foreach($columnNameArray as $columnNameMysql) {
+			if($columnNameMysql !='isDefault' &&
+				   $columnNameMysql !='isNew' &&
+				   $columnNameMysql !='isDraft'&&
+				   $columnNameMysql !='isUpdate'&&
+				   $columnNameMysql !='isDelete'&&
+				   $columnNameMysql !='isActive'&&
+				   $columnNameMysql !='isApproved'&&
+				   $columnNameMysql !='isReview'&&
+				   $columnNameMysql !='isPost'&&
+				   $columnNameMysql !='isSeperated'&&
+				   $columnNameMysql !='isConsolidation') {	
+				$updateStatementInsideValue.=" ".strtoupper($columnNameMysql)." = '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',\n";
+			} else {
+				$updateStatementInsideValue.=" ".strtoupper($columnNameMysql)." = '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',\n";
+			}
+		}
+		$updateStatementValue.=(substr($updateStatementInsideValue,0,-2));
+		$updateStatement.=$updateStatementValue;
+		$updateStatement.=" \nWHERE `".strtoupper($targetTableId)."`='\".get".ucfirst($targetTable)."Id('0','single').\"'\";";
+	}
+	
+	
+	
+	// start delete statement
+	
+	if($targetDatabase=='mysql') { 
+	$deleteStatement = "
+	\$sql=\"  	UPDATE 	`".$targetDbObject."`.`".$targetTable."`\n
+					SET 	`isDefault`				=	'\" . \$this->model->getIsDefault(0, 'single') . \"',
+							`isNew`					=	'\" . \$this->model->getIsNew(0, 'single') . \"',
+							`isDraft`					=	'\" . \$this->model->getIsDraft(0, 'single') . \"',
+							`isUpdate`				=	'\" . \$this->model->getIsUpdate(0, 'single') . \"',
+							`isDelete`					=	'\" . \$this->model->getIsDelete(0, 'single') . \"',
+							`isActive`					=	'\" . \$this->model->getIsActive(0, 'single') . \"',
+							`isApproved`			=	'\" . \$this->model->getIsApproved(0, 'single') . \"',
+							`isReview`				=	'\" . \$this->model->getIsReview(0, 'single') . \"',
+							`isPost`					=	'\" . \$this->model->getIsPost(0, 'single') . \"',
+							`executeBy`				=	'\" . \$this->model->getExecuteBy() . \"',
+							`executeTime`			=	\" . \$this->model->getExecuteTime() . \"
+				WHERE 	`".$targetTableId."`	=  '\" . \$this->model->get".ucfirst($targetTable)."Id(0, 'single') . \"'\";";
+	} else if ($targetDatabase=='mssql') {
+			$deleteStatement = "
+			\$sql=\"   	
+				UPDATE 	[".$targetDbObject."].[".$targetTable."]
+				SET 			[isDefault]					=	'\" . \$this->model->getIsDefault(0, 'single') . \"',
+								[isNew]						=	'\" . \$this->model->getIsNew(0, 'single') . \"',
+								[isDraft]					=	'\" . \$this->model->getIsDraft(0, 'single') . \"',
+								[isUpdate]					=	'\" . \$this->model->getIsUpdate(0, 'single') . \"',
+								[isDelete]					=	'\" . \$this->model->getIsDelete(0, 'single') . \"',
+								[isActive]					=	'\" . \$this->model->getIsActive(0, 'single') . \"',
+								[isApproved]				=	'\" . \$this->model->getIsApproved(0, 'single') . \"',
+								[isReview]					=	'\" . \$this->model->getIsReview(0, 'single') . \"',
+								[isPost]						=	'\" . \$this->model->getIsPost(0, 'single') . \"',
+								[executeBy]				=	'\" . \$this->model->getExecuteBy() . \"',
+								[executeTime]			=	\" . \$this->model->getExecuteTime() . \"
+				WHERE 		[".$targetTableId."]	=  '\" . \$this->model->get".ucfirst($targetTable)."Id(0, 'single') . \"'\";";
+	} else if ($targetDatabase =='oracle' || $targetDatabase=='db2' || $targetDatabase=='postgress') {
+		$deleteStatement = "
+	\$sql=\" 
+				UPDATE 	".strtoupper($targetTable)."
+				SET 	ISDEFAULT		=	'\" . \$this->model->getIsDefault(0, 'single') . \"',
+						ISNEW			=	'\" . \$this->model->getIsNew(0, 'single') . \"',
+						ISDRAFT			=	'\" . \$this->model->getIsDraft(0, 'single') .\"',
+						ISUPDATE		=	'\" . \$this->model->getIsUpdate(0, 'single') . \"',
+						ISDELETE		=	'\" . \$this->model->getIsDelete(0, 'single') . \"',
+						ISACTIVE		=	'\" . \$this->model->getIsActive(0, 'single') . \"',
+						ISAPPROVED		=	'\" . \$this->model->getIsApproved(0, 'single') .\"',
+						ISREVIEW		=	'\" .\$this->model->getIsReview(0, 'single') . \"',
+						ISPOST			=	'\" . \$this->model->getIsPost(0, 'single') .\"',
+						EXECUTEBY		=	'\" . \$this->model->getExecuteBy() .\"',
+						EXECUTETIME		=	\" . \$this->model->getExecuteTime() . \"
+				WHERE 	`".strtoupper($targetTable)."`	=  '\" . \$this->model->get".ucfirst($targetTable)."Id(0, 'single') . \"'\";";
+	}
+	// end delete statement
+	// start reade statement
+		if($targetDatabase=='mysql') { 
+			$readStatement.="\$sql = \"SELECT";
+			foreach($columnNameArray as $columnNameMysql) {
+				$readInsideStatement.="`".$targetTable."`.`".$columnNameMysql."`,\n";
 			}	
-			$readStatement.=(substr($readInsideStatement,0,-1));		
-			$readStatement.="
-					,`iManagement`.`staff`.`staffName`
-			FROM 	`".$targetDb."`.`".$targetTable."`
-			JOIN	`".$managementDb."`.`staff`
+			$readStatement.=$readInsideStatement;
+			//$readStatement.=(substr($readInsideStatement,0,-1));		
+			$readStatement.="`staff`.`staffName`
+			FROM 	`".$targetDbObject."`.`".$targetTable."`
+			JOIN	`".$targetDbManagementObject."`.`staff`
 			ON		`".$targetTable."`.`executeBy` = `staff`.`staffId`
-			WHERE 	;";
+			WHERE 		\" . \$this->auditFilter; ";
+		} else if ($targetDatabase=='mssql') {
+			$readStatement.="\$sql = \"SELECT ";
+			$readPagingStatement="
+				\$sql =\"WITH [".$targetTable."Derived] AS
+							(
+								SELECT ";
+			foreach($columnNameArray as $columnNameMysql) {
+				$readInsideStatement.="[".$targetTable."].[".$columnNameMysql."],\n";
+				$readInsidePagingStatement.="[".$targetTable."].[".$columnNameMysql."],\n";
+			}
+			$readInsidePagingStatement.="[staff].[staffName],\n";	
+			$readInsidePagingStatement.="ROW_NUMBER() OVER (ORDER BY [".$targetTable."].[".$targetTableId."]) AS 'RowNumber'\n";	
+			$readStatement.=$readInsideStatement;
+			//$readStatement.=(substr($readInsideStatement,0,-1));		
+			$readPagingStatement.=$readInsidePagingStatement;
+			$readStatement.="[staff].[staffName]
+			FROM 	[".$targetDbObject."].[".$targetTable."]
+			JOIN		[".$targetDbManagementObject."].[staff]
+			ON		[".$targetTable."].[executeBy] = [staff].[staffId]
+			WHERE 		\" . \$this->auditFilter; ";
+			$readPagingStatement.="
+						,
+			FROM 	[".$targetDbObject."].[".$targetTable."]
+			JOIN		[".$targetDbManagementObject."].[staff]
+			ON		[".$targetTable."].[executeBy] = [staff].[staffId]
+			WHERE \" . \$this->auditFilter . \$tempSql . \$tempSql2 . \"
+							)
+							SELECT		*
+							FROM 		[".$targetTable."Derived]
+							WHERE 		[RowNumber]
+							BETWEEN	\" . (\$this->getStart() + 1) . \"
+							AND 			\" . (\$this->getStart() + \$this->getLimit()) . \" ;\";";
+		} else if ($targetDatabase =='oracle' || $targetDatabase=='db2' || $targetDatabase=='postgress') {
+			$readStatement.="\$sql = \"SELECT";
+			$readPagingStatement.="\$sql = \"
+						SELECT *
+						FROM ( SELECT	a.*,
+												rownum r
+						FROM (";
+			foreach($columnNameArray as $columnNameMysql) {
+				$readInsideStatement.=" ".strtoupper($targetTable).".".strtoupper($columnNameMysql).",\n";
+			}	
+			$readStatement.=$readInsideStatement;
+			//$readStatement.=(substr($readInsideStatement,0,-1));		
+			$readStatement.="STAFF.STAFFNAME
+			FROM 	".strtoupper($targetTable)."
+			JOIN		STAFF
+			ON		".strtoupper($targetTable).".EXECUTEBY = STAFF.STAFFID
+			WHERE 		\" . \$this->auditFilter; ";
+			$readPagingCopyStatement = str_replace('$sql = "','',$readStatement);
+			$readPagingStatement.=substr($readPagingCopyStatement,0,-2);
+			$readPagingStatement.=" . \$tempSql . \$tempSql2 . \"
+								 ) a
+						where rownum <= '\" . (\$this->getStart() + \$this->getLimit()) . \"' )
+						where r >=  '\" . (\$this->getStart() + 1) . \"'\";";
+		}		
+	// end readStatement		
 			if($targetGridType=='first') { 
 			$gridPanel.=
 			"var ".$targetTable."FlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
@@ -2397,9 +2561,9 @@ $comboRenderer.="Ext.util.Format.comboRenderer = function(combo) {
 	 * 
 	 * @param $countryDesc
 	 */
-	public function set".ucfirst($columnNameMysql)."(".$columnNameMysql.")
+	public function set".ucfirst($columnNameMysql)."(\$".$columnNameMysql.")
 	{
-	    \$this->".$columnNameMysql." = ".$columnNameMysql.";
+	    \$this->".$columnNameMysql." = \$".$columnNameMysql.";
 	}";
 	}
 	}
@@ -2434,7 +2598,7 @@ $execute="
 			}
 		}
 		if (isset(\$_GET ['isNew'])) {
-			if (is_array($_GET ['isNew'])) {
+			if (is_array(\$_GET ['isNew'])) {
 				\$this->isNew = array();
 			}
 		}
@@ -2663,9 +2827,9 @@ class ".ucfirst($targetTable)."Model extends ValidationClass { ";
 <h1>Full Javascript</h1>
 <?php 
 if($targetTableType=='first') { 
-echo $firstCodeJs.$jsonStoreString.$gridFilterJs.$systemCheckbox.$columnModelJs.$gridPanel.$formItem.$systemValidation.$formPanel.$lastCodeJs;
+//echo $firstCodeJs.$jsonStoreString.$gridFilterJs.$systemCheckbox.$columnModelJs.$gridPanel.$formItem.$systemValidation.$formPanel.$lastCodeJs;
 } else {
-echo $jsonStoreString.$gridFilterJs.$formItem.$systemCheckbox.$comboRenderer.$columnModelJs.$jsonWriter.$entity.$gridPanel;
+//echo $jsonStoreString.$gridFilterJs.$formItem.$systemCheckbox.$comboRenderer.$columnModelJs.$jsonWriter.$entity.$gridPanel;
 
 } ?>
 <a name="fulljs"></a>
@@ -2698,6 +2862,11 @@ echo $jsonStoreString.$gridFilterJs.$formItem.$systemCheckbox.$comboRenderer.$co
 <pre class="brush: php;">
 <?php echo $readStatement; ?>
 </pre>
+<a name="readPagingStatement"></a>
+<h1>Read  Paging Statement</h1>
+<pre class="brush: php;">
+<?php echo $readPagingStatement; ?>
+</pre>
 <a name="updateStatement"></a>
 <h1>Update Statement</h1>
 <pre class="brush: php;">
@@ -2708,6 +2877,7 @@ echo $jsonStoreString.$gridFilterJs.$formItem.$systemCheckbox.$comboRenderer.$co
 <pre class="brush: php;">
 <?php echo $deleteStatement; ?>
 </pre>
+
 <a name="updateStatus"></a>
 <h1>Update Status Statement</h1>
 <pre class="brush: php;">

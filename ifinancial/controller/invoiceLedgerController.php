@@ -147,31 +147,64 @@ class InvoiceLedgerClass extends ConfigClass {
 			$sql="
 			INSERT INTO `".$this->q->getFinancialDatabase()."`.`invoiceLedger` 
 				(    
-						`invoiceLedgerId`,   `invoiceTypeId`,   `documentNo`,`referenceNo`,   `invoiceLedgerTitle`,    `invoiceLedgerDesc`, `invoiceLedgerDate`, `invoiceLedgerStartDate`,    `invoiceLedgerEndDate`,  `invoiceLedgerAmount`,   `isDefault`,    `isNew`,    `isDraft`,  `isUpdate`, `isDelete`, `isActive`, `isApproved`,   `isReview`, `isPost`,   `executeBy`,    `executeTime`) VALUES ( null, '".$this->model->getInvoiceTypeId()."',
-'".$this->model->getDocumentNo()."',
-'".$this->model->getReferenceNo()."',
-'".$this->model->getInvoiceLedgerTitle()."',
-'".$this->model->getInvoiceLedgerDesc()."',
-'".$this->model->getInvoiceLedgerDate()."',
-'".$this->model->getInvoiceLedgerStartDate()."',
-'".$this->model->getInvoiceLedgerEndDate()."',
-'".$this->model->getInvoiceLedgerAmount()."',
-'".$this->model->getIsDefault(0, 'single')."',
-'".$this->model->getIsNew(0, 'single')."',
-'".$this->model->getIsDraft(0, 'single')."',
-'".$this->model->getIsUpdate(0, 'single')."',
-'".$this->model->getIsDelete(0, 'single')."',
-'".$this->model->getIsActive(0, 'single')."',
-'".$this->model->getIsApproved(0, 'single')."',
-'".$this->model->getIsReview(0, 'single')."',
-'".$this->model->getIsPost(0, 'single')."',
-'".$this->model->getExecuteBy()."',
-".$this->model->getExecuteTime().");";
+						`invoiceLedgerId`,   
+						`businessPartnerId`,
+						`invoiceCategoryId`,
+						`invoiceTypeId`,  
+						`documentNo`,
+						`referenceNo`,  
+						`invoiceLedgerTitle`,   
+						`invoiceLedgerDesc`, 
+						`invoiceLedgerDate`, 
+						`invoiceLedgerStartDate`,    
+						`invoiceLedgerEndDate`,  
+						`invoiceLedgerAmount`,   
+						`isDefault`,    
+						`isNew`,    
+						`isDraft`,  
+						`isUpdate`, 
+						`isDelete`, 
+						`isActive`, 
+						`isApproved`,   
+						`isReview`, 
+						`isPost`,   
+						`executeBy`,    
+						`executeTime`
+				) VALUES ( 
+					null, 
+					'".$this->model->getBusinessPartnerId()."',
+					'".$this->model->getInvoiceCategoryId()."',
+					'".$this->model->getInvoiceTypeId()."',
+					'".$this->model->getDocumentNo()."',
+					'".$this->model->getReferenceNo()."',
+					'".$this->model->getInvoiceLedgerTitle()."',
+					'".$this->model->getInvoiceLedgerDesc()."',
+					'".$this->model->getInvoiceLedgerDate()."',
+					'".$this->model->getInvoiceLedgerStartDate()."',
+					'".$this->model->getInvoiceLedgerEndDate()."',
+					'".$this->model->getInvoiceLedgerAmount()."',
+					'".$this->model->getIsDefault(0, 'single')."',
+					'".$this->model->getIsNew(0, 'single')."',
+					'".$this->model->getIsDraft(0, 'single')."',
+					'".$this->model->getIsUpdate(0, 'single')."',
+					'".$this->model->getIsDelete(0, 'single')."',
+					'".$this->model->getIsActive(0, 'single')."',
+					'".$this->model->getIsApproved(0, 'single')."',
+					'".$this->model->getIsReview(0, 'single')."',
+					'".$this->model->getIsPost(0, 'single')."',
+					'".$this->model->getExecuteBy()."',
+					".$this->model->getExecuteTime()."
+				);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			INSERT INTO [".$this->q->getFinancialDatabase()."].[invoiceLedger]
 					(
-						[documentNo],												
+						[invoiceLedgerId],   
+						[businessPartnerId],
+						[invoiceCategoryId],
+						[invoiceTypeId],
+						[documentNo],
+						[referenceNo],
 						[invoiceLedgerTitle],
 						[invoiceLedgerDesc],
 						[invoiceLedgerDate],
@@ -190,29 +223,41 @@ class InvoiceLedgerClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getInvoiceLedgerTitle() . "',
-						'" . $this->model->getInvoiceLedgerDesc() . "',
-						'" . $this->model->getInvoiceLedgerDate() . "',
-						'" . $this->model->getInvoiceLedgerAmount() . "',					
-						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',				
-						'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',			
-						'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',			
-						'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',			
-						'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',						
-						" . $this->model->getExecuteTime() . "
+						null, 
+					'".$this->model->getBusinessPartnerId()."',
+					'".$this->model->getInvoiceCategoryId()."',
+					'".$this->model->getInvoiceTypeId()."',
+					'".$this->model->getDocumentNo()."',
+					'".$this->model->getReferenceNo()."',
+					'".$this->model->getInvoiceLedgerTitle()."',
+					'".$this->model->getInvoiceLedgerDesc()."',
+					'".$this->model->getInvoiceLedgerDate()."',
+					'".$this->model->getInvoiceLedgerStartDate()."',
+					'".$this->model->getInvoiceLedgerEndDate()."',
+					'".$this->model->getInvoiceLedgerAmount()."',
+					'".$this->model->getIsDefault(0, 'single')."',
+					'".$this->model->getIsNew(0, 'single')."',
+					'".$this->model->getIsDraft(0, 'single')."',
+					'".$this->model->getIsUpdate(0, 'single')."',
+					'".$this->model->getIsDelete(0, 'single')."',
+					'".$this->model->getIsActive(0, 'single')."',
+					'".$this->model->getIsApproved(0, 'single')."',
+					'".$this->model->getIsReview(0, 'single')."',
+					'".$this->model->getIsPost(0, 'single')."',
+					'".$this->model->getExecuteBy()."',
+					".$this->model->getExecuteTime()."
 					);";
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
 			INSERT INTO	INVOICELEDGER
 					(
-						DOCUMENTNO,												
+						INVOICELEDGERID,   
+						BUSINESSPARTNERID,
+						INVOICECATEGORYID,
+						INVOICETYPEID,
+						DOCUMENTNO,
+						REFERENCENO,		
 						INVOICELEDGERTITLE,
 						INVOICELEDGERDESC,
 						INVOICELEDGERDATE,
@@ -231,23 +276,40 @@ class InvoiceLedgerClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getInvoiceLedgerTitle() . "',
-						'" . $this->model->getInvoiceLedgerDesc() . "',
-						'" . $this->model->getInvoiceLedgerDate() . "',
-						'" . $this->model->getInvoiceLedgerAmount() . "',					
-						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						null, 
+					'".$this->model->getBusinessPartnerId()."',
+					'".$this->model->getInvoiceCategoryId()."',
+					'".$this->model->getInvoiceTypeId()."',
+					'".$this->model->getDocumentNo()."',
+					'".$this->model->getReferenceNo()."',
+					'".$this->model->getInvoiceLedgerTitle()."',
+					'".$this->model->getInvoiceLedgerDesc()."',
+					'".$this->model->getInvoiceLedgerDate()."',
+					'".$this->model->getInvoiceLedgerStartDate()."',
+					'".$this->model->getInvoiceLedgerEndDate()."',
+					'".$this->model->getInvoiceLedgerAmount()."',
+					'".$this->model->getIsDefault(0, 'single')."',
+					'".$this->model->getIsNew(0, 'single')."',
+					'".$this->model->getIsDraft(0, 'single')."',
+					'".$this->model->getIsUpdate(0, 'single')."',
+					'".$this->model->getIsDelete(0, 'single')."',
+					'".$this->model->getIsActive(0, 'single')."',
+					'".$this->model->getIsApproved(0, 'single')."',
+					'".$this->model->getIsReview(0, 'single')."',
+					'".$this->model->getIsPost(0, 'single')."',
+					'".$this->model->getExecuteBy()."',
+					".$this->model->getExecuteTime()."
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			INSERT INTO	INVOICELEDGER
 					(
-						DOCUMENTNO,												
+						INVOICELEDGERID,   
+						BUSINESSPARTNERID,
+						INVOICECATEGORYID,
+						INVOICETYPEID,
+						DOCUMENTNO,
+						REFERENCENO,												
 						INVOICELEDGERTITLE,
 						INVOICELEDGERDESC,
 						INVOICELEDGERDATE,
@@ -266,23 +328,40 @@ class InvoiceLedgerClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getInvoiceLedgerTitle() . "',
-						'" . $this->model->getInvoiceLedgerDesc() . "',
-						'" . $this->model->getInvoiceLedgerDate() . "',
-						'" . $this->model->getInvoiceLedgerAmount() . "',					
-						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						null, 
+					'".$this->model->getBusinessPartnerId()."',
+					'".$this->model->getInvoiceCategoryId()."',
+					'".$this->model->getInvoiceTypeId()."',
+					'".$this->model->getDocumentNo()."',
+					'".$this->model->getReferenceNo()."',
+					'".$this->model->getInvoiceLedgerTitle()."',
+					'".$this->model->getInvoiceLedgerDesc()."',
+					'".$this->model->getInvoiceLedgerDate()."',
+					'".$this->model->getInvoiceLedgerStartDate()."',
+					'".$this->model->getInvoiceLedgerEndDate()."',
+					'".$this->model->getInvoiceLedgerAmount()."',
+					'".$this->model->getIsDefault(0, 'single')."',
+					'".$this->model->getIsNew(0, 'single')."',
+					'".$this->model->getIsDraft(0, 'single')."',
+					'".$this->model->getIsUpdate(0, 'single')."',
+					'".$this->model->getIsDelete(0, 'single')."',
+					'".$this->model->getIsActive(0, 'single')."',
+					'".$this->model->getIsApproved(0, 'single')."',
+					'".$this->model->getIsReview(0, 'single')."',
+					'".$this->model->getIsPost(0, 'single')."',
+					'".$this->model->getExecuteBy()."',
+					".$this->model->getExecuteTime()."
 					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			INSERT INTO	INVOICELEDGER
 					(
-						DOCUMENTNO,												
+						INVOICELEDGERID,   
+						BUSINESSPARTNERID,
+						INVOICECATEGORYID,
+						INVOICETYPEID,
+						DOCUMENTNO,
+						REFERENCENO,													
 						INVOICELEDGERTITLE,
 						INVOICELEDGERDESC,
 						INVOICELEDGERDATE,
@@ -301,17 +380,29 @@ class InvoiceLedgerClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getInvoiceLedgerTitle() . "',
-						'" . $this->model->getInvoiceLedgerDesc() . "',
-						'" . $this->model->getInvoiceLedgerDate() . "',
-						'" . $this->model->getInvoiceLedgerAmount() . "',					
-						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						null, 
+					'".$this->model->getBusinessPartnerId()."',
+					'".$this->model->getInvoiceCategoryId()."',
+					'".$this->model->getInvoiceTypeId()."',
+					'".$this->model->getDocumentNo()."',
+					'".$this->model->getReferenceNo()."',
+					'".$this->model->getInvoiceLedgerTitle()."',
+					'".$this->model->getInvoiceLedgerDesc()."',
+					'".$this->model->getInvoiceLedgerDate()."',
+					'".$this->model->getInvoiceLedgerStartDate()."',
+					'".$this->model->getInvoiceLedgerEndDate()."',
+					'".$this->model->getInvoiceLedgerAmount()."',
+					'".$this->model->getIsDefault(0, 'single')."',
+					'".$this->model->getIsNew(0, 'single')."',
+					'".$this->model->getIsDraft(0, 'single')."',
+					'".$this->model->getIsUpdate(0, 'single')."',
+					'".$this->model->getIsDelete(0, 'single')."',
+					'".$this->model->getIsActive(0, 'single')."',
+					'".$this->model->getIsApproved(0, 'single')."',
+					'".$this->model->getIsReview(0, 'single')."',
+					'".$this->model->getIsPost(0, 'single')."',
+					'".$this->model->getExecuteBy()."',
+					".$this->model->getExecuteTime()."
 					)";
 		} else {
 			echo json_encode(array("success" => false,"sql"=>$sql, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -346,7 +437,7 @@ class InvoiceLedgerClass extends ConfigClass {
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
 				$this->auditFilter = "		`invoiceLedger`.`isActive`		=	1
-										AND	`invoiceLedger`.`isPost`		=	0";
+										AND	`invoiceLedger`.`isPost`		=	0 ";
 			} else if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "  	[invoiceLedger].[isActive]		=	1
 										AND	[invoiceLedger].[isPost]		=	0 ";
@@ -358,7 +449,7 @@ class InvoiceLedgerClass extends ConfigClass {
 										AND INVOICELEDGER.ISPOST			=	0	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "		INVOICELEDGER.ISACTIVE			=	1
-											AND INVOICELEDGER.ISPOST		=	0	";
+													AND INVOICELEDGER.ISPOST		=	0	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -606,7 +697,7 @@ class InvoiceLedgerClass extends ConfigClass {
 			JOIN			STAFF
 			ON			INVOICELEDGER.EXECUTEBY 	  						=	STAFF.STAFFID
 			JOIN			BUSINESSPARTNER
-			ON			BUSINESSPARTNER.BUSINESSPARTNERID	= 	INVOICELEDGER.BUSINESSPARTNERID
+			ON			BUSINESSPARTNER.BUSINESSPARTNERID		= 	INVOICELEDGER.BUSINESSPARTNERID
 			JOIN			INVOICECATEGORY
             ON			INVOICECATEGORY.INVOICECATEGORYID		= 	INVOICELEDGER.INVOICECATEGORYID
 			JOIN			INVOICETYPE
@@ -786,14 +877,14 @@ class InvoiceLedgerClass extends ConfigClass {
 								ROW_NUMBER() OVER (ORDER BY [invoiceLedger].[invoiceLedgerId]) AS 'RowNumber'
 								FROM 	[".$this->q->getFinancialDatabase()."].[invoiceLedger]
 								JOIN		[".$this->q->getManagementDatabase()."].[staff]
-								ON		[invoiceLedger].[executeBy] = [staff].[staffId]
+								ON		[invoiceLedger].[executeBy] 					= [staff].[staffId]
 								JOIN		[".$this->q->getFinancialDatabase()."].[businessPartnerId]
 								ON		[businessPartnerId].[businessPartnerId]	= [invoiceLedger].[businessPartnerId]
 								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceCategory]
-								ON		[invoiceCategory].[invoiceCategoryId] = [invoiceLedger].[invoiceCategoryId]
+								ON		[invoiceCategory].[invoiceCategoryId] 	= [invoiceLedger].[invoiceCategoryId]
 								JOIN		[".$this->q->getFinancialDatabase()."].[invoiceType]
-								ON		[invoiceCategory].[invoiceCategoryId] = [invoiceType].[invoiceCategoryId]
-								AND		[invoiceType].[invoiceTypeId] = [invoiceLedger].[invoiceTypeId]
+								ON		[invoiceCategory].[invoiceCategoryId] 	= [invoiceType].[invoiceCategoryId]
+								AND		[invoiceType].[invoiceTypeId] 				= [invoiceLedger].[invoiceTypeId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -843,7 +934,7 @@ class InvoiceLedgerClass extends ConfigClass {
 										ON			INVOICECATEGORY.INVOICECATEGORYID		= 	INVOICELEDGER.INVOICECATEGORYID
 										JOIN			INVOICETYPE
 										ON			INVOICECATEGORY.INVOICECATEGORYID 		= 	INVOICETYPE.INVOICECATEGORYID
-										ON			INVOICELEDGER.EXECUTEBY 	  	=	STAFF.STAFFID
+										
 										WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -978,7 +1069,7 @@ class InvoiceLedgerClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE	`".$this->q->getFinancialDatabase()."`.`invoiceLedger`
-				SET 		`businessPartnerId`				=	'".$this->getBusinessPartnerId()."',
+				SET 			`businessPartnerId`				=	'".$this->getBusinessPartnerId()."',
 								`invoiceCategoryId` 			= '".$this->model->getInvoiceCategoryId()."',
 								`invoiceTypeId` 					= '".$this->model->getInvoiceTypeId()."',
 								`referenceNo`						= '".$this->model->getReferenceNo()."',
@@ -1003,19 +1094,19 @@ class InvoiceLedgerClass extends ConfigClass {
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE	[".$this->q->getFinancialDatabase()."].[invoiceLedger]
-				SET 		[businessPartnerId]			='".$this->getBusinessPartnerId()."',
+				SET 			[businessPartnerId]			='".$this->getBusinessPartnerId()."',
 								[invoiceCategoryId] 			= '".$this->model->getInvoiceCategoryId()."',
 								[invoiceTypeId] 				= '".$this->model->getInvoiceTypeId()."',
 								[referenceNo] 					= '".$this->model->getReferenceNo()."',
 								[invoiceLedgerTitle] 			= '".$this->model->getInvoiceLedgerTitle()."',
-								[invoiceLedgerDesc] 		= '".$this->model->getInvoiceLedgerDesc()."',
+								[invoiceLedgerDesc] 			= '".$this->model->getInvoiceLedgerDesc()."',
 								[invoiceLedgerDate] 			= '".$this->model->getInvoiceLedgerDate()."',
 								[invoiceLedgerStartDate]	= '".$this->model->getInvoiceLedgerStartDate()."',
-								[invoiceLedgerEndDate] 	= '".$this->model->getInvoiceLedgerEndDate()."',
-								[invoiceLedgerAmount] 	= '".$this->model->getInvoiceLedgerAmount()."',	
+								[invoiceLedgerEndDate] 		= '".$this->model->getInvoiceLedgerEndDate()."',
+								[invoiceLedgerAmount] 		= '".$this->model->getInvoiceLedgerAmount()."',	
 								[isDefault]							=	'" . $this->model->getIsDefault(0, 'single') . "',
 								[isNew]								=	'" . $this->model->getIsNew(0, 'single') . "',
-								[isDraft]								=	'" . $this->model->getIsDraft(0, 'single') . "',
+								[isDraft]							=	'" . $this->model->getIsDraft(0, 'single') . "',
 								[isUpdate]							=	'" . $this->model->getIsUpdate(0, 'single') . "',
 								[isDelete]							=	'" . $this->model->getIsDelete(0, 'single') . "',
 								[isActive]							=	'" . $this->model->getIsActive(0, 'single') . "',
@@ -1024,76 +1115,76 @@ class InvoiceLedgerClass extends ConfigClass {
 								[isPost]								=	'" . $this->model->getIsPost(0, 'single') . "',
 								[executeBy]						=	'" . $this->model->getExecuteBy() . "',
 								[executeTime]					=	" . $this->model->getExecuteTime() . "
-				WHERE	[invoiceLedgerId]				=	'" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
+				WHERE	[invoiceLedgerId]					=	'" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		INVOICELEDGER
-				SET 			BUSINESSPARTNERID			=	'".$this->getBusinessPartnerId()."',
-									INVOICECATEGORYID			= '".$this->model->getInvoiceCategoryId()."',
-									INVOICETYPEID						= '".$this->model->getInvoiceTypeId()."',
+				SET 				BUSINESSPARTNERID				=	'".$this->getBusinessPartnerId()."',
+									INVOICECATEGORYID				= '".$this->model->getInvoiceCategoryId()."',
+									INVOICETYPEID							= '".$this->model->getInvoiceTypeId()."',
 									REFERENCENO							= '".$this->model->getReferenceNo()."',
-									INVOICELEDGERTITLE			=	'" . $this->model->getInvoiceLedgerTitle() . "',
-									INVOICELEDGERDESC			=	'" . $this->model->getInvoiceLedgerDesc() . "',
-									INVOICELEDGERDATE			=	'" . $this->model->getInvoiceLedgerDate() . "',
-									INVOICELEDGERAMOUNT	=	'" . $this->model->getInvoiceLedgerAmount() . "',									
+									INVOICELEDGERTITLE				=	'" . $this->model->getInvoiceLedgerTitle() . "',
+									INVOICELEDGERDESC				=	'" . $this->model->getInvoiceLedgerDesc() . "',
+									INVOICELEDGERDATE				=	'" . $this->model->getInvoiceLedgerDate() . "',
+									INVOICELEDGERAMOUNT			=	'" . $this->model->getInvoiceLedgerAmount() . "',									
 									ISDEFAULT								=	'" . $this->model->getIsDefault(0, 'single') . "',
 									ISNEW										=	'" . $this->model->getIsNew(0, 'single') . "',
 									ISDRAFT									=	'" . $this->model->getIsDraft(0, 'single') . "',
 									ISUPDATE									=	'" . $this->model->getIsUpdate(0, 'single') . "',
 									ISDELETE									=	'" . $this->model->getIsDelete(0, 'single') . "',
 									ISACTIVE									=	'" . $this->model->getIsActive(0, 'single') . "',
-									ISAPPROVED							=	'" . $this->model->getIsApproved(0, 'single') . "',
+									ISAPPROVED								=	'" . $this->model->getIsApproved(0, 'single') . "',
 									ISREVIEW									=	'" . $this->model->getIsReview(0, 'single') . "',
 									ISPOST										=	'" . $this->model->getIsPost(0, 'single') . "',
 									EXECUTEBY								=	'" . $this->model->getExecuteBy() . "',
 									EXECUTETIME							=	" . $this->model->getExecuteTime() . "
-				WHERE 		INVOICELEDGERID				=	'" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
+				WHERE 			INVOICELEDGERID					=	'" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 				UPDATE		INVOICELEDGER
-				SET 			BUSINESSPARTNERID			=	'".$this->getBusinessPartnerId()."',
-									INVOICECATEGORYID			= '".$this->model->getInvoiceCategoryId()."',
-									INVOICETYPEID						= '".$this->model->getInvoiceTypeId()."',
+				SET 				BUSINESSPARTNERID				=	'".$this->getBusinessPartnerId()."',
+									INVOICECATEGORYID				= '".$this->model->getInvoiceCategoryId()."',
+									INVOICETYPEID							= '".$this->model->getInvoiceTypeId()."',
 									REFERENCENO							= '".$this->model->getReferenceNo()."',
-									INVOICELEDGERTITLE			=	'" . $this->model->getInvoiceLedgerTitle() . "',
-									INVOICELEDGERDESC			=	'" . $this->model->getInvoiceLedgerDesc() . "',
-									INVOICELEDGERDATE			=	'" . $this->model->getInvoiceLedgerDate() . "',
-									INVOICELEDGERAMOUNT	=	'" . $this->model->getInvoiceLedgerAmount() . "',									
+									INVOICELEDGERTITLE				=	'" . $this->model->getInvoiceLedgerTitle() . "',
+									INVOICELEDGERDESC				=	'" . $this->model->getInvoiceLedgerDesc() . "',
+									INVOICELEDGERDATE				=	'" . $this->model->getInvoiceLedgerDate() . "',
+									INVOICELEDGERAMOUNT			=	'" . $this->model->getInvoiceLedgerAmount() . "',									
 									ISDEFAULT								=	'" . $this->model->getIsDefault(0, 'single') . "',
 									ISNEW										=	'" . $this->model->getIsNew(0, 'single') . "',
 									ISDRAFT									=	'" . $this->model->getIsDraft(0, 'single') . "',
 									ISUPDATE									=	'" . $this->model->getIsUpdate(0, 'single') . "',
 									ISDELETE									=	'" . $this->model->getIsDelete(0, 'single') . "',
 									ISACTIVE									=	'" . $this->model->getIsActive(0, 'single') . "',
-									ISAPPROVED							=	'" . $this->model->getIsApproved(0, 'single') . "',
+									ISAPPROVED								=	'" . $this->model->getIsApproved(0, 'single') . "',
 									ISREVIEW									=	'" . $this->model->getIsReview(0, 'single') . "',
 									ISPOST										=	'" . $this->model->getIsPost(0, 'single') . "',
 									EXECUTEBY								=	'" . $this->model->getExecuteBy() . "',
 									EXECUTETIME							=	" . $this->model->getExecuteTime() . "
-				WHERE 		INVOICELEDGERID				=	'" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
+				WHERE 			INVOICELEDGERID					=	'" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE		INVOICELEDGER
-				SET 			BUSINESSPARTNERID			=	'".$this->getBusinessPartnerId()."',
-									INVOICECATEGORYID			= '".$this->model->getInvoiceCategoryId()."',
-									INVOICETYPEID						= '".$this->model->getInvoiceTypeId()."',
+				SET 				BUSINESSPARTNERID				=	'".$this->getBusinessPartnerId()."',
+									INVOICECATEGORYID				= '".$this->model->getInvoiceCategoryId()."',
+									INVOICETYPEID							= '".$this->model->getInvoiceTypeId()."',
 									REFERENCENO							= '".$this->model->getReferenceNo()."',
-									INVOICELEDGERTITLE			=	'" . $this->model->getInvoiceLedgerTitle() . "',
-									INVOICELEDGERDESC			=	'" . $this->model->getInvoiceLedgerDesc() . "',
-									INVOICELEDGERDATE			=	'" . $this->model->getInvoiceLedgerDate() . "',
-									INVOICELEDGERAMOUNT	=	'" . $this->model->getInvoiceLedgerAmount() . "',									
+									INVOICELEDGERTITLE				=	'" . $this->model->getInvoiceLedgerTitle() . "',
+									INVOICELEDGERDESC				=	'" . $this->model->getInvoiceLedgerDesc() . "',
+									INVOICELEDGERDATE				=	'" . $this->model->getInvoiceLedgerDate() . "',
+									INVOICELEDGERAMOUNT			=	'" . $this->model->getInvoiceLedgerAmount() . "',									
 									ISDEFAULT								=	'" . $this->model->getIsDefault(0, 'single') . "',
 									ISNEW										=	'" . $this->model->getIsNew(0, 'single') . "',
 									ISDRAFT									=	'" . $this->model->getIsDraft(0, 'single') . "',
 									ISUPDATE									=	'" . $this->model->getIsUpdate(0, 'single') . "',
 									ISDELETE									=	'" . $this->model->getIsDelete(0, 'single') . "',
 									ISACTIVE									=	'" . $this->model->getIsActive(0, 'single') . "',
-									ISAPPROVED							=	'" . $this->model->getIsApproved(0, 'single') . "',
+									ISAPPROVED								=	'" . $this->model->getIsApproved(0, 'single') . "',
 									ISREVIEW									=	'" . $this->model->getIsReview(0, 'single') . "',
 									ISPOST										=	'" . $this->model->getIsPost(0, 'single') . "',
 									EXECUTEBY								=	'" . $this->model->getExecuteBy() . "',
 									EXECUTETIME							=	" . $this->model->getExecuteTime() . "
-				WHERE 		INVOICELEDGERID				=	'" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
+				WHERE 			INVOICELEDGERID					=	'" . $this->model->getInvoiceLedgerId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
