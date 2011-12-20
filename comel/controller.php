@@ -19,7 +19,7 @@ require_once (\"../model/'".$targetDb."'Model.php\");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ReligionDetailSampleClass extends ConfigClass {
+class ".ucfirst($targetTable)."Class extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -95,7 +95,7 @@ class ReligionDetailSampleClass extends ConfigClass {
 		\$this->audit = 0;
 		\$this->log = 1;
 
-		\$this->model = new  ReligionDetailSampleModel ();
+		\$this->model = new  ".ucfirst($targetTable)."Model ();
 		\$this->model->setVendor(\$this->getVendor());
 		\$this->model->execute();
 
@@ -151,7 +151,7 @@ class ReligionDetailSampleClass extends ConfigClass {
 		$controller .= "} else if (\$this->getVendor() == self::ORACLE) {";
 
 		$controller .= "\$this->q->create(\$sql);
-		\$religionDetailSampleId = \$this->q->lastInsertId();
+		".$targetTable."Id = \$this->q->lastInsertId();
 		if (\$this->q->execute == 'fail') {
 			echo json_encode(array(\"success\" => false, \"message\" => \$this->q->responce));
 			exit();
@@ -162,7 +162,7 @@ class ReligionDetailSampleClass extends ConfigClass {
 		echo json_encode(
 		array(	\"success\" => true,
 					\"message\" => \$this->systemString->getCreateMessage(), 
-					\"religionDetailSampleId\" => \$religionDetailSampleId,
+					\"religionDetailSampleId\" => ".$targetTable."Id,
 					\"time\"=>\$time));
 		exit();
 	}
@@ -180,7 +180,7 @@ class ReligionDetailSampleClass extends ConfigClass {
 			} else if (\$this->q->vendor == self::MSSQL) {
 				\$this->auditFilter = \"	[religionDetailSample].[isActive]		=	1	\";
 			} else if (\$this->q->vendor == self::ORACLE) {
-				\$this->auditFilter = \"	RELIGIONDETAIL.ISACTIVE	=	1	\";
+				\$this->auditFilter = \"	".strtoupper($targetTable).".ISACTIVE	=	1	\";
 			}
 		} else if (\$this->getIsAdmin() == 1) {
 			if (\$this->getVendor() == self::MYSQL) {
@@ -200,27 +200,27 @@ class ReligionDetailSampleClass extends ConfigClass {
 		\$items = array();";
 		$controller .= "if (\$this->getVendor() == self::MYSQL) {";
 			
-		$controller .= "if (\$this->model->getReligionDetailId(0, 'single')) {
-				\$sql .= \" AND `\" . \$this->model->getTableName() . \"`.`\" . \$this->model->getPrimaryKeyName() . \"`='\" . \$this->model->getReligionDetailId(0, 'single') . \"'\";
+		$controller .= "if (\$this->model->get".ucfirst($targetTableId)."(0, 'single')) {
+				\$sql .= \" AND `\" . \$this->model->getTableName() . \"`.`\" . \$this->model->getPrimaryKeyName() . \"`='\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"'\";
 			}
 			if (\$this->model->getReligionId()) {
 				\$sql .= \" AND `\" . \$this->model->getTableName() . \"`.`\" . \$this->model->getMasterForeignKeyName() . \"`='\" . \$this->model->getReligionId() . \"'\";
 			}
 		} else if (\$this->getVendor() == self::MSSQL) {";
 
-		$controller .= "if (\$this->model->getReligionDetailId(0, 'single')) {
-				\$sql .= \" AND [\" . \$this->model->getTableName() . \"].[\" . \$this->model->getPrimaryKeyName() . \"]		=	'\" . \$this->model->getReligionDetailId(0, 'single') . \"'\";
+		$controller .= "if (\$this->model->get".ucfirst($targetTableId)."(0, 'single')) {
+				\$sql .= \" AND [\" . \$this->model->getTableName() . \"].[\" . \$this->model->getPrimaryKeyName() . \"]		=	'\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"'\";
 			}
 			if (\$this->model->getReligionId()) {
 				\$sql .= \" AND 	[\" . \$this->model->getTableName() . \"].[\" . \$this->model->getMasterForeignKeyName() . \"]	=	'\" . \$this->model->getReligionId() . \"'\";
 			}
 		} else if (\$this->getVendor() == self::ORACLE) {";
 
-		$controller .= "if (\$this->model->getReligionDetailId(0, 'single')) {
-				\$sql .= \" AND \" . strtoupper(\$this->model->getTableName()) . \".\" . strtoupper(\$this->model->getPrimaryKeyName()) . \"='\" . \$this->model->getReligionDetailId(0, 'single') . \"'\";
+		$controller .= "if (\$this->model->get".ucfirst($targetTableId)."(0, 'single')) {
+				\$sql .= \" AND \" . strtoupper(\$this->model->getTableName()) . "."\" . strtoupper(\$this->model->getPrimaryKeyName()) . \"='\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"'\";
 			}
 			if (\$this->model->getReligionId()) {
-				\$sql .= \" AND 	\" . strtoupper(\$this->model->getTableName()) . \".\" . strtoupper(\$this->model->getMasterForeignKeyName()) . \"	=	'\" . \$this->model->getReligionId() . \"'\";
+				\$sql .= \" AND 	\" . strtoupper(\$this->model->getTableName()) . "."\" . strtoupper(\$this->model->getMasterForeignKeyName()) . \"	=	'\" . \$this->model->getReligionId() . \"'\";
 			}
 		} else {
 			echo json_encode(array(\"success\" => false, \"message\" => \$this->systemString->getNonSupportedDatabase()));
@@ -343,7 +343,7 @@ $controller .= "
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!(\$this->model->getReligionDetailId(0, 'single'))) {
+		if (!(\$this->model->get".ucfirst($targetTableId)."(0, 'single'))) {
 			\$this->q->read(\$sql);
 			if (\$this->q->execute == 'fail') {
 				echo json_encode(array(\"success\" => false, \"message\" => \$this->q->responce));
@@ -354,7 +354,7 @@ $controller .= "
 		while ((\$row = \$this->q->fetchAssoc()) == TRUE) {
 			\$items [] = \$row;
 		}
-		if (\$this->model->getReligionDetailId(0, 'single')) {
+		if (\$this->model->get".ucfirst($targetTableId)."(0, 'single')) {
 			\$end = microtime(true);
 			\$time = \$end - \$start;
 			\$json_encode = json_encode(array(
@@ -363,8 +363,8 @@ $controller .= "
 					'message' => \$this->systemString->getReadMessage(), 
 					'time' => \$time, 
 					'firstRecord' => \$this->firstRecord('value'), 
-					'previousRecord' => \$this->previousRecord('value', \$this->model->getReligionDetailId(0, 'single')), 
-					'nextRecord' => \$this->nextRecord('value', \$this->model->getReligionDetailId(0, 'single')), 
+					'previousRecord' => \$this->previousRecord('value', \$this->model->get".ucfirst($targetTableId)."(0, 'single')), 
+					'nextRecord' => \$this->nextRecord('value', \$this->model->get".ucfirst($targetTableId)."(0, 'single')), 
 					'lastRecord' => \$this->lastRecord('value'),
 					'dataDetail' => \$items));
 			\$json_encode = str_replace(\"[\", \"\", \$json_encode);
@@ -382,8 +382,8 @@ $controller .= "
 				'message' => \$this->systemString->getReadMessage(), 
 				'time' => \$time, 
             	'firstRecord' => \$this->recordSet->firstRecord('value'), 
-            	'previousRecord' => \$this->recordSet->previousRecord('value', \$this->model->getReligionDetailId(0, 'single')), 
-            	'nextRecord' => \$this->recordSet->nextRecord('value', \$this->model->getReligionDetailId(0, 'single')), 
+            	'previousRecord' => \$this->recordSet->previousRecord('value', \$this->model->get".ucfirst($targetTableId)."(0, 'single')), 
+            	'nextRecord' => \$this->recordSet->nextRecord('value', \$this->model->get".ucfirst($targetTableId)."(0, 'single')), 
             	'lastRecord' => \$this->recordSet->lastRecord('value'),
 			'dataDetail' => \$items));
 			exit();
@@ -412,27 +412,27 @@ $controller .= "
 		$controller .= "	\$sql = \"
 		SELECT	`\" . \$this->model->getPrimaryKeyName() . \"`
 		FROM 	`\" . \$this->model->getTableName() . \"`
-		WHERE  	`\" . \$this->model->getPrimaryKeyName() . \"` = '\" . \$this->model->getReligionDetailId(0, 'single') . \"' \";
+		WHERE  	`\" . \$this->model->getPrimaryKeyName() . \"` = '\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"' \";
 		} else if (\$this->getVendor() == self::MSSQL) {
 			\$sql = \"
 			SELECT	[\" . \$this->model->getPrimaryKeyName() . \"]
 			FROM 	[\" . \$this->model->getTableName() . \"]
-			WHERE  	[\" . \$this->model->getPrimaryKeyName() . \"] = '\" . \$this->model->getReligionDetailId(0, 'single') . \"' \";
+			WHERE  	[\" . \$this->model->getPrimaryKeyName() . \"] = '\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"' \";
 		} else if (\$this->getVendor() == self::ORACLE) {
 			\$sql = \"
 		SELECT	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \"
 		FROM 	\" . strtoupper(\$this->model->getTableName()) . \"
-		WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->getReligionDetailId(0, 'single') . \"' \";
+		WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"' \";
 		} else if (\$this->getVendor() == self::DB2) {
 			\$sql = \"
 			SELECT	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \"
 			FROM 	\" . strtoupper(\$this->model->getTableName()) . \"
-			WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->getReligionDetailId(0, 'single') . \"' \";
+			WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"' \";
 		} else if (\$this->getVendor() == self::POSTGRESS) {
 			\$sql = \"
 			SELECT	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \"
 			FROM 	\" . strtoupper(\$this->model->getTableName()) . \"
-			WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->getReligionDetailId(0, 'single') . \"' \";
+			WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"' \";
 		}
 		\$result = \$this->q->fast(\$sql);
 		\$total = \$this->q->numberRows(\$result, \$sql);
@@ -483,27 +483,27 @@ $controller .= "
 			\$sql = \"
 		SELECT	`\" . \$this->model->getPrimaryKeyName() . \"`
 		FROM 	`\" . \$this->model->getTableName() . \"`
-		WHERE  	`\" . \$this->model->getPrimaryKeyName() . \"` = '\" . \$this->model->getReligionDetailId(0, 'single') . \"' \";
+		WHERE  	`\" . \$this->model->getPrimaryKeyName() . \"` = '\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"' \";
 		} else if (\$this->getVendor() == self::MSSQL) {
 			\$sql = \"
 			SELECT	[\" . \$this->model->getPrimaryKeyName() . \"]
 			FROM 	[\" . \$this->model->getTableName() . \"]
-			WHERE  	[\" . \$this->model->getPrimaryKeyName() . \"] = '\" . \$this->model->getReligionDetailId(0, 'single') . \"' \";
+			WHERE  	[\" . \$this->model->getPrimaryKeyName() . \"] = '\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"' \";
 		} else if (\$this->getVendor() == self::ORACLE) {
 			\$sql = \"
 		SELECT	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \"
 		FROM 	\" . strtoupper(\$this->model->getTableName()) . \"
-		WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->getReligionDetailId(0, 'single') . \"' \";
+		WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"' \";
 		} else if (\$this->getVendor() == self::DB2) {
 			\$sql = \"
 			SELECT	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \"
 			FROM 	\" . strtoupper(\$this->model->getTableName()) . \"
-			WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->getReligionDetailId(0, 'single') . \"' \";
+			WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"' \";
 		} else if (\$this->getVendor() == self::POSTGRESS) {
 			\$sql = \"
 			SELECT	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \"
 			FROM 	\" . strtoupper(\$this->model->getTableName()) . \"
-			WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->getReligionDetailId(0, 'single') . \"' \";
+			WHERE  	\" . strtoupper(\$this->model->getPrimaryKeyName()) . \" = '\" . \$this->model->get".ucfirst($targetTableId)."(0, 'single') . \"' \";
 		}
 		\$result = \$this->q->fast(\$sql);
 		\$total = \$this->q->numberRows(\$result, \$sql);
@@ -581,21 +581,21 @@ $controller .= "
 					for (\$i = 0; \$i < \$loop; \$i++) {
 						if (strlen(\$this->model->getIsDefault(\$i, 'array')) > 0) {
 							if (\$this->getVendor() == self::MYSQL) {
-								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `iCore`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
+								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `".$targetDbObject."`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
 							} else if (\$this->getVendor() == self::MSSQL) {
-								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [iCore].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
+								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [".$targetDbObject."].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
 							} else if (\$this->getVendor() == self::ORACLE) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::DB2) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::POSTGRESS) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else {
 								echo json_encode(array(\"success\" => false, \"message\" => \$this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							\$sqlLooping .= \"
-							WHEN '\" . \$this->model->getReligionDetailId(\$i, 'array') . \"'
+							WHEN '\" . \$this->model->get".ucfirst($targetTableId)."(\$i, 'array') . \"'
 							THEN '\" . \$this->model->getIsDefault(\$i, 'array') . \"'\";
 							\$sqlLooping .= \" END,\";
 						}
@@ -605,21 +605,21 @@ $controller .= "
 					for (\$i = 0; \$i < \$loop; \$i++) {
 						if (strlen(\$this->model->getIsNew(\$i, 'array')) > 0) {
 							if (\$this->getVendor() == self::MYSQL) {
-								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `iCore`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
+								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `".$targetDbObject."`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
 							} else if (\$this->getVendor() == self::MSSQL) {
-								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [iCore].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
+								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [".$targetDbObject."].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
 							} else if (\$this->getVendor() == self::ORACLE) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::DB2) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::POSTGRESS) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else {
 								echo json_encode(array(\"success\" => false, \"message\" => \$this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							\$sqlLooping .= \"
-							WHEN '\" . \$this->model->getReligionDetailId(\$i, 'array') . \"'
+							WHEN '\" . \$this->model->get".ucfirst($targetTableId)."(\$i, 'array') . \"'
 							THEN '\" . \$this->model->getIsNew(\$i, 'array') . \"'\";
 							\$sqlLooping .= \" END,\";
 						}
@@ -629,21 +629,21 @@ $controller .= "
 					for (\$i = 0; \$i < \$loop; \$i++) {
 						if (strlen(\$this->model->getIsDraft(\$i, 'array')) > 0) {
 							if (\$this->getVendor() == self::MYSQL) {
-								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `iCore`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
+								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `".$targetDbObject."`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
 							} else if (\$this->getVendor() == self::MSSQL) {
-								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [iCore].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
+								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [".$targetDbObject."].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
 							} else if (\$this->getVendor() == self::ORACLE) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::DB2) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::POSTGRESS) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else {
 								echo json_encode(array(\"success\" => false, \"message\" => \$this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							\$sqlLooping .= \"
-							WHEN '\" . \$this->model->getReligionDetailId(\$i, 'array') . \"'
+							WHEN '\" . \$this->model->get".ucfirst($targetTableId)."(\$i, 'array') . \"'
 							THEN '\" . \$this->model->getIsDraft(\$i, 'array') . \"'\";
 							\$sqlLooping .= \" END,\";
 						}
@@ -653,21 +653,21 @@ $controller .= "
 					for (\$i = 0; \$i < \$loop; \$i++) {
 						if (strlen(\$this->model->getIsUpdate(\$i, 'array')) > 0) {
 							if (\$this->getVendor() == self::MYSQL) {
-								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `iCore`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
+								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `".$targetDbObject."`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
 							} else if (\$this->getVendor() == self::MSSQL) {
-								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [iCore].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
+								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [".$targetDbObject."].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
 							} else if (\$this->getVendor() == self::ORACLE) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::DB2) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::POSTGRESS) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else {
 								echo json_encode(array(\"success\" => false, \"message\" => \$this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							\$sqlLooping .= \"
-							WHEN '\" . \$this->model->getReligionDetailId(\$i, 'array') . \"'
+							WHEN '\" . \$this->model->get".ucfirst($targetTableId)."(\$i, 'array') . \"'
 							THEN '\" . \$this->model->getIsUpdate(\$i, 'array') . \"'\";
 							\$sqlLooping .= \" END,\";
 						}
@@ -677,21 +677,21 @@ $controller .= "
 					for (\$i = 0; \$i < \$loop; \$i++) {
 						if (strlen(\$this->model->getIsDelete(\$i, 'array')) > 0) {
 							if (\$this->getVendor() == self::MYSQL) {
-								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `iCore`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
+								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `".$targetDbObject."`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
 							} else if (\$this->getVendor() == self::MSSQL) {
-								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [iCore].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
+								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [".$targetDbObject."].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
 							} else if (\$this->getVendor() == self::ORACLE) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::DB2) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::POSTGRESS) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else {
 								echo json_encode(array(\"success\" => false, \"message\" => \$this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							\$sqlLooping .= \"
-							WHEN '\" . \$this->model->getReligionDetailId(\$i, 'array') . \"'
+							WHEN '\" . \$this->model->get".ucfirst($targetTableId)."(\$i, 'array') . \"'
 							THEN '\" . \$this->model->getIsDelete(\$i, 'array') . \"'\";
 							\$sqlLooping .= \" END,\";
 							if(!\$this->getIsAdmin()){
@@ -712,7 +712,7 @@ $controller .= "
 										exit();
 									}
 									\$sqlLooping .= \"
-							WHEN '\" . \$this->model->getReligionDetailId(\$i, 'array') . \"'
+							WHEN '\" . \$this->model->get".ucfirst($targetTableId)."(\$i, 'array') . \"'
 							THEN '0'\";
 									\$sqlLooping .= \" END,\";
 								}
@@ -725,21 +725,21 @@ $controller .= "
 					for (\$i = 0; \$i < \$loop; \$i++) {
 						if (strlen(\$this->model->getIsActive(\$i, 'array')) > 0) {
 							if (\$this->getVendor() == self::MYSQL) {
-								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `iCore`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
+								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `".$targetDbObject."`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
 							} else if (\$this->getVendor() == self::MSSQL) {
-								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [iCore].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
+								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [".$targetDbObject."].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
 							} else if (\$this->getVendor() == self::ORACLE) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::DB2) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::POSTGRESS) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else {
 								echo json_encode(array(\"success\" => false, \"message\" => \$this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							\$sqlLooping .= \"
-							WHEN '\" . \$this->model->getReligionDetailId(\$i, 'array') . \"'
+							WHEN '\" . \$this->model->get".ucfirst($targetTableId)."(\$i, 'array') . \"'
 							THEN '\" . \$this->model->getIsActive(\$i, 'array') . \"'\";
 							\$sqlLooping .= \" END,\";
 						}
@@ -749,21 +749,21 @@ $controller .= "
 					for (\$i = 0; \$i < \$loop; \$i++) {
 						if (strlen(\$this->model->getIsApproved(\$i, 'array')) > 0) {
 							if (\$this->getVendor() == self::MYSQL) {
-								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `iCore`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
+								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `".$targetDbObject."`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
 							} else if (\$this->getVendor() == self::MSSQL) {
-								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [iCore].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
+								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [".$targetDbObject."].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
 							} else if (\$this->getVendor() == self::ORACLE) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::DB2) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::POSTGRESS) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else {
 								echo json_encode(array(\"success\" => false, \"message\" => \$this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							\$sqlLooping .= \"
-							WHEN '\" . \$this->model->getReligionDetailId(\$i, 'array') . \"'
+							WHEN '\" . \$this->model->get".ucfirst($targetTableId)."(\$i, 'array') . \"'
 							THEN '\" . \$this->model->getIsApproved(\$i, 'array') . \"'\";
 							\$sqlLooping .= \" END,\";
 						}
@@ -773,21 +773,21 @@ $controller .= "
 					for (\$i = 0; \$i < \$loop; \$i++) {
 						if (strlen(\$this->model->getIsReview(\$i, 'array')) > 0) {
 							if (\$this->getVendor() == self::MYSQL) {
-								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `iCore`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
+								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `".$targetDbObject."`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
 							} else if (\$this->getVendor() == self::MSSQL) {
-								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [iCore].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
+								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [".$targetDbObject."].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
 							} else if (\$this->getVendor() == self::ORACLE) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::DB2) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::POSTGRESS) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else {
 								echo json_encode(array(\"success\" => false, \"message\" => \$this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							\$sqlLooping .= \"
-                            WHEN '\" . \$this->model->getReligionDetailId(\$i, 'array') . \"'
+                            WHEN '\" . \$this->model->get".ucfirst($targetTableId)."(\$i, 'array') . \"'
                             THEN '\" . \$this->model->getIsReview(\$i, 'array') . \"'\";
 							\$sqlLooping .= \" END,\";
 						}
@@ -797,21 +797,21 @@ $controller .= "
 					for (\$i = 0; \$i < \$loop; \$i++) {
 						if (strlen(\$this->model->getIsPost(\$i, 'array')) > 0) {
 							if (\$this->getVendor() == self::MYSQL) {
-								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `iCore`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
+								\$sqlLooping .= \" `\" . \$systemCheck . \"` = CASE `".$targetDbObject."`.`\".\$this->model->getTableName().\"`.`\" . \$this->model->getPrimaryKeyName() . \"`\";
 							} else if (\$this->getVendor() == self::MSSQL) {
-								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [iCore].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
+								\$sqlLooping .= \"  [\" . \$systemCheck . \"] = CASE [".$targetDbObject."].[\".\$this->model->getTableName().\"].[\" . \$this->model->getPrimaryKeyName() . \"]\";
 							} else if (\$this->getVendor() == self::ORACLE) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::DB2) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else if (\$this->getVendor() == self::POSTGRESS) {
-								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ICORE.\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
+								\$sqlLooping .= \"	\" . strtoupper(\$systemCheck) . \" = CASE ".$targetDbObject.".\" . strtoupper(\$this->model->getTableName()).strtoupper(\$this->model->getPrimaryKeyName()) . \" \";
 							} else {
 								echo json_encode(array(\"success\" => false, \"message\" => \$this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							\$sqlLooping .= \"
-                                WHEN '\" . \$this->model->getReligionDetailId(\$i, 'array') . \"'
+                                WHEN '\" . \$this->model->get".ucfirst($targetTableId)."(\$i, 'array') . \"'
                                 THEN '\" . \$this->model->getIsPost(\$i, 'array') . \"'\";
 							\$sqlLooping .= \" END,\";
 						}
@@ -856,7 +856,7 @@ $controller .= "
 						\"time\"=>\$time)
 		);
 		exit();
-	}";
+	}\";
 
 	/**
 	 * To check if a key duplicate or not
@@ -883,9 +883,9 @@ $controller .= "
 			AND		[isActive]				=	1\";
 		} else if (\$this->getVendor() == self::ORACLE) {
 			\$sql = \"
-			SELECT	RELIGIONDETAIL
-			FROM 	RELIGIONDETAIL
-			WHERE 	RELIGIONDETAILSAMPLEDESC 	= 	'\" . \$this->model->getReligionDetailDesc() . \"'
+			SELECT	".strtoupper($targetTable)."
+			FROM 	".strtoupper($targetTable)."
+			WHERE 	".strtoupper($targetTable)."SAMPLEDESC 	= 	'\" . \$this->model->getReligionDetailDesc() . \"'
 			AND		ISACTIVE			=	1\";
 		}
 		\$this->q->read(\$sql);
@@ -1013,7 +1013,7 @@ $controller .= "
 
 }
 
-\$religionDetailSampleObject = new ReligionDetailClass ();
+".$targetTable."Object = new ReligionDetailClass ();
 /**
  * crud -create,read,update,delete
  * */
@@ -1022,77 +1022,77 @@ if (isset(\$_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset(\$_POST ['leafId'])) {
-		\$religionDetailSampleObject->setLeafId(\$_POST ['leafId']);
+		".$targetTable."Object->setLeafId(\$_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset(\$_POST ['isAdmin'])) {
-		\$religionDetailSampleObject->setIsAdmin(\$_POST ['isAdmin']);
+		".$targetTable."Object->setIsAdmin(\$_POST ['isAdmin']);
 	}
 	/**
 	 * Database Request
 	 */
 	if (isset(\$_POST ['databaseRequest'])) {
-		\$religionDetailSampleObject->setDatabaseRequest(\$_POST ['databaseRequest']);
+		".$targetTable."Object->setDatabaseRequest(\$_POST ['databaseRequest']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset(\$_POST ['start'])) {
-		\$religionDetailSampleObject->setStart(\$_POST ['start']);
+		".$targetTable."Object->setStart(\$_POST ['start']);
 	}
 	if (isset(\$_POST ['perPage'])) {
-		\$religionDetailSampleObject->setLimit(\$_POST ['perPage']);
+		".$targetTable."Object->setLimit(\$_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset(\$_POST ['query'])) {
-		\$religionDetailSampleObject->setFieldQuery(\$_POST ['query']);
+		".$targetTable."Object->setFieldQuery(\$_POST ['query']);
 	}
 	if (isset(\$_POST ['filter'])) {
-		\$religionDetailSampleObject->setGridQuery(\$_POST ['filter']);
+		".$targetTable."Object->setGridQuery(\$_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset(\$_POST ['order'])) {
-		\$religionDetailSampleObject->setOrder(\$_POST ['order']);
+		".$targetTable."Object->setOrder(\$_POST ['order']);
 	}
 	if (isset(\$_POST ['sortField'])) {
-		\$religionDetailSampleObject->setSortField(\$_POST ['sortField']);
+		".$targetTable."Object->setSortField(\$_POST ['sortField']);
 	}
 	if (isset(\$_POST ['character'])) {
-		\$religionDetailSampleObject->setCharacterQuery(\$_POST['character']);
+		".$targetTable."Object->setCharacterQuery(\$_POST['character']);
 	}
 	if (isset(\$_POST ['dateRangeStart'])) {
-		\$religionDetailSampleObject->setDateRangeStartQuery(\$_POST['dateRangeStart']);
+		".$targetTable."Object->setDateRangeStartQuery(\$_POST['dateRangeStart']);
 	}
 	if (isset(\$_POST ['dateRangeEnd'])) {
-		\$religionDetailSampleObject->setDateRangeEndQuery(\$_POST['dateRangeEnd']);
+		".$targetTable."Object->setDateRangeEndQuery(\$_POST['dateRangeEnd']);
 	}
 	if (isset(\$_POST ['dateRangeType'])) {
-		\$religionDetailSampleObject->setDateRangeTypeQuery(\$_POST['dateRangeType']);
+		".$targetTable."Object->setDateRangeTypeQuery(\$_POST['dateRangeType']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	\$religionDetailSampleObject->execute();
+	".$targetTable."Object->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if (\$_POST ['method'] == 'create') {
-		\$religionDetailSampleObject->create();
+		".$targetTable."Object->create();
 	}
 	if (\$_POST ['method'] == 'save') {
-		\$religionDetailSampleObject->update();
+		".$targetTable."Object->update();
 	}
 	if (\$_POST ['method'] == 'read') {
-		\$religionDetailSampleObject->read();
+		".$targetTable."Object->read();
 	}
 	if (\$_POST ['method'] == 'delete') {
-		\$religionDetailSampleObject->delete();
+		".$targetTable."Object->delete();
 	}
 }
 if (isset(\$_GET ['method'])) {
@@ -1100,55 +1100,55 @@ if (isset(\$_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset(\$_GET ['leafId'])) {
-		\$religionDetailSampleObject->setLeafId(\$_GET ['leafId']);
+		".$targetTable."Object->setLeafId(\$_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset(\$_GET ['isAdmin'])) {
-		\$religionDetailSampleObject->setIsAdmin(\$_GET ['isAdmin']);
+		".$targetTable."Object->setIsAdmin(\$_GET ['isAdmin']);
 	}
 	/**
 	 * Database Request
 	 */
 	if (isset(\$_GET ['databaseRequest'])) {
-		\$religionDetailSampleObject->setDatabaseRequest(\$_GET ['databaseRequest']);
+		".$targetTable."Object->setDatabaseRequest(\$_GET ['databaseRequest']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	\$religionDetailSampleObject->execute();
+	".$targetTable."Object->execute();
 	if (isset(\$_GET ['field'])) {
 		if (\$_GET ['field'] == 'staffId') {
-			\$religionDetailSampleObject->staff();
+			".$targetTable."Object->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if (\$_GET ['method'] == 'updateStatus') {
-		\$religionDetailSampleObject->updateStatus();
+		".$targetTable."Object->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
 	if (isset(\$_GET ['religionDetailSampleDesc'])) {
 		if (strlen(\$_GET ['religionDetailSampleDesc']) > 0) {
-			\$religionDetailSampleObject->duplicate();
+			".$targetTable."Object->duplicate();
 		}
 	}
 	if (\$_GET ['method'] == 'dataNavigationRequest') {
 		if (\$_GET ['dataNavigation'] == 'first') {
-			\$religionDetailSampleObject->firstRecord('json');
+			".$targetTable."Object->firstRecord('json');
 		}
 		if (\$_GET ['dataNavigation'] == 'previous') {
-			\$religionDetailSampleObject->previousRecord('json', 0);
+			".$targetTable."Object->previousRecord('json', 0);
 		}
 		if (\$_GET ['dataNavigation'] == 'next') {
-			\$religionDetailSampleObject->nextRecord('json', 0);
+			".$targetTable."Object->nextRecord('json', 0);
 		}
 		if (\$_GET ['dataNavigation'] == 'last') {
-			\$religionDetailSampleObject->lastRecord('json');
+			".$targetTable."Object->lastRecord('json');
 		}
 	}
 	/*
@@ -1156,7 +1156,7 @@ if (isset(\$_GET ['method'])) {
 	 */
 	if (isset(\$_GET ['mode'])) {
 		if (\$_GET ['mode'] == 'excel') {
-			\$religionDetailSampleObject->excel();
+			".$targetTable."Object->excel();
 		}
 	}
 }
